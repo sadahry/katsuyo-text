@@ -30,6 +30,23 @@ from katsuyo_text.katsuyo_text import (
     KatsuyoTextError,
     ShujoshiText,
     TaigenText,
+    FUKUZYOSHI_BAKARI,
+    FUKUZYOSHI_MADE,
+    FUKUZYOSHI_DAKE,
+    FUKUZYOSHI_HODO,
+    FUKUZYOSHI_KURAI,
+    FUKUZYOSHI_NADO,
+    FUKUZYOSHI_NARI,
+    FUKUZYOSHI_KA,
+    FUKUZYOSHI_ZUTSU,
+    FUKUZYOSHI_NOMI,
+    FUKUZYOSHI_KIRI,
+    FUKUZYOSHI_YARA,
+    SHUJOSHI_NO,
+    SHUJOSHI_NONI,
+    SHUJOSHI_NA,
+    SHUJOSHI_KA,
+    SHUJOSHI_KASHIRA,
 )
 from katsuyo_text.katsuyo_text_helper import (
     IKatsuyoTextHelper,
@@ -480,3 +497,42 @@ class SpacyKatsuyoTextAppendantsDetector(IKatsuyoTextAppendantsDetector):
             return None, None
 
         return self.try_get_shujoshi("のに")
+
+
+DEFAULT_APPENDANTS_DETECTOR = SpacyKatsuyoTextAppendantsDetector(
+    helpers={
+        Ukemi(),
+        Shieki(),
+        Hitei(),
+        KibouSelf(),
+        KibouOthers(),
+        KakoKanryo(),
+        Youtai(),
+        Denbun(),
+        Suitei(),
+        Touzen(),
+        HikyoReizi(),
+        Keizoku(),
+    },
+    fukujoshis={
+        FUKUZYOSHI_BAKARI,
+        FUKUZYOSHI_MADE,
+        FUKUZYOSHI_DAKE,
+        FUKUZYOSHI_HODO,
+        FUKUZYOSHI_KURAI,
+        FUKUZYOSHI_NADO,
+        FUKUZYOSHI_NARI,
+        FUKUZYOSHI_KA,
+        FUKUZYOSHI_ZUTSU,
+        FUKUZYOSHI_NOMI,
+        FUKUZYOSHI_KIRI,
+        FUKUZYOSHI_YARA,
+    },
+    shujoshis={
+        SHUJOSHI_NO,
+        SHUJOSHI_NONI,
+        SHUJOSHI_NA,
+        SHUJOSHI_KA,
+        SHUJOSHI_KASHIRA,
+    },
+)

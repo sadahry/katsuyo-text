@@ -42,7 +42,9 @@ from katsuyo_text.katsuyo import (
     SHIMO_ICHIDAN,
 )
 from katsuyo_text.katsuyo_text_detector import (
+    SpacyKatsuyoTextSourceDetector,
     SpacyKatsuyoTextAppendantsDetector,
+    DEFAULT_APPENDANTS_DETECTOR,
 )
 from katsuyo_text.katsuyo_text_helper import (
     IKatsuyoTextHelper,
@@ -59,17 +61,16 @@ from katsuyo_text.katsuyo_text_helper import (
     Hitei,
     Youtai,
 )
-from katsuyo_text.katsuyo_text_builder import SpacyKatsuyoTextBuilder
 
 
 @pytest.fixture(scope="session")
-def spacy_detector():
-    return SpacyKatsuyoTextBuilder().root_detector
+def spacy_source_detector():
+    return SpacyKatsuyoTextSourceDetector()
 
 
 @pytest.fixture(scope="session")
 def spacy_appendants_detector():
-    return SpacyKatsuyoTextBuilder().appendants_detector
+    return DEFAULT_APPENDANTS_DETECTOR
 
 
 def katsuyo_texts_appendants_detector_init_validation_error():
@@ -647,13 +648,13 @@ def katsuyo_texts_appendants_detector_init_warning():
     ],
 )
 def test_spacy_katsuyo_text_detector(
-    nlp_ja, spacy_detector, msg, text, root_text, pos, expected
+    nlp_ja, spacy_source_detector, msg, text, root_text, pos, expected
 ):
     sent = next(nlp_ja(text).sents)
     root_token = sent.root
     assert root_token.text == root_text, "root token is not correct"
     assert root_token.pos_ == pos, "root token is not correct"
-    result = spacy_detector.detect(root_token)
+    result = spacy_source_detector.detect(root_token)
     assert result == expected, msg
 
 
