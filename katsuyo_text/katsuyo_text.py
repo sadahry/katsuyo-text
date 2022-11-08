@@ -225,36 +225,12 @@ class FixedKatsuyoText(IKatsuyoTextSource):
     katsuyo: k.FixedKatsuyo
 
     def __add__(self, post: IKatsuyoTextAppendant[A]) -> A:
-        # 基本はそのまま引っ付ける
-        if isinstance(post, TaigenText):
-            return TaigenText(gokan=str(self) + post.gokan)
-        elif isinstance(post, FukujoshiText):
-            if type(post) is not FukujoshiText:  # 特殊な活用系の場合
-                return post.merge(self)
-            return FukujoshiText(gokan=str(self) + post.gokan)
-        elif isinstance(post, ShujoshiText):
-            if type(post) is not ShujoshiText:  # 特殊な活用系の場合
-                return post.merge(self)
-            return ShujoshiText(gokan=str(self) + post.gokan)
-        elif isinstance(post, KakujoshiText):
-            # TODO 特殊な活用系の実装
-            return KakujoshiText(gokan=str(self) + post.gokan)
-        elif isinstance(post, KeijoshiText):
-            # TODO 特殊な活用系の実装
-            return KeijoshiText(gokan=str(self) + post.gokan)
-        elif isinstance(post, SetsuzokujoshiText):
-            # TODO 特殊な活用系の実装
-            return SetsuzokujoshiText(gokan=str(self) + post.gokan)
-        elif isinstance(post, JuntaijoshiText):
-            # TODO 特殊な活用系の実装
-            return JuntaijoshiText(gokan=str(self) + post.gokan)
-        elif isinstance(post, KatsuyoText):
+        if isinstance(post, KatsuyoText):
             return KatsuyoText(
                 gokan=str(self) + post.gokan,
                 katsuyo=post.katsuyo,
             )
         else:
-            # gokanやkatsuyoを持たないクラスを想定(e.g., IKatsuyoHelper)
             return post.merge(self)
 
     def __str__(self):
@@ -262,7 +238,7 @@ class FixedKatsuyoText(IKatsuyoTextSource):
 
 
 @attrs.define(frozen=True, slots=False)
-class INonKatsuyoText(IKatsuyoTextSource, IKatsuyoTextAppendant[M]):
+class INonKatsuyoText(IKatsuyoTextSource):
     """
     活用形を含まない文字列を表すクラス。
     名詞,助詞,接続詞,感動詞,記号,連体詞,接頭辞,接尾辞,補助記号,フィラー,
@@ -272,55 +248,13 @@ class INonKatsuyoText(IKatsuyoTextSource, IKatsuyoTextAppendant[M]):
     gokan: str
     katsuyo: None = None
 
-    def merge(self, pre: IKatsuyoTextSource) -> M:
-        """
-        基本的には連体形で受けるが、下位クラスで上書きすることで
-        任意の活用形に変換して返すことがある。
-        """
-        if isinstance(pre, (FixedKatsuyoText, INonKatsuyoText)):
-            return pre + self
-        else:
-            assert isinstance(pre, KatsuyoText)
-
-            if (fkt := pre.as_fkt_rentai) is not None:
-                return fkt + self
-
-            raise KatsuyoTextError(
-                f"Unsupported katsuyo_text in merge of {type(self)}: {pre} "
-                f"type: {type(pre)} katsuyo: {type(pre.katsuyo)}"
-            )
-
     def __add__(self, post: IKatsuyoTextAppendant[A]) -> A:
-        # 基本はそのまま引っ付ける
-        if isinstance(post, TaigenText):
-            return TaigenText(gokan=str(self) + post.gokan)
-        elif isinstance(post, FukujoshiText):
-            if type(post) is not FukujoshiText:  # 特殊な活用系の場合
-                return post.merge(self)
-            return FukujoshiText(gokan=str(self) + post.gokan)
-        elif isinstance(post, ShujoshiText):
-            if type(post) is not ShujoshiText:  # 特殊な活用系の場合
-                return post.merge(self)
-            return ShujoshiText(gokan=str(self) + post.gokan)
-        elif isinstance(post, KakujoshiText):
-            # TODO 特殊な活用系の実装
-            return KakujoshiText(gokan=str(self) + post.gokan)
-        elif isinstance(post, KeijoshiText):
-            # TODO 特殊な活用系の実装
-            return KeijoshiText(gokan=str(self) + post.gokan)
-        elif isinstance(post, SetsuzokujoshiText):
-            # TODO 特殊な活用系の実装
-            return SetsuzokujoshiText(gokan=str(self) + post.gokan)
-        elif isinstance(post, JuntaijoshiText):
-            # TODO 特殊な活用系の実装
-            return JuntaijoshiText(gokan=str(self) + post.gokan)
-        elif isinstance(post, KatsuyoText):
+        if isinstance(post, KatsuyoText):
             return KatsuyoText(
                 gokan=str(self) + post.gokan,
                 katsuyo=post.katsuyo,
             )
         else:
-            # gokanやkatsuyoを持たないクラスを想定(e.g., IKatsuyoHelper)
             return post.merge(self)
 
     def __str__(self):
@@ -1111,10 +1045,22 @@ JODOUSHI_DEIRU = Deiru()
 
 
 @attrs.define(frozen=True, slots=True)
-class TaigenText(INonKatsuyoText["TaigenText"]):
+class TaigenText(INonKatsuyoText, IKatsuyoTextAppendant["TaigenText"]):
     """体言"""
 
-    pass
+    def merge(self, pre: IKatsuyoTextSource) -> "TaigenText":
+        if isinstance(pre, (FixedKatsuyoText, INonKatsuyoText)):
+            return TaigenText(str(pre) + self.gokan)
+        else:
+            assert isinstance(pre, KatsuyoText)
+
+            if (fkt := pre.as_fkt_rentai) is not None:
+                return TaigenText(str(fkt) + self.gokan)
+
+            raise KatsuyoTextError(
+                f"Unsupported katsuyo_text in merge of {type(self)}: {pre} "
+                f"type: {type(pre)} katsuyo: {type(pre.katsuyo)}"
+            )
 
 
 # ==============================================================================
@@ -1125,12 +1071,24 @@ class TaigenText(INonKatsuyoText["TaigenText"]):
 
 
 @attrs.define(frozen=True, slots=True)
-class KakujoshiText(INonKatsuyoText["KakujoshiText"]):
+class KakujoshiText(INonKatsuyoText, IKatsuyoTextAppendant["KakujoshiText"]):
     """
     格助詞
     """
 
-    pass
+    def merge(self, pre: IKatsuyoTextSource) -> "KakujoshiText":
+        if isinstance(pre, (FixedKatsuyoText, INonKatsuyoText)):
+            return KakujoshiText(str(pre) + self.gokan)
+        else:
+            assert isinstance(pre, KatsuyoText)
+
+            if (fkt := pre.as_fkt_rentai) is not None:
+                return KakujoshiText(str(fkt) + self.gokan)
+
+            raise KatsuyoTextError(
+                f"Unsupported katsuyo_text in merge of {type(self)}: {pre} "
+                f"type: {type(pre)} katsuyo: {type(pre.katsuyo)}"
+            )
 
 
 # TODO 特殊な活用系のHelper実装
@@ -1150,7 +1108,7 @@ KAKUJOSHI_DA = KakujoshiText("だ")
 
 
 @attrs.define(frozen=True, slots=True)
-class KeijoshiText(INonKatsuyoText["KeijoshiText"]):
+class KeijoshiText(INonKatsuyoText):
     """
     係助詞
     """
@@ -1170,39 +1128,58 @@ KEIJOSHI_MO = KeijoshiText("も")
 
 
 @attrs.define(frozen=True, slots=False)
-class FukujoshiText(INonKatsuyoText["FukujoshiText"]):
+class FukujoshiText(INonKatsuyoText):
+    """
+    副助詞
+    """
+
+    pass
+
+
+@attrs.define(frozen=True, slots=False)
+class FukujoshiRentaiText(FukujoshiText, IKatsuyoTextAppendant["FukujoshiText"]):
     """
     副助詞。連体形につくものをまとめる
     """
 
-    @property
-    def fukujoshi(self) -> "FukujoshiText":
-        return FukujoshiText(self.gokan)
+    def merge(self, pre: IKatsuyoTextSource) -> "FukujoshiText":
+        if isinstance(pre, (FixedKatsuyoText, INonKatsuyoText)):
+            return FukujoshiText(str(pre) + self.gokan)
+        else:
+            assert isinstance(pre, KatsuyoText)
+
+            if (fkt := pre.as_fkt_rentai) is not None:
+                return FukujoshiText(str(fkt) + self.gokan)
+
+            raise KatsuyoTextError(
+                f"Unsupported katsuyo_text in merge of {type(self)}: {pre} "
+                f"type: {type(pre)} katsuyo: {type(pre.katsuyo)}"
+            )
 
 
-FUKUZYOSHI_BAKARI = FukujoshiText("ばかり")
-FUKUZYOSHI_MADE = FukujoshiText("まで")
-FUKUZYOSHI_DAKE = FukujoshiText("だけ")
-FUKUZYOSHI_HODO = FukujoshiText("ほど")
-FUKUZYOSHI_KURAI = FukujoshiText("くらい")
+FUKUZYOSHI_BAKARI = FukujoshiRentaiText("ばかり")
+FUKUZYOSHI_MADE = FukujoshiRentaiText("まで")
+FUKUZYOSHI_DAKE = FukujoshiRentaiText("だけ")
+FUKUZYOSHI_HODO = FukujoshiRentaiText("ほど")
+FUKUZYOSHI_KURAI = FukujoshiRentaiText("くらい")
 
 
 @attrs.define(frozen=True, slots=False)
-class FukujoshiGokanText(FukujoshiText):
+class FukujoshiGokanText(FukujoshiText, IKatsuyoTextAppendant["FukujoshiText"]):
     """
     副助詞のなかで、形容動詞を語幹で扱うもの
     """
 
     def merge(self, pre: IKatsuyoTextSource) -> FukujoshiText:
         if isinstance(pre, (FixedKatsuyoText, INonKatsuyoText)):
-            return pre + self.fukujoshi
+            return FukujoshiText(str(pre) + self.gokan)
 
         assert isinstance(pre, KatsuyoText)
         if isinstance(pre.katsuyo, k.KeiyoudoushiKatsuyo):
             assert (fkt := pre.as_fkt_gokan) is not None
-            return fkt + self.fukujoshi
+            return FukujoshiText(str(fkt) + self.gokan)
         elif (fkt := pre.as_fkt_rentai) is not None:
-            return fkt + self
+            return FukujoshiText(str(fkt) + self.gokan)
 
         raise KatsuyoTextError(
             f"Unsupported katsuyo_text in merge of {type(self)}: {pre} "
@@ -1218,14 +1195,14 @@ FUKUZYOSHI_NOMI = FukujoshiGokanText("のみ")
 
 
 @attrs.define(frozen=True, slots=False)
-class FukujoshiTaigenText(FukujoshiText):
+class FukujoshiTaigenText(FukujoshiText, IKatsuyoTextAppendant["FukujoshiText"]):
     """
     副助詞のなかでも活用形を体言的に扱う
     """
 
     def merge(self, pre: IKatsuyoTextSource) -> FukujoshiText:
         if isinstance(pre, TaigenText):
-            return pre + self.fukujoshi
+            return FukujoshiText(str(pre) + self.gokan)
 
         raise KatsuyoTextError(
             f"Unsupported katsuyo_text in {type(self)}: {pre} "
@@ -1237,25 +1214,25 @@ FUKUZYOSHI_ZUTSU = FukujoshiTaigenText("ずつ")
 
 
 @attrs.define(frozen=True, slots=False)
-class Kiri(FukujoshiText):
+class Kiri(FukujoshiText, IKatsuyoTextAppendant["FukujoshiText"]):
     """
     副助詞のなかでも特殊な活用形である「きり」のクラス
     """
 
     def merge(self, pre: IKatsuyoTextSource) -> FukujoshiText:
         if isinstance(pre, FixedKatsuyoText):
-            return pre + self.fukujoshi
+            return FukujoshiText(str(pre) + self.gokan)
         elif isinstance(pre, TaigenText):
-            return pre + self.fukujoshi
+            return FukujoshiText(str(pre) + self.gokan)
         elif isinstance(pre, SetsuzokujoshiText):
-            return pre + self.fukujoshi
+            return FukujoshiText(str(pre) + self.gokan)
         elif isinstance(pre, KatsuyoText):
             if isinstance(pre.katsuyo, k.TaKatsuyo):
                 assert (fkt := pre.as_fkt_rentai) is not None
-                return fkt + self.fukujoshi
+                return FukujoshiText(str(fkt) + self.gokan)
             elif isinstance(pre.katsuyo, k.IDoushiKatsuyo):
                 assert (fkt := pre.as_fkt_renyo) is not None
-                return fkt + FukujoshiText("っきり")
+                return FukujoshiText(str(fkt) + "っきり")
 
         raise KatsuyoTextError(
             f"Unsupported katsuyo_text in {type(self)}: {pre} "
@@ -1273,7 +1250,7 @@ FUKUZYOSHI_KIRI = Kiri("きり")
 
 
 @attrs.define(frozen=True, slots=True)
-class SetsuzokujoshiText(INonKatsuyoText["SetsuzokujoshiText"]):
+class SetsuzokujoshiText(INonKatsuyoText):
     """
     接続助詞
     """
@@ -1293,27 +1270,26 @@ SETSUZOKUJOSHI_KEREDO = SetsuzokujoshiText("けれど")
 
 
 @attrs.define(frozen=True, slots=False)
-class ShujoshiText(INonKatsuyoText["ShujoshiText"]):
+class ShujoshiText(INonKatsuyoText):
     """
-    終助詞。連体形につくものをまとめる
+    終助詞
     """
 
-    @property
-    def shujoshi(self) -> "ShujoshiText":
-        return ShujoshiText(self.gokan)
+    pass
 
 
 @attrs.define(frozen=True, slots=False)
-class ShujoshiYogenText(ShujoshiText):
+class ShujoshiYogenText(ShujoshiText, IKatsuyoTextAppendant["ShujoshiText"]):
     """
     終助詞。連体形につくもので用言にしか紐づかないものをまとめる
     """
 
     def merge(self, pre: IKatsuyoTextSource) -> "ShujoshiText":
         if isinstance(pre, FixedKatsuyoText):
-            return pre + self.shujoshi
+            return ShujoshiText(str(pre) + self.gokan)
         elif isinstance(pre, KatsuyoText):
-            return pre + self.shujoshi
+            if (fkt := pre.as_fkt_rentai) is not None:
+                return ShujoshiText(str(fkt) + self.gokan)
 
         raise KatsuyoTextError(
             f"Unsupported katsuyo_text in {type(self)}: {pre} "
@@ -1326,22 +1302,22 @@ SHUJOSHI_NONI = ShujoshiYogenText("のに")
 
 
 @attrs.define(frozen=True, slots=False)
-class ShujoshShushiiText(ShujoshiText):
+class ShujoshShushiiText(ShujoshiText, IKatsuyoTextAppendant["ShujoshiText"]):
     """
     終助詞。終止形につくもの
     """
 
     def merge(self, pre: IKatsuyoTextSource) -> "ShujoshiText":
         if isinstance(pre, FixedKatsuyoText):
-            return pre + self.shujoshi
+            return ShujoshiText(str(pre) + self.gokan)
         elif isinstance(pre, KeijoshiText):
-            return pre + self.shujoshi
+            return ShujoshiText(str(pre) + self.gokan)
         elif isinstance(pre, SetsuzokujoshiText):
-            return pre + self.shujoshi
+            return ShujoshiText(str(pre) + self.gokan)
         elif isinstance(pre.katsuyo, k.ShushiMixin):
             assert isinstance(pre, KatsuyoText)
             assert (fkt := pre.as_fkt_shushi) is not None
-            return fkt + self.shujoshi
+            return ShujoshiText(str(fkt) + self.gokan)
 
         raise KatsuyoTextError(
             f"Unsupported katsuyo_text in {type(self)}: {pre} "
@@ -1353,20 +1329,28 @@ SHUJOSHI_NA = ShujoshShushiiText("な")
 
 
 @attrs.define(frozen=True, slots=False)
-class ShujoshiGokanText(ShujoshiText):
+class ShujoshiGokanText(ShujoshiText, IKatsuyoTextAppendant["ShujoshiText"]):
     """
     終助詞のなかで、形容動詞を語幹で扱うもの
     """
 
     def merge(self, pre: IKatsuyoTextSource) -> ShujoshiText:
         if isinstance(pre, (FixedKatsuyoText, INonKatsuyoText)):
-            return pre + self.shujoshi
-        elif isinstance(pre.katsuyo, k.KeiyoudoushiKatsuyo):
+            return ShujoshiText(str(pre) + self.gokan)
+        else:
             assert isinstance(pre, KatsuyoText)
-            assert (fkt := pre.as_fkt_gokan) is not None
-            return fkt + self.shujoshi
 
-        return super().merge(pre)
+            if isinstance(pre.katsuyo, k.KeiyoudoushiKatsuyo):
+                assert (fkt := pre.as_fkt_gokan) is not None
+                return ShujoshiText(str(fkt) + self.gokan)
+
+            if (fkt := pre.as_fkt_rentai) is not None:
+                return ShujoshiText(str(fkt) + self.gokan)
+
+            raise KatsuyoTextError(
+                f"Unsupported katsuyo_text in merge of {type(self)}: {pre} "
+                f"type: {type(pre)} katsuyo: {type(pre.katsuyo)}"
+            )
 
 
 SHUJOSHI_KA = ShujoshiGokanText("か")
@@ -1382,7 +1366,7 @@ SHUJOSHI_KASHIRA = ShujoshiGokanText("かしら")
 
 
 @attrs.define(frozen=True, slots=True)
-class JuntaijoshiText(INonKatsuyoText["JuntaijoshiText"]):
+class JuntaijoshiText(INonKatsuyoText):
     """
     準体助詞
     """
