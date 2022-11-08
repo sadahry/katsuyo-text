@@ -1058,7 +1058,8 @@ class KakujoshiText(INonKatsuyoText["KakujoshiText"]):
     pass
 
 
-# TODO 特殊な活用系の実装（e.g., 目的「に」の場合、動詞の連用形につく）
+# TODO 特殊な活用系のHelper実装
+#      e.g., 同じ格助詞「に」であっても、目的を表す場合のみ動詞の連用形につくケースがある
 # 概ね体言と連体形に適用されるため、細かなハンドリングが現状行わなっていない
 KAKUJOSHI_GA = KakujoshiText("が")
 KAKUJOSHI_NI = KakujoshiText("に")
