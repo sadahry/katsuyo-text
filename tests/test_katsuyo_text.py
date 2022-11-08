@@ -1464,7 +1464,7 @@ def test_FUKUZYOSHI_NOMI(msg, katsuyo_text, expected):
                 gokan="付",
                 katsuyo=GODAN_KA_GYO,
             ),
-            "付きっきり",
+            "付ききり",
         ),
         # 上一段活用では特殊なケースを除き、事例が存在しなかった
         # 特殊なケースであり、文語(BCCWJ)のみに見られたため対応しない
@@ -1474,7 +1474,7 @@ def test_FUKUZYOSHI_NOMI(msg, katsuyo_text, expected):
         #         gokan="い",
         #         katsuyo=KAMI_ICHIDAN,
         #     ),
-        #     "いるっきり",
+        #     "いるきり",
         # ),
         (
             "下一段活用",
@@ -1482,7 +1482,7 @@ def test_FUKUZYOSHI_NOMI(msg, katsuyo_text, expected):
                 gokan="閉め",
                 katsuyo=SHIMO_ICHIDAN,
             ),
-            "閉めっきり",
+            "閉めきり",
         ),
         # カ変活用では事例が存在しなかった
         # (
