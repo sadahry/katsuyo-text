@@ -768,6 +768,41 @@ JODOUSHI_DA_KAKO_KANRYO = DaKakoKanryo()
 
 
 # ==============================================================================
+# 助動詞::丁寧
+# ==============================================================================
+
+
+class Masu(IJodoushiKatsuyoText):
+    def __init__(self):
+        super().__init__(
+            gokan="ま",
+            katsuyo=k.JODOUSHI_MASU,
+        )
+
+    def merge(self, pre: IKatsuyoTextSource) -> KatsuyoText:
+        if isinstance(pre, FixedKatsuyoText):
+            return pre + self.katsuyo_text
+        if isinstance(pre, INonKatsuyoText):
+            raise KatsuyoTextError(
+                f"Unsupported katsuyo_text in merge of {type(self)}: "
+                f"{pre} type: {type(pre)}"
+            )
+        else:
+            assert isinstance(pre, KatsuyoText)
+
+            if isinstance(pre.katsuyo, k.IDoushiKatsuyo):
+                assert (fkt := pre.as_fkt_renyo) is not None
+                return fkt + self.katsuyo_text
+
+            raise KatsuyoTextError(
+                f"Unsupported katsuyo_text in {type(self)}: {pre} "
+                f"type: {type(pre)} katsuyo: {type(pre.katsuyo)}"
+            )
+
+
+JODOUSHI_MASU = Masu()
+
+# ==============================================================================
 # 助動詞::様態
 # ==============================================================================
 
@@ -982,9 +1017,15 @@ class Desu(IJodoushiKatsuyoText):
             assert isinstance(pre, KatsuyoText)
 
             # 未然形「でしょ」でのみ使用可能だが、helperで対処する
-            # if isinstance(pre.katsuyo, (k.IDoushiKatsuyo, k.KeiyoushiKatsuyo)):
+            # if isinstance(pre.katsuyo, k.IDoushiKatsuyo):
             #     assert (fkt := pre.as_fkt_rentai) is not None
             #     return fkt + self.katsuyo_text
+            if isinstance(pre.katsuyo, k.KeiyoushiKatsuyo):
+                assert (fkt := pre.as_fkt_rentai) is not None
+                return fkt + self.katsuyo_text
+            elif isinstance(pre.katsuyo, k.KeiyoudoushiKatsuyo):
+                assert (fkt := pre.as_fkt_gokan) is not None
+                return fkt + self.katsuyo_text
 
             raise KatsuyoTextError(
                 f"Unsupported katsuyo_text in {type(self)}: {pre} "

@@ -532,6 +532,33 @@ JODOUSHI_DA_KAKO_KANRYO = TaKatsuyo(
 
 
 @attrs.define(frozen=True, slots=True)
+class MasuKatsuyo(
+    IJodoushiKatsuyo,
+    MizenMixin,
+    MizenUMixin,
+    RenyoMixin,
+    ShushiMixin,
+    RentaiMixin,
+    KateiMixin,
+    MeireiMixin,
+    # 命令形「まし」は登録しない
+    # 「ませ」のほうが口語的だと判断
+):
+    pass
+
+
+JODOUSHI_MASU = MasuKatsuyo(
+    mizen=FixedKatsuyo("せ"),
+    mizen_u=FixedKatsuyo("しょ"),
+    renyo=FixedKatsuyo("し"),
+    shushi=FixedKatsuyo("す"),
+    rentai=FixedKatsuyo("す"),
+    katei=FixedKatsuyo("すれ"),
+    meirei=FixedKatsuyo("せ"),
+)
+
+
+@attrs.define(frozen=True, slots=True)
 class DesuKatsuyo(
     IJodoushiKatsuyo,
     MizenMixin,

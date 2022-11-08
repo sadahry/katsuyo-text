@@ -40,6 +40,7 @@ from katsuyo_text.katsuyo_text_helper import (
     Youtai,
     Dantei,
     DanteiTeinei,
+    Teinei,
 )
 
 
@@ -1294,7 +1295,7 @@ def test_jodoushi_dantei_value_error(unsupported_katsuyo_text):
                 gokan="美し",
                 katsuyo=KEIYOUSHI,
             ),
-            "美しいのです",
+            "美しいです",
         ),
         (
             "形容動詞",
@@ -1302,7 +1303,7 @@ def test_jodoushi_dantei_value_error(unsupported_katsuyo_text):
                 gokan="綺麗",
                 katsuyo=KEIYOUDOUSHI,
             ),
-            "綺麗なのです",
+            "綺麗です",
         ),
         # TODO 助詞のハンドリング
         (
@@ -1320,6 +1321,98 @@ def test_jodoushi_dantei_teinei(msg, katsuyo_text, expected):
 
 def test_jodoushi_dantei_teinei_value_error(unsupported_katsuyo_text):
     jodoushi = DanteiTeinei()
+    with pytest.raises(KatsuyoTextError):
+        unsupported_katsuyo_text + jodoushi
+
+
+@pytest.mark.parametrize(
+    "msg, katsuyo_text, expected",
+    [
+        (
+            "五段活用",
+            KatsuyoText(
+                gokan="遊",
+                katsuyo=GODAN_BA_GYO,
+            ),
+            "遊びます",
+        ),
+        (
+            "上一段活用",
+            KatsuyoText(
+                gokan="見",
+                katsuyo=KAMI_ICHIDAN,
+            ),
+            "見ます",
+        ),
+        (
+            "下一段活用",
+            KatsuyoText(
+                gokan="求め",
+                katsuyo=SHIMO_ICHIDAN,
+            ),
+            "求めます",
+        ),
+        (
+            "カ変活用",
+            KURU,
+            "きます",
+        ),
+        (
+            "サ変活用",
+            KatsuyoText(
+                gokan="ウォーキング",
+                katsuyo=SA_GYO_HENKAKU_SURU,
+            ),
+            "ウォーキングします",
+        ),
+        (
+            "サ変活用(する)",
+            KatsuyoText(
+                gokan="尊重",
+                katsuyo=SA_GYO_HENKAKU_SURU,
+            ),
+            "尊重します",
+        ),
+        (
+            "サ変活用(ずる)",
+            KatsuyoText(
+                gokan="重ん",
+                katsuyo=SA_GYO_HENKAKU_ZURU,
+            ),
+            "重んじます",
+        ),
+        (
+            "形容詞",
+            KatsuyoText(
+                gokan="美し",
+                katsuyo=KEIYOUSHI,
+            ),
+            "美しいです",
+        ),
+        (
+            "形容動詞",
+            KatsuyoText(
+                gokan="綺麗",
+                katsuyo=KEIYOUDOUSHI,
+            ),
+            "綺麗です",
+        ),
+        # TODO 助詞のハンドリング
+        (
+            "TaigenText",
+            TaigenText("状態"),
+            "状態です",
+        ),
+    ],
+)
+def test_jodoushi_teinei(msg, katsuyo_text, expected):
+    jodoushi = Teinei()
+    result = katsuyo_text + jodoushi
+    assert str(result) == expected, msg
+
+
+def test_jodoushi_teinei_value_error(unsupported_katsuyo_text):
+    jodoushi = Teinei()
     with pytest.raises(KatsuyoTextError):
         unsupported_katsuyo_text + jodoushi
 

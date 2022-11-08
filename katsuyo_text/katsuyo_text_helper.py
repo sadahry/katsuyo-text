@@ -511,6 +511,43 @@ class DanteiTeinei(IKatsuyoTextHelper):
         if isinstance(pre, kt.INonKatsuyoText):
             return pre + kt.JODOUSHI_DESU
 
+        if isinstance(pre.katsuyo, (k.KeiyoushiKatsuyo, k.KeiyoudoushiKatsuyo)):
+            return pre + kt.JODOUSHI_DESU
+
+        return None
+
+
+# ==============================================================================
+# 助動詞::丁寧
+# ==============================================================================
+
+
+def bridge_Teinei_default(pre: kt.IKatsuyoTextSource) -> kt.KatsuyoText:
+    if isinstance(pre, kt.INonKatsuyoText):
+        return pre + kt.JODOUSHI_DESU
+
+    if isinstance(pre.katsuyo, (k.KeiyoushiKatsuyo, k.KeiyoudoushiKatsuyo)):
+        return pre + kt.JODOUSHI_DESU
+
+    raise kt.KatsuyoTextError(
+        f"Unsupported katsuyo_text in {sys._getframe().f_code.co_name}: {pre} "
+        f"type: {type(pre)} katsuyo: {type(pre.katsuyo)}"
+    )
+
+
+class Teinei(IKatsuyoTextHelper):
+    def __init__(
+        self,
+        bridge: Optional[
+            Callable[[kt.IKatsuyoTextSource], kt.KatsuyoText]
+        ] = bridge_Teinei_default,
+    ) -> None:
+        super().__init__(bridge)
+
+    def try_merge(self, pre: kt.IKatsuyoTextSource) -> Optional[kt.KatsuyoText]:
+        if isinstance(pre.katsuyo, k.IDoushiKatsuyo):
+            return pre + kt.JODOUSHI_MASU
+
         return None
 
 
