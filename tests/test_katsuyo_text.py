@@ -117,9 +117,113 @@ def test_error():
         KURU_KANJI + 1
 
 
-# TODO TaigenTextのテストを追加
 # TODO KeijoshiTextTextのテストを追加
 # TODO SetsuzokujoshiTextのテストを追加
+
+
+@pytest.mark.parametrize(
+    "msg, katsuyo_text, expected",
+    [
+        (
+            "五段活用",
+            KatsuyoText(
+                gokan="遊",
+                katsuyo=GODAN_BA_GYO,
+            ),
+            "遊ぶ人",
+        ),
+        (
+            "上一段活用",
+            KatsuyoText(
+                gokan="見",
+                katsuyo=KAMI_ICHIDAN,
+            ),
+            "見る人",
+        ),
+        (
+            "下一段活用",
+            KatsuyoText(
+                gokan="求め",
+                katsuyo=SHIMO_ICHIDAN,
+            ),
+            "求める人",
+        ),
+        (
+            "カ変活用",
+            KURU,
+            "くる人",
+        ),
+        (
+            "サ変活用",
+            KatsuyoText(
+                gokan="ウォーキング",
+                katsuyo=SA_GYO_HENKAKU_SURU,
+            ),
+            "ウォーキングする人",
+        ),
+        (
+            "サ変活用(する)",
+            KatsuyoText(
+                gokan="尊重",
+                katsuyo=SA_GYO_HENKAKU_SURU,
+            ),
+            "尊重する人",
+        ),
+        (
+            "サ変活用(ずる)",
+            KatsuyoText(
+                gokan="重ん",
+                katsuyo=SA_GYO_HENKAKU_ZURU,
+            ),
+            "重んずる人",
+        ),
+        (
+            "形容詞",
+            KatsuyoText(
+                gokan="美し",
+                katsuyo=KEIYOUSHI,
+            ),
+            "美しい人",
+        ),
+        (
+            "形容動詞",
+            KatsuyoText(
+                gokan="綺麗",
+                katsuyo=KEIYOUDOUSHI,
+            ),
+            "綺麗な人",
+        ),
+        (
+            "助動詞「た」",
+            JODOUSHI_TA,
+            "た人",
+        ),
+        (
+            "TaigenText",
+            TaigenText("民間"),
+            "民間人",
+        ),
+        (
+            "FukujoshiText",
+            FUKUZYOSHI_HODO,
+            "ほど人",
+        ),
+        (
+            "ShujoshiText",
+            SHUJOSHI_NO,
+            "の人",
+        ),
+        (
+            "KakujoshiText",
+            KAKUJOSHI_NO,
+            "の人",
+        ),
+    ],
+)
+def test_TAIGEN(msg, katsuyo_text, expected):
+    kakujoshi = TaigenText("人")
+    result = katsuyo_text + kakujoshi
+    assert str(result) == expected, msg
 
 
 @pytest.mark.parametrize(
