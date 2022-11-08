@@ -36,6 +36,64 @@ def spacy_source_detector():
 @pytest.mark.parametrize(
     "msg, text, root_text, pos, expected",
     [
+        # 形容詞
+        (
+            "形容詞",
+            "あなたは美しい",
+            "美しい",
+            "ADJ",
+            KatsuyoText(
+                gokan="美し",
+                katsuyo=KEIYOUSHI,
+            ),
+        ),
+        # 形容動詞
+        (
+            "形容動詞",
+            "あなたは傲慢だ",
+            "傲慢",
+            "ADJ",
+            KatsuyoText(
+                gokan="傲慢",
+                katsuyo=KEIYOUDOUSHI,
+            ),
+        ),
+        # 名詞
+        (
+            "名詞",
+            "それは明日かな",
+            "明日",
+            "NOUN",
+            TaigenText(
+                gokan="明日",
+            ),
+        ),
+        # 固有名詞
+        (
+            "固有名詞",
+            "それはステファンだ",
+            "ステファン",
+            "PROPN",
+            TaigenText(
+                gokan="ステファン",
+            ),
+        ),
+    ],
+)
+def test_spacy_katsuyo_text_source_detector(
+    nlp_ja, spacy_source_detector, msg, text, root_text, pos, expected
+):
+    sent = next(nlp_ja(text).sents)
+    root_token = sent.root
+    assert root_token.text == root_text, "root token is not correct"
+    assert root_token.pos_ == pos, "root token is not correct"
+    result = spacy_source_detector.try_detect(root_token)
+    assert result == expected, msg
+
+
+@pytest.mark.parametrize(
+    "msg, text, root_text, pos, expected",
+    [
         # ref, https://ja.wikipedia.org/wiki/五段活用
         (
             "五段活用",
@@ -545,51 +603,9 @@ def spacy_source_detector():
         #         katsuyo=GODAN_RA_GYO,
         #     ),
         # ),
-        # 形容詞
-        (
-            "形容詞",
-            "あなたは美しい",
-            "美しい",
-            "ADJ",
-            KatsuyoText(
-                gokan="美し",
-                katsuyo=KEIYOUSHI,
-            ),
-        ),
-        # 形容動詞
-        (
-            "形容動詞",
-            "あなたは傲慢だ",
-            "傲慢",
-            "ADJ",
-            KatsuyoText(
-                gokan="傲慢",
-                katsuyo=KEIYOUDOUSHI,
-            ),
-        ),
-        # 名詞
-        (
-            "名詞",
-            "それは明日かな",
-            "明日",
-            "NOUN",
-            TaigenText(
-                gokan="明日",
-            ),
-        ),
-        # 固有名詞
-        (
-            "固有名詞",
-            "それはステファンだ",
-            "ステファン",
-            "PROPN",
-            TaigenText(
-                gokan="ステファン",
-            ),
-        ),
     ],
 )
-def test_spacy_katsuyo_text_detector(
+def test_spacy_katsuyo_text_source_detector_verb(
     nlp_ja, spacy_source_detector, msg, text, root_text, pos, expected
 ):
     sent = next(nlp_ja(text).sents)
