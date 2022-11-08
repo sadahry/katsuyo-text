@@ -529,3 +529,24 @@ JODOUSHI_DA_KAKO_KANRYO = TaKatsuyo(
     rentai=FixedKatsuyo("だ"),
     katei=FixedKatsuyo("だら"),
 )
+
+
+@attrs.define(frozen=True, slots=True)
+class DesuKatsuyo(
+    IJodoushiKatsuyo,
+    MizenMixin,
+    RenyoMixin,
+    ShushiMixin,
+    RentaiMixin,
+    # NO: KateiMixin,
+    # NO: MeireiMixin,
+):
+    pass
+
+
+JODOUSHI_DESU = DesuKatsuyo(
+    mizen=FixedKatsuyo("しょ"),
+    renyo=FixedKatsuyo("し"),
+    shushi=FixedKatsuyo("す"),
+    rentai=FixedKatsuyo("す"),
+)

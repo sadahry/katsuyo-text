@@ -962,6 +962,69 @@ class Youda(IJodoushiKatsuyoText):
 JODOUSHI_YOUDA = Youda()
 
 # ==============================================================================
+# 助動詞::断定
+# ==============================================================================
+
+
+class Desu(IJodoushiKatsuyoText):
+    def __init__(self):
+        super().__init__(
+            gokan="で",
+            katsuyo=k.JODOUSHI_DESU,
+        )
+
+    def merge(self, pre: IKatsuyoTextSource) -> KatsuyoText:
+        if isinstance(pre, FixedKatsuyoText):
+            return pre + self.katsuyo_text
+        if isinstance(pre, INonKatsuyoText):
+            return pre + self.katsuyo_text
+        else:
+            assert isinstance(pre, KatsuyoText)
+
+            # 未然形「でしょ」でのみ使用可能だが、helperで対処する
+            # if isinstance(pre.katsuyo, (k.IDoushiKatsuyo, k.KeiyoushiKatsuyo)):
+            #     assert (fkt := pre.as_fkt_rentai) is not None
+            #     return fkt + self.katsuyo_text
+
+            raise KatsuyoTextError(
+                f"Unsupported katsuyo_text in {type(self)}: {pre} "
+                f"type: {type(pre)} katsuyo: {type(pre.katsuyo)}"
+            )
+
+
+JODOUSHI_DESU = Desu()
+
+
+class DaDantei(IJodoushiKatsuyoText):
+    def __init__(self):
+        super().__init__(
+            gokan="",
+            katsuyo=k.KEIYOUDOUSHI,
+        )
+
+    def merge(self, pre: IKatsuyoTextSource) -> KatsuyoText:
+        if isinstance(pre, FixedKatsuyoText):
+            return pre + self.katsuyo_text
+        if isinstance(pre, INonKatsuyoText):
+            return pre + self.katsuyo_text
+        else:
+            assert isinstance(pre, KatsuyoText)
+
+            # 仮定形「なら」未然形「だろ」でのみ使用可能だが、helperで対処する
+            # if isinstance(pre.katsuyo, (k.IDoushiKatsuyo, k.KeiyoushiKatsuyo)):
+            #     assert (fkt := pre.as_fkt_rentai) is not None
+            #     return fkt + self.katsuyo_text
+
+            raise KatsuyoTextError(
+                f"Unsupported katsuyo_text in {type(self)}: {pre} "
+                f"type: {type(pre)} katsuyo: {type(pre.katsuyo)}"
+            )
+
+
+JODOUSHI_DA_DANTEI = DaDantei()
+
+
+# ==============================================================================
 # 助動詞::継続
 # 助動詞の参照リンクには含まれないが、口語では頻出されるため追記
 # ref. https://ja.wiktionary.org/wiki/てる#助動詞

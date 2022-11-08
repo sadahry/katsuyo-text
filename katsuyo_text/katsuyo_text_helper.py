@@ -458,6 +458,63 @@ class HikyoReizi(IKatsuyoTextHelper):
 
 
 # ==============================================================================
+# 助動詞::断定
+# ==============================================================================
+
+
+def bridge_Dantei_default(pre: kt.IKatsuyoTextSource) -> kt.KatsuyoText:
+    if isinstance(pre, kt.KatsuyoText):
+        return pre + kt.KAKUJOSHI_NO + kt.JODOUSHI_DA_DANTEI
+
+    raise kt.KatsuyoTextError(
+        f"Unsupported katsuyo_text in {sys._getframe().f_code.co_name}: {pre} "
+        f"type: {type(pre)} katsuyo: {type(pre.katsuyo)}"
+    )
+
+
+class Dantei(IKatsuyoTextHelper):
+    def __init__(
+        self,
+        bridge: Optional[
+            Callable[[kt.IKatsuyoTextSource], kt.KatsuyoText]
+        ] = bridge_Dantei_default,
+    ) -> None:
+        super().__init__(bridge)
+
+    def try_merge(self, pre: kt.IKatsuyoTextSource) -> Optional[kt.KatsuyoText]:
+        if isinstance(pre, kt.INonKatsuyoText):
+            return pre + kt.JODOUSHI_DA_DANTEI
+
+        return None
+
+
+def bridge_DanteiTeinei_default(pre: kt.IKatsuyoTextSource) -> kt.KatsuyoText:
+    if isinstance(pre, kt.KatsuyoText):
+        return pre + kt.KAKUJOSHI_NO + kt.JODOUSHI_DESU
+
+    raise kt.KatsuyoTextError(
+        f"Unsupported katsuyo_text in {sys._getframe().f_code.co_name}: {pre} "
+        f"type: {type(pre)} katsuyo: {type(pre.katsuyo)}"
+    )
+
+
+class DanteiTeinei(IKatsuyoTextHelper):
+    def __init__(
+        self,
+        bridge: Optional[
+            Callable[[kt.IKatsuyoTextSource], kt.KatsuyoText]
+        ] = bridge_DanteiTeinei_default,
+    ) -> None:
+        super().__init__(bridge)
+
+    def try_merge(self, pre: kt.IKatsuyoTextSource) -> Optional[kt.KatsuyoText]:
+        if isinstance(pre, kt.INonKatsuyoText):
+            return pre + kt.JODOUSHI_DESU
+
+        return None
+
+
+# ==============================================================================
 # 助動詞::継続
 # ==============================================================================
 
