@@ -216,7 +216,7 @@ class KatsuyoText(IKatsuyoTextSource, IKatsuyoTextAppendant["KatsuyoText"]):
 
 
 @attrs.define(frozen=True, slots=True)
-class FixedKatsuyoText(IKatsuyoTextSource, IKatsuyoTextAppendant["FixedKatsuyoText"]):
+class FixedKatsuyoText(IKatsuyoTextSource):
     """
     活用変形されたKatsuyoTextを格納するクラス。用言を表す。
     """
@@ -224,33 +224,9 @@ class FixedKatsuyoText(IKatsuyoTextSource, IKatsuyoTextAppendant["FixedKatsuyoTe
     gokan: str
     katsuyo: k.FixedKatsuyo
 
-    def merge(self, pre: IKatsuyoTextSource) -> "FixedKatsuyoText":
-        """
-        基本的には連用形で受けるが、下位クラスで上書きすることで
-        任意の活用形に変換して返すことがある。
-        """
-        # 現状あまり使われないため簡易的な実装
-        if isinstance(pre, (FixedKatsuyoText, INonKatsuyoText)):
-            return pre + self
-        else:
-            assert isinstance(pre, KatsuyoText)
-
-            if (fkt := pre.as_fkt_renyo) is not None:
-                return fkt + self
-
-            raise KatsuyoTextError(
-                f"Unsupported katsuyo_text in merge of {type(self)}: {pre} "
-                f"type: {type(pre)} katsuyo: {type(pre.katsuyo)}"
-            )
-
     def __add__(self, post: IKatsuyoTextAppendant[A]) -> A:
         # 基本はそのまま引っ付ける
-        if isinstance(post, FixedKatsuyoText):
-            return FixedKatsuyoText(
-                gokan=str(self) + post.gokan,
-                katsuyo=post.katsuyo,
-            )
-        elif isinstance(post, TaigenText):
+        if isinstance(post, TaigenText):
             return TaigenText(gokan=str(self) + post.gokan)
         elif isinstance(post, FukujoshiText):
             if type(post) is not FukujoshiText:  # 特殊な活用系の場合
@@ -316,12 +292,7 @@ class INonKatsuyoText(IKatsuyoTextSource, IKatsuyoTextAppendant[M]):
 
     def __add__(self, post: IKatsuyoTextAppendant[A]) -> A:
         # 基本はそのまま引っ付ける
-        if isinstance(post, FixedKatsuyoText):
-            return FixedKatsuyoText(
-                gokan=str(self) + post.gokan,
-                katsuyo=post.katsuyo,
-            )
-        elif isinstance(post, TaigenText):
+        if isinstance(post, TaigenText):
             return TaigenText(gokan=str(self) + post.gokan)
         elif isinstance(post, FukujoshiText):
             if type(post) is not FukujoshiText:  # 特殊な活用系の場合

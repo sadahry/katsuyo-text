@@ -354,6 +354,7 @@ DEFAULT_APPENDANTS_DETECTOR = SpacyKatsuyoTextAppendantDetector(
         Keizoku(),
         Dantei(),
         DanteiTeinei(),
+        # TODO 丁寧を足す
     },
     fukujoshis={
         FUKUZYOSHI_BAKARI,
