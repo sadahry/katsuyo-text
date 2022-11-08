@@ -66,6 +66,8 @@ class IKatsuyoTextAppendantDetector(abc.ABC):
         helpers: Set[IKatsuyoTextHelper],
         fukujoshis: Set[FukujoshiText],
         shujoshis: Set[ShujoshiText],
+        allow_not_registered_fukujoshi: bool = False,
+        allow_not_registered_shujoshi: bool = False,
     ) -> None:
         # validate helpers
         for helper in helpers:
@@ -81,6 +83,8 @@ class IKatsuyoTextAppendantDetector(abc.ABC):
 
         self.fukujoshis_dict = {fukujoshi.gokan: fukujoshi for fukujoshi in fukujoshis}
         self.shujoshis_dict = {shujoshi.gokan: shujoshi for shujoshi in shujoshis}
+        self.allow_not_registered_fukujoshi = allow_not_registered_fukujoshi
+        self.allow_not_registered_shujoshi = allow_not_registered_shujoshi
 
     def try_get_helper(
         self, typ: Type[IKatsuyoTextHelper]
@@ -101,7 +105,12 @@ class IKatsuyoTextAppendantDetector(abc.ABC):
         if fukujoshi is not None:
             return fukujoshi, None
 
-        # 例外が多いため、Noneを返却する
+        if self.allow_not_registered_fukujoshi:
+            return FukujoshiText(norm), KatsuyoTextErrorMessage(
+                f"Get Unsupported type in fukujoshi: {norm}"
+            )
+
+        # 例外が多いため、allowしない場合はwarningを出さない
         # return None, KatsuyoTextErrorMessage(
         #     f"Unsupported type in try_get_fukujoshi: {norm}"
         # )
@@ -114,7 +123,12 @@ class IKatsuyoTextAppendantDetector(abc.ABC):
         if shujoshi is not None:
             return shujoshi, None
 
-        # 例外が多いため、Noneを返却する
+        if self.allow_not_registered_shujoshi:
+            return ShujoshiText(norm), KatsuyoTextErrorMessage(
+                f"Get Unsupported type in shujoshi: {norm}"
+            )
+
+        # 例外が多いため、allowしない場合はwarningを出さない
         # return None, KatsuyoTextErrorMessage(
         #     f"Unsupported type in try_get_shujoshi: {norm}"
         # )
