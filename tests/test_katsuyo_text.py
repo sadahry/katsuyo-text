@@ -25,6 +25,8 @@ from katsuyo_text.katsuyo_text import (
     SHUJOSHI_NA,
     SHUJOSHI_NO,
     SHUJOSHI_NONI,
+    SETSUZOKUJOSHI_TE,
+    SETSUZOKUJOSHI_KEREDO,
     SURU,
     KatsuyoText,
     KatsuyoTextError,
@@ -210,6 +212,11 @@ def test_error():
             "ほど人",
         ),
         (
+            "SetsuzokujoshiText",
+            SETSUZOKUJOSHI_TE,
+            "て人",
+        ),
+        (
             "ShujoshiText",
             SHUJOSHI_NO,
             "の人",
@@ -319,6 +326,12 @@ def test_TAIGEN(msg, katsuyo_text, expected):
             FUKUZYOSHI_HODO,
             "ほどが",
         ),
+        # 接続されるケースがあるが稀なためスキップ
+        # (
+        #     "SetsuzokujoshiText",
+        #     SETSUZOKUJOSHI_TE,
+        #     "てから",
+        # ),
         (
             "ShujoshiText",
             SHUJOSHI_NO,
@@ -430,6 +443,11 @@ def test_KAKUJOSHI(msg, katsuyo_text, expected):
             "ほどばかり",
         ),
         (
+            "SetsuzokujoshiText",
+            SETSUZOKUJOSHI_TE,
+            "てばかり",
+        ),
+        (
             "ShujoshiText",
             SHUJOSHI_NO,
             "のばかり",
@@ -533,6 +551,11 @@ def test_FUKUZYOSHI_BAKARI(msg, katsuyo_text, expected):
             "FukujoshiText",
             FUKUZYOSHI_HODO,
             "ほどまで",
+        ),
+        (
+            "SetsuzokujoshiText",
+            SETSUZOKUJOSHI_TE,
+            "てまで",
         ),
         (
             "ShujoshiText",
@@ -640,6 +663,11 @@ def test_FUKUZYOSHI_MADE(msg, katsuyo_text, expected):
             "ほどだけ",
         ),
         (
+            "SetsuzokujoshiText",
+            SETSUZOKUJOSHI_TE,
+            "てだけ",
+        ),
+        (
             "ShujoshiText",
             SHUJOSHI_NO,
             "のだけ",
@@ -743,6 +771,11 @@ def test_FUKUZYOSHI_DAKE(msg, katsuyo_text, expected):
             "FukujoshiText",
             FUKUZYOSHI_ZUTSU,
             "ずつほど",
+        ),
+        (
+            "SetsuzokujoshiText",
+            SETSUZOKUJOSHI_TE,
+            "てほど",
         ),
         (
             "ShujoshiText",
@@ -850,6 +883,11 @@ def test_FUKUZYOSHI_HODO(msg, katsuyo_text, expected):
             "ほどくらい",
         ),
         (
+            "SetsuzokujoshiText",
+            SETSUZOKUJOSHI_TE,
+            "てくらい",
+        ),
+        (
             "ShujoshiText",
             SHUJOSHI_NO,
             "のくらい",
@@ -953,6 +991,11 @@ def test_FUKUZYOSHI_KURAI(msg, katsuyo_text, expected):
             "FukujoshiText",
             FUKUZYOSHI_HODO,
             "ほどなど",
+        ),
+        (
+            "SetsuzokujoshiText",
+            SETSUZOKUJOSHI_TE,
+            "てなど",
         ),
         (
             "ShujoshiText",
@@ -1060,6 +1103,11 @@ def test_FUKUZYOSHI_NADO(msg, katsuyo_text, expected):
             "ほどなり",
         ),
         (
+            "SetsuzokujoshiText",
+            SETSUZOKUJOSHI_TE,
+            "てなり",
+        ),
+        (
             "ShujoshiText",
             SHUJOSHI_NO,
             "のなり",
@@ -1163,6 +1211,11 @@ def test_FUKUZYOSHI_NARI(msg, katsuyo_text, expected):
             "FukujoshiText",
             FUKUZYOSHI_HODO,
             "ほどやら",
+        ),
+        (
+            "SetsuzokujoshiText",
+            SETSUZOKUJOSHI_TE,
+            "てやら",
         ),
         (
             "ShujoshiText",
@@ -1270,6 +1323,11 @@ def test_FUKUZYOSHI_YARA(msg, katsuyo_text, expected):
             "ほどか",
         ),
         (
+            "SetsuzokujoshiText",
+            SETSUZOKUJOSHI_TE,
+            "てか",
+        ),
+        (
             "ShujoshiText",
             SHUJOSHI_NO,
             "のか",
@@ -1375,6 +1433,11 @@ def test_FUKUZYOSHI_KA(msg, katsuyo_text, expected):
             "ほどのみ",
         ),
         (
+            "SetsuzokujoshiText",
+            SETSUZOKUJOSHI_TE,
+            "てのみ",
+        ),
+        (
             "ShujoshiText",
             SHUJOSHI_NO,
             "ののみ",
@@ -1456,6 +1519,11 @@ def test_FUKUZYOSHI_NOMI(msg, katsuyo_text, expected):
             "JodoushiText",
             JODOUSHI_TA,
             "たきり",  # e.g. 寝たきり
+        ),
+        (
+            "SetsuzokujoshiText",
+            SETSUZOKUJOSHI_TE,
+            "てきり",
         ),
         (
             "JodoushiText",
@@ -1605,6 +1673,10 @@ def test_FUKUZYOSHI_ZUTSU(msg, katsuyo_text, expected):
             SHUJOSHI_NA,
         ),
         (
+            "SetsuzokujoshiText",
+            SETSUZOKUJOSHI_TE,
+        ),
+        (
             "KeijoshiText",
             KEIJOSHI_MO,
         ),
@@ -1716,6 +1788,10 @@ def test_SHUJOSHI_NO(msg, katsuyo_text, expected):
         (
             "FukujoshiText",
             FUKUZYOSHI_HODO,
+        ),
+        (
+            "SetsuzokujoshiText",
+            SETSUZOKUJOSHI_TE,
         ),
         (
             "ShujoshiText",
@@ -1835,6 +1911,10 @@ def test_SHUJOSHI_NONI(msg, katsuyo_text, expected):
             FUKUZYOSHI_HODO,
         ),
         (
+            "SetsuzokujoshiText",
+            SETSUZOKUJOSHI_TE,
+        ),
+        (
             "ShujoshiText",
             SHUJOSHI_NA,
         ),
@@ -1942,6 +2022,11 @@ def test_SHUJOSHI_NONI_error(msg, katsuyo_text):
         #     TaigenText("それ"),
         #     "それな",
         # ),
+        (
+            "SetsuzokujoshiText",
+            SETSUZOKUJOSHI_KEREDO,
+            "けれどな",
+        ),
         (
             "KeijoshiText",
             KEIJOSHI_MO,

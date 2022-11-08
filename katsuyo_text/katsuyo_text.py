@@ -1172,6 +1172,8 @@ class Kiri(FukujoshiText):
             return pre + self.fukujoshi
         elif isinstance(pre, TaigenText):
             return pre + self.fukujoshi
+        elif isinstance(pre, SetsuzokujoshiText):
+            return pre + self.fukujoshi
         elif isinstance(pre, KatsuyoText):
             if isinstance(pre.katsuyo, k.TaKatsuyo):
                 assert (fkt := pre.as_fkt_rentai) is not None
@@ -1202,6 +1204,10 @@ class SetsuzokujoshiText(INonKatsuyoText["SetsuzokujoshiText"]):
     """
 
     pass
+
+
+SETSUZOKUJOSHI_TE = SetsuzokujoshiText("て")
+SETSUZOKUJOSHI_KEREDO = SetsuzokujoshiText("けれど")
 
 
 # ==============================================================================
@@ -1254,6 +1260,8 @@ class ShujoshShushiiText(ShujoshiText):
         if isinstance(pre, FixedKatsuyoText):
             return pre + self.shujoshi
         elif isinstance(pre, KeijoshiText):
+            return pre + self.shujoshi
+        elif isinstance(pre, SetsuzokujoshiText):
             return pre + self.shujoshi
         elif isinstance(pre.katsuyo, k.ShushiMixin):
             assert isinstance(pre, KatsuyoText)
