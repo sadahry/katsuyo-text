@@ -39,6 +39,8 @@ from katsuyo_text.katsuyo_text_helper import (
     Ukemi,
     KibouOthers,
     Youtai,
+    Dantei,
+    DanteiTeinei,
 )
 import abc
 import warnings
@@ -59,6 +61,8 @@ class IKatsuyoTextAppendantDetector(abc.ABC):
         Touzen,
         HikyoReizi,
         Keizoku,
+        Dantei,
+        DanteiTeinei,
     )
 
     def __init__(
@@ -197,8 +201,6 @@ class SpacyKatsuyoTextAppendantDetector(IKatsuyoTextAppendantDetector):
 
             # TODO 無視する助動詞のリスト化
             if norm in {
-                "だ",
-                "です",
                 "ます",
                 "ちゃう",
                 "やがる",
@@ -229,6 +231,10 @@ class SpacyKatsuyoTextAppendantDetector(IKatsuyoTextAppendantDetector):
                 return self.try_get_helper(Touzen)
             elif norm in ["よう"]:
                 return self.try_get_helper(HikyoReizi)
+            elif norm in ["だ"]:
+                return self.try_get_helper(Dantei)
+            elif norm in ["です"]:
+                return self.try_get_helper(DanteiTeinei)
             elif norm in ["てる"]:
                 return self.try_get_helper(Keizoku)
 
@@ -346,6 +352,8 @@ DEFAULT_APPENDANTS_DETECTOR = SpacyKatsuyoTextAppendantDetector(
         Touzen(),
         HikyoReizi(),
         Keizoku(),
+        Dantei(),
+        DanteiTeinei(),
     },
     fukujoshis={
         FUKUZYOSHI_BAKARI,

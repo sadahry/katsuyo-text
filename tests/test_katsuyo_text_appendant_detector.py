@@ -37,6 +37,8 @@ from katsuyo_text.katsuyo_text_helper import (
     Shieki,
     Hitei,
     Youtai,
+    Dantei,
+    DanteiTeinei,
 )
 
 
@@ -257,21 +259,21 @@ def katsuyo_texts_appendants_detector_init_warning():
             "とても困難だそう",
             "そう",
             "AUX",
-            [Denbun],
+            [Dantei, Denbun],
         ),
         # 辞書にある「〜的」
         (
             "その発想は保守的だそう",
             "そう",
             "AUX",
-            [Denbun],
+            [Dantei, Denbun],
         ),
         # 辞書にない「〜的」
         (
             "パリピ的だそう",
             "そう",
             "AUX",
-            [Denbun],
+            [Dantei, Denbun],
         ),
         # NOTE: 明確に意味を判別できないケースが存在するが、テストケースには追加しない
         #       たとえば「ご飯を食べたそう」において、
@@ -326,7 +328,7 @@ def katsuyo_texts_appendants_detector_init_warning():
             "とても困難なよう",
             "よう",
             "AUX",
-            [HikyoReizi],
+            [Dantei, HikyoReizi],
         ),
         # NOTE: 名詞として扱われる場合、「よう」がrootとなりappendantとしては
         #       何も抽出されない
@@ -335,6 +337,18 @@ def katsuyo_texts_appendants_detector_init_warning():
             "よう",
             "NOUN",
             [],
+        ),
+        (
+            "まるで宝石だ",
+            "だ",
+            "AUX",
+            [Dantei],
+        ),
+        (
+            "まるで宝石です",
+            "です",
+            "AUX",
+            [DanteiTeinei],
         ),
         (
             "遊んでる",
@@ -538,16 +552,6 @@ def test_spacy_shujoshi_appendants_detector(
 @pytest.mark.parametrize(
     "text, norm, pos",
     [
-        (
-            "最高だ",
-            "だ",
-            "AUX",
-        ),
-        (
-            "最高です",
-            "です",
-            "AUX",
-        ),
         (
             "悲しみます",
             "ます",
