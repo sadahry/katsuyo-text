@@ -31,7 +31,7 @@ import spacy
 
 class IKatsuyoTextSourceDetector(abc.ABC):
     @abc.abstractmethod
-    def detect(self, src: Any) -> Optional[IKatsuyoTextSource]:
+    def try_detect(self, src: Any) -> Optional[IKatsuyoTextSource]:
         """
         不適切な値が代入された際は、Noneを返却する。
         """
@@ -75,7 +75,7 @@ class SpacyKatsuyoTextSourceDetector(IKatsuyoTextSourceDetector):
         "下一段-ラ行": SHIMO_ICHIDAN,
     }
 
-    def detect(self, src: spacy.tokens.Token) -> Optional[IKatsuyoTextSource]:
+    def try_detect(self, src: spacy.tokens.Token) -> Optional[IKatsuyoTextSource]:
         # spacy.tokens.Tokenから抽出される活用形の特徴を表す変数
         tag = src.tag_
         lemma = src.lemma_

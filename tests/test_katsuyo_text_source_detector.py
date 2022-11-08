@@ -596,5 +596,5 @@ def test_spacy_katsuyo_text_detector(
     root_token = sent.root
     assert root_token.text == root_text, "root token is not correct"
     assert root_token.pos_ == pos, "root token is not correct"
-    result = spacy_source_detector.detect(root_token)
+    result = spacy_source_detector.try_detect(root_token)
     assert result == expected, msg
