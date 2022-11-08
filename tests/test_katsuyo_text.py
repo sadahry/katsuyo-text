@@ -15,6 +15,7 @@ from katsuyo_text.katsuyo_text import (
     KAKUJOSHI_NI,
     KAKUJOSHI_NO,
     KAKUJOSHI_GA,
+    KEIJOSHI_MO,
     JODOUSHI_DA_KAKO_KANRYO,
     JODOUSHI_TA,
     KURU,
@@ -214,6 +215,11 @@ def test_error():
             "の人",
         ),
         (
+            "KeijoshiText",
+            KEIJOSHI_MO,
+            "も人",
+        ),
+        (
             "KakujoshiText",
             KAKUJOSHI_NO,
             "の人",
@@ -317,6 +323,11 @@ def test_TAIGEN(msg, katsuyo_text, expected):
             "ShujoshiText",
             SHUJOSHI_NO,
             "のが",
+        ),
+        (
+            "KeijoshiText",
+            KEIJOSHI_MO,
+            "もが",
         ),
         (
             "KakujoshiText",
@@ -1490,6 +1501,10 @@ def test_FUKUZYOSHI_KIRI(msg, katsuyo_text, expected):
             SHUJOSHI_NA,
         ),
         (
+            "KeijoshiText",
+            KEIJOSHI_MO,
+        ),
+        (
             "KakujoshiText",
             KAKUJOSHI_NI,
         ),
@@ -1588,6 +1603,10 @@ def test_FUKUZYOSHI_ZUTSU(msg, katsuyo_text, expected):
         (
             "ShujoshiText",
             SHUJOSHI_NA,
+        ),
+        (
+            "KeijoshiText",
+            KEIJOSHI_MO,
         ),
         (
             "KakujoshiText",
@@ -1706,6 +1725,10 @@ def test_SHUJOSHI_NO(msg, katsuyo_text, expected):
             "KakujoshiText",
             KAKUJOSHI_NI,
         ),
+        (
+            "KeijoshiText",
+            KEIJOSHI_MO,
+        ),
     ],
 )
 def test_SHUJOSHI_NO_error(msg, katsuyo_text):
@@ -1819,6 +1842,10 @@ def test_SHUJOSHI_NONI(msg, katsuyo_text, expected):
             "KakujoshiText",
             KAKUJOSHI_NI,
         ),
+        (
+            "KeijoshiText",
+            KEIJOSHI_MO,
+        ),
     ],
 )
 def test_SHUJOSHI_NONI_error(msg, katsuyo_text):
@@ -1915,6 +1942,11 @@ def test_SHUJOSHI_NONI_error(msg, katsuyo_text):
         #     TaigenText("それ"),
         #     "それな",
         # ),
+        (
+            "KeijoshiText",
+            KEIJOSHI_MO,
+            "もな",
+        ),
     ],
 )
 def test_SHUJOSHI_NA(msg, katsuyo_text, expected):
@@ -2044,6 +2076,11 @@ def test_SHUJOSHI_NA_error(msg, katsuyo_text):
             "のか",
         ),
         (
+            "KeijoshiText",
+            KEIJOSHI_MO,
+            "もか",
+        ),
+        (
             "KakujoshiText",
             KAKUJOSHI_NI,
             "にか",
@@ -2147,6 +2184,11 @@ def test_SHUJOSHI_KA(msg, katsuyo_text, expected):
             "ShujoshiText",
             SHUJOSHI_NO,
             "のかしら",
+        ),
+        (
+            "KeijoshiText",
+            KEIJOSHI_MO,
+            "もかしら",
         ),
         (
             "KakujoshiText",

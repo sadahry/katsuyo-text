@@ -1085,6 +1085,7 @@ class KeijoshiText(INonKatsuyoText["KeijoshiText"]):
 
 # TODO 特殊な活用系の実装
 KEIJOSHI_HA = KeijoshiText("は")
+KEIJOSHI_MO = KeijoshiText("も")
 
 # ==============================================================================
 # 副助詞
@@ -1251,6 +1252,8 @@ class ShujoshShushiiText(ShujoshiText):
 
     def merge(self, pre: IKatsuyoTextSource) -> "ShujoshiText":
         if isinstance(pre, FixedKatsuyoText):
+            return pre + self.shujoshi
+        elif isinstance(pre, KeijoshiText):
             return pre + self.shujoshi
         elif isinstance(pre.katsuyo, k.ShushiMixin):
             assert isinstance(pre, KatsuyoText)
