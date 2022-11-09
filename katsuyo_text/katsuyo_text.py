@@ -1288,6 +1288,8 @@ class Kiri(FukujoshiTextAppendant):
         )
 
 
+# ref. http://sudachi.s3-website-ap-northeast-1.amazonaws.com/sudachidict-raw/20221021/small_lex.zip
+# TODO 残りの副助詞の実装
 FUKUZYOSHI_BAKARI = FukujoshiRentaiText("ばかり")
 FUKUZYOSHI_MADE = FukujoshiRentaiText("まで")
 FUKUZYOSHI_DAKE = FukujoshiRentaiText("だけ")
@@ -1420,6 +1422,7 @@ class SetsuzokujoshiShushiText(SetsuzokujoshiTextAppendant):
 
 # 以下から正規形を参照して作成
 # ref. http://sudachi.s3-website-ap-northeast-1.amazonaws.com/sudachidict-raw/20221021/small_lex.zip
+# TODO 残りの接続助詞の実装
 SETSUZOKUJOSHI_TE = SetuzokujoshiTeText()  # 「ても」は「て」で表現
 SETSUZOKUJOSHI_DE = SetuzokujoshiDeText()  # 「でも」は「で」で表現
 SETSUZOKUJOSHI_KEREDO = SetsuzokujoshiShushiText("けれど")
@@ -1516,6 +1519,7 @@ class ShujoshiGokanText(ShujoshiTextAppendant):
             )
 
 
+# TODO 残りの終助詞の実装
 SHUJOSHI_NO = ShujoshiYogenText("の")
 SHUJOSHI_NONI = ShujoshiYogenText("のに")
 SHUJOSHI_NA = ShujoshShushiText("な")
