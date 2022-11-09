@@ -26,6 +26,7 @@ from katsuyo_text.katsuyo_text import (
     SHUJOSHI_NO,
     SHUJOSHI_NONI,
     SETSUZOKUJOSHI_TE,
+    SETSUZOKUJOSHI_DE,
     SETSUZOKUJOSHI_KEREDO,
     JUNTAIJOSHI_NO,
     JUNTAIJOSHI_NN,
@@ -36,8 +37,15 @@ from katsuyo_text.katsuyo_text import (
 )
 from katsuyo_text.katsuyo import (
     GODAN_BA_GYO,
+    GODAN_GA_GYO,
+    GODAN_IKU,
     GODAN_KA_GYO,
+    GODAN_MA_GYO,
+    GODAN_NA_GYO,
+    GODAN_RA_GYO,
     GODAN_SA_GYO,
+    GODAN_TA_GYO,
+    GODAN_WAA_GYO,
     KAMI_ICHIDAN,
     KEIYOUDOUSHI,
     KEIYOUSHI,
@@ -1888,6 +1896,515 @@ def test_FUKUZYOSHI_ZUTSU_error(msg, katsuyo_text):
     fukujoshi = FUKUZYOSHI_ZUTSU
     with pytest.raises(KatsuyoTextError):
         katsuyo_text + fukujoshi
+        assert False, msg
+
+
+@pytest.mark.parametrize(
+    "msg, katsuyo_text, expected",
+    [
+        # 五段活用を念入りにテスト
+        (
+            "五段活用",
+            KatsuyoText(
+                gokan="歩",
+                katsuyo=GODAN_KA_GYO,
+            ),
+            "歩いて",
+        ),
+        # (
+        #     "五段活用",
+        #     KatsuyoText(
+        #         gokan="稼",
+        #         katsuyo=GODAN_GA_GYO,
+        #     ),
+        #     "稼いで",
+        # ),
+        (
+            "五段活用",
+            KatsuyoText(
+                gokan="話",
+                katsuyo=GODAN_SA_GYO,
+            ),
+            "話して",
+        ),
+        (
+            "五段活用",
+            KatsuyoText(
+                gokan="待",
+                katsuyo=GODAN_TA_GYO,
+            ),
+            "待って",
+        ),
+        # (
+        #     "五段活用",
+        #     KatsuyoText(
+        #         gokan="死",
+        #         katsuyo=GODAN_NA_GYO,
+        #     ),
+        #     "死んで",
+        # ),
+        # (
+        #     "五段活用",
+        #     KatsuyoText(
+        #         gokan="遊",
+        #         katsuyo=GODAN_BA_GYO,
+        #     ),
+        #     "遊んで",
+        # ),
+        # (
+        #     "五段活用",
+        #     KatsuyoText(
+        #         gokan="読",
+        #         katsuyo=GODAN_MA_GYO,
+        #     ),
+        #     "読んで",
+        # ),
+        (
+            "五段活用",
+            KatsuyoText(
+                gokan="帰",
+                katsuyo=GODAN_RA_GYO,
+            ),
+            "帰って",
+        ),
+        (
+            "五段活用",
+            KatsuyoText(
+                gokan="買",
+                katsuyo=GODAN_WAA_GYO,
+            ),
+            "買って",
+        ),
+        (
+            "五段活用",
+            KatsuyoText(
+                gokan="行",
+                katsuyo=GODAN_IKU,
+            ),
+            "行って",
+        ),
+        (
+            "上一段活用",
+            KatsuyoText(
+                gokan="見",
+                katsuyo=KAMI_ICHIDAN,
+            ),
+            "見て",
+        ),
+        (
+            "下一段活用",
+            KatsuyoText(
+                gokan="求め",
+                katsuyo=SHIMO_ICHIDAN,
+            ),
+            "求めて",
+        ),
+        (
+            "カ変活用",
+            KURU,
+            "きて",
+        ),
+        (
+            "サ変活用",
+            KatsuyoText(
+                gokan="ウォーキング",
+                katsuyo=SA_GYO_HENKAKU_SURU,
+            ),
+            "ウォーキングして",
+        ),
+        (
+            "サ変活用(する)",
+            KatsuyoText(
+                gokan="尊重",
+                katsuyo=SA_GYO_HENKAKU_SURU,
+            ),
+            "尊重して",
+        ),
+        (
+            "サ変活用(ずる)",
+            KatsuyoText(
+                gokan="重ん",
+                katsuyo=SA_GYO_HENKAKU_ZURU,
+            ),
+            "重んじて",
+        ),
+        (
+            "形容詞",
+            KatsuyoText(
+                gokan="美し",
+                katsuyo=KEIYOUSHI,
+            ),
+            "美しかって",
+        ),
+        (
+            "形容動詞",
+            KatsuyoText(
+                gokan="綺麗",
+                katsuyo=KEIYOUDOUSHI,
+            ),
+            "綺麗だって",
+        ),
+    ],
+)
+def test_SETSUZOKUJOSHI_TE(msg, katsuyo_text, expected):
+    setsuzokujoshi = SETSUZOKUJOSHI_TE
+    result = katsuyo_text + setsuzokujoshi
+    assert str(result) == expected, msg
+
+
+@pytest.mark.parametrize(
+    "msg, katsuyo_text",
+    [
+        (
+            "五段活用",
+            KatsuyoText(
+                gokan="稼",
+                katsuyo=GODAN_GA_GYO,
+            ),
+        ),
+        (
+            "五段活用",
+            KatsuyoText(
+                gokan="死",
+                katsuyo=GODAN_NA_GYO,
+            ),
+        ),
+        (
+            "五段活用",
+            KatsuyoText(
+                gokan="遊",
+                katsuyo=GODAN_BA_GYO,
+            ),
+        ),
+        (
+            "五段活用",
+            KatsuyoText(
+                gokan="読",
+                katsuyo=GODAN_MA_GYO,
+            ),
+        ),
+        (
+            "助動詞「た」",
+            JODOUSHI_TA,
+        ),
+        (
+            "TaigenText",
+            TaigenText("それ"),
+        ),
+        (
+            "FukujoshiText",
+            FUKUZYOSHI_HODO,
+        ),
+        (
+            "SetsuzokujoshiText",
+            SETSUZOKUJOSHI_TE,
+        ),
+        (
+            "ShujoshiText",
+            SHUJOSHI_NA,
+        ),
+        (
+            "KakujoshiText",
+            KAKUJOSHI_NI,
+        ),
+        (
+            "KeijoshiText",
+            KEIJOSHI_MO,
+        ),
+    ],
+)
+def test_SETSUZOKUJOSHI_TE_error(msg, katsuyo_text):
+    setsuzokujoshi = SETSUZOKUJOSHI_TE
+    with pytest.raises(KatsuyoTextError):
+        katsuyo_text + setsuzokujoshi
+        assert False, msg
+
+
+@pytest.mark.parametrize(
+    "msg, katsuyo_text, expected",
+    [
+        # 五段活用を念入りにテスト
+        # (
+        #     "五段活用",
+        #     KatsuyoText(
+        #         gokan="歩",
+        #         katsuyo=GODAN_KA_GYO,
+        #     ),
+        #     "歩いて",
+        # ),
+        (
+            "五段活用",
+            KatsuyoText(
+                gokan="稼",
+                katsuyo=GODAN_GA_GYO,
+            ),
+            "稼いで",
+        ),
+        # (
+        #     "五段活用",
+        #     KatsuyoText(
+        #         gokan="話",
+        #         katsuyo=GODAN_SA_GYO,
+        #     ),
+        #     "話して",
+        # ),
+        # (
+        #     "五段活用",
+        #     KatsuyoText(
+        #         gokan="待",
+        #         katsuyo=GODAN_TA_GYO,
+        #     ),
+        #     "待って",
+        # ),
+        (
+            "五段活用",
+            KatsuyoText(
+                gokan="死",
+                katsuyo=GODAN_NA_GYO,
+            ),
+            "死んで",
+        ),
+        (
+            "五段活用",
+            KatsuyoText(
+                gokan="遊",
+                katsuyo=GODAN_BA_GYO,
+            ),
+            "遊んで",
+        ),
+        (
+            "五段活用",
+            KatsuyoText(
+                gokan="読",
+                katsuyo=GODAN_MA_GYO,
+            ),
+            "読んで",
+        ),
+        # (
+        #     "五段活用",
+        #     KatsuyoText(
+        #         gokan="帰",
+        #         katsuyo=GODAN_RA_GYO,
+        #     ),
+        #     "帰って",
+        # ),
+        # (
+        #     "五段活用",
+        #     KatsuyoText(
+        #         gokan="買",
+        #         katsuyo=GODAN_WAA_GYO,
+        #     ),
+        #     "買って",
+        # ),
+        # (
+        #     "五段活用",
+        #     KatsuyoText(
+        #         gokan="行",
+        #         katsuyo=GODAN_IKU,
+        #     ),
+        #     "行って",
+        # ),
+        # (
+        #     "上一段活用",
+        #     KatsuyoText(
+        #         gokan="見",
+        #         katsuyo=KAMI_ICHIDAN,
+        #     ),
+        #     "見て",
+        # ),
+        # (
+        #     "下一段活用",
+        #     KatsuyoText(
+        #         gokan="求め",
+        #         katsuyo=SHIMO_ICHIDAN,
+        #     ),
+        #     "求めて",
+        # ),
+        # (
+        #     "カ変活用",
+        #     KURU,
+        #     "きて",
+        # ),
+        # (
+        #     "サ変活用",
+        #     KatsuyoText(
+        #         gokan="ウォーキング",
+        #         katsuyo=SA_GYO_HENKAKU_SURU,
+        #     ),
+        #     "ウォーキングして",
+        # ),
+        # (
+        #     "サ変活用(する)",
+        #     KatsuyoText(
+        #         gokan="尊重",
+        #         katsuyo=SA_GYO_HENKAKU_SURU,
+        #     ),
+        #     "尊重して",
+        # ),
+        # (
+        #     "サ変活用(ずる)",
+        #     KatsuyoText(
+        #         gokan="重ん",
+        #         katsuyo=SA_GYO_HENKAKU_ZURU,
+        #     ),
+        #     "重んじて",
+        # ),
+        # (
+        #     "形容詞",
+        #     KatsuyoText(
+        #         gokan="美し",
+        #         katsuyo=KEIYOUSHI,
+        #     ),
+        #     "美しかって",
+        # ),
+        # (
+        #     "形容動詞",
+        #     KatsuyoText(
+        #         gokan="綺麗",
+        #         katsuyo=KEIYOUDOUSHI,
+        #     ),
+        #     "綺麗だって",
+        # ),
+    ],
+)
+def test_SETSUZOKUJOSHI_DE(msg, katsuyo_text, expected):
+    setsuzokujoshi = SETSUZOKUJOSHI_DE
+    result = katsuyo_text + setsuzokujoshi
+    assert str(result) == expected, msg
+
+
+@pytest.mark.parametrize(
+    "msg, katsuyo_text",
+    [
+        (
+            "五段活用",
+            KatsuyoText(
+                gokan="歩",
+                katsuyo=GODAN_KA_GYO,
+            ),
+        ),
+        (
+            "五段活用",
+            KatsuyoText(
+                gokan="話",
+                katsuyo=GODAN_SA_GYO,
+            ),
+        ),
+        (
+            "五段活用",
+            KatsuyoText(
+                gokan="待",
+                katsuyo=GODAN_TA_GYO,
+            ),
+        ),
+        (
+            "五段活用",
+            KatsuyoText(
+                gokan="帰",
+                katsuyo=GODAN_RA_GYO,
+            ),
+        ),
+        (
+            "五段活用",
+            KatsuyoText(
+                gokan="買",
+                katsuyo=GODAN_WAA_GYO,
+            ),
+        ),
+        (
+            "五段活用",
+            KatsuyoText(
+                gokan="行",
+                katsuyo=GODAN_IKU,
+            ),
+        ),
+        (
+            "上一段活用",
+            KatsuyoText(
+                gokan="見",
+                katsuyo=KAMI_ICHIDAN,
+            ),
+        ),
+        (
+            "下一段活用",
+            KatsuyoText(
+                gokan="求め",
+                katsuyo=SHIMO_ICHIDAN,
+            ),
+        ),
+        (
+            "カ変活用",
+            KURU,
+        ),
+        (
+            "サ変活用",
+            KatsuyoText(
+                gokan="ウォーキング",
+                katsuyo=SA_GYO_HENKAKU_SURU,
+            ),
+        ),
+        (
+            "サ変活用(する)",
+            KatsuyoText(
+                gokan="尊重",
+                katsuyo=SA_GYO_HENKAKU_SURU,
+            ),
+        ),
+        (
+            "サ変活用(ずる)",
+            KatsuyoText(
+                gokan="重ん",
+                katsuyo=SA_GYO_HENKAKU_ZURU,
+            ),
+        ),
+        (
+            "形容詞",
+            KatsuyoText(
+                gokan="美し",
+                katsuyo=KEIYOUSHI,
+            ),
+        ),
+        (
+            "形容動詞",
+            KatsuyoText(
+                gokan="綺麗",
+                katsuyo=KEIYOUDOUSHI,
+            ),
+        ),
+        (
+            "助動詞「た」",
+            JODOUSHI_TA,
+        ),
+        (
+            "TaigenText",
+            TaigenText("それ"),
+        ),
+        (
+            "FukujoshiText",
+            FUKUZYOSHI_HODO,
+        ),
+        (
+            "SetsuzokujoshiText",
+            SETSUZOKUJOSHI_TE,
+        ),
+        (
+            "ShujoshiText",
+            SHUJOSHI_NA,
+        ),
+        (
+            "KakujoshiText",
+            KAKUJOSHI_NI,
+        ),
+        (
+            "KeijoshiText",
+            KEIJOSHI_MO,
+        ),
+    ],
+)
+def test_SETSUZOKUJOSHI_DE_error(msg, katsuyo_text):
+    setsuzokujoshi = SETSUZOKUJOSHI_DE
+    with pytest.raises(KatsuyoTextError):
+        katsuyo_text + setsuzokujoshi
         assert False, msg
 
 

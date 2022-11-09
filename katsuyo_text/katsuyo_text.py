@@ -628,6 +628,15 @@ class Ta(IJodoushiKatsuyoText):
         else:
             assert isinstance(pre, KatsuyoText)
 
+            # TODO 「だ」となりうる語の除外とテストコード追加
+            # if isinstance(pre.katsuyo, k.GodanKatsuyo) and (
+            #     pre.katsuyo.shushi in ["ぐ", "ぬ", "ぶ", "む"]
+            # ):
+            #     raise KatsuyoTextError(
+            #         f"Should be 「だ」: {pre} "
+            #         f"type: {type(pre)} katsuyo: {type(pre.katsuyo)}"
+            #     )
+
             if (fkt := pre.as_fkt_renyo_ta) is not None:
                 return fkt + self.katsuyo_text
             elif (fkt := pre.as_fkt_renyo) is not None:
@@ -656,6 +665,15 @@ class DaKakoKanryo(IJodoushiKatsuyoText):
             )
         else:
             assert isinstance(pre, KatsuyoText)
+
+            # TODO 「た」となりうる語の除外とテストコード追加
+            # if isinstance(pre.katsuyo, k.GodanKatsuyo) and (
+            #     pre.katsuyo.shushi not in ["ぐ", "ぬ", "ぶ", "む"]
+            # ):
+            #     raise KatsuyoTextError(
+            #         f"Should be 「た」: {pre} "
+            #         f"type: {type(pre)} katsuyo: {type(pre.katsuyo)}"
+            #     )
 
             if (fkt := pre.as_fkt_renyo_ta) is not None:
                 return fkt + self.katsuyo_text
@@ -1293,7 +1311,87 @@ class SetsuzokujoshiText(INonKatsuyoText):
     pass
 
 
-SETSUZOKUJOSHI_TE = SetsuzokujoshiText("て")
+class SetsuzokujoshiTextAppendant(
+    SetsuzokujoshiText, IKatsuyoTextAppendant["SetsuzokujoshiText"]
+):
+    def merge(self, pre: IKatsuyoTextSource) -> "SetsuzokujoshiText":
+        assert isinstance(pre, (FixedKatsuyoText, INonKatsuyoText))
+        return SetsuzokujoshiText(str(pre) + self.gokan)
+
+
+class SetuzokujoshiTeText(SetsuzokujoshiTextAppendant):
+    """
+    接続助詞「て」用のクラス
+    """
+
+    def __init__(self):
+        super().__init__("て")
+
+    def merge(self, pre: IKatsuyoTextSource) -> "SetsuzokujoshiText":
+        if isinstance(pre, FixedKatsuyoText):
+            return super().merge(pre)
+        elif isinstance(pre, JuntaijoshiText):
+            return super().merge(pre)
+        elif isinstance(pre, KatsuyoText):
+            if isinstance(pre.katsuyo, k.GodanKatsuyo) and (
+                pre.katsuyo.shushi in ["ぐ", "ぬ", "ぶ", "む"]
+            ):
+                raise KatsuyoTextError(
+                    f"Should be 「で」: {pre} "
+                    f"type: {type(pre)} katsuyo: {type(pre.katsuyo)}"
+                )
+
+            if (fkt := pre.as_fkt_renyo_ta) is not None:
+                return super().merge(fkt)
+            elif (fkt := pre.as_fkt_renyo) is not None:
+                return super().merge(fkt)
+
+        raise KatsuyoTextError(
+            f"Unsupported katsuyo_text in {type(self)}: {pre} "
+            f"type: {type(pre)} katsuyo: {type(pre.katsuyo)}"
+        )
+
+
+class SetuzokujoshiDeText(SetsuzokujoshiTextAppendant):
+    """
+    接続助詞「で」用のクラス
+    """
+
+    def __init__(self):
+        super().__init__("で")
+
+    def merge(self, pre: IKatsuyoTextSource) -> "SetsuzokujoshiText":
+        if isinstance(pre, FixedKatsuyoText):
+            return super().merge(pre)
+        elif isinstance(pre, JuntaijoshiText):
+            return super().merge(pre)
+        elif isinstance(pre, KatsuyoText):
+            if isinstance(pre.katsuyo, k.IDoushiKatsuyo) and (
+                pre.katsuyo.shushi not in ["ぐ", "ぬ", "ぶ", "む"]
+            ):
+                raise KatsuyoTextError(
+                    f"Should be 「て」: {pre} "
+                    f"type: {type(pre)} katsuyo: {type(pre.katsuyo)}"
+                )
+            elif isinstance(pre.katsuyo, (k.KeiyoushiKatsuyo, k.KeiyoudoushiKatsuyo)):
+                raise KatsuyoTextError(
+                    f"Should be 「て」: {pre} "
+                    f"type: {type(pre)} katsuyo: {type(pre.katsuyo)}"
+                )
+
+            if (fkt := pre.as_fkt_renyo_ta) is not None:
+                return super().merge(fkt)
+            elif (fkt := pre.as_fkt_renyo) is not None:
+                return super().merge(fkt)
+
+        raise KatsuyoTextError(
+            f"Unsupported katsuyo_text in {type(self)}: {pre} "
+            f"type: {type(pre)} katsuyo: {type(pre.katsuyo)}"
+        )
+
+
+SETSUZOKUJOSHI_TE = SetuzokujoshiTeText()
+SETSUZOKUJOSHI_DE = SetuzokujoshiDeText()
 SETSUZOKUJOSHI_KEREDO = SetsuzokujoshiText("けれど")
 
 
