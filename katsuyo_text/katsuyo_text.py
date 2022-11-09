@@ -1390,9 +1390,32 @@ class SetuzokujoshiDeText(SetsuzokujoshiTextAppendant):
         )
 
 
-SETSUZOKUJOSHI_TE = SetuzokujoshiTeText()
-SETSUZOKUJOSHI_DE = SetuzokujoshiDeText()
-SETSUZOKUJOSHI_KEREDO = SetsuzokujoshiText("けれど")
+@attrs.define(frozen=True, slots=False)
+class SetsuzokujoshiShushiText(SetsuzokujoshiTextAppendant):
+    """
+    接続助詞。終止形につくもの
+    """
+
+    def merge(self, pre: IKatsuyoTextSource) -> "SetsuzokujoshiText":
+        if isinstance(pre, FixedKatsuyoText):
+            return super().merge(pre)
+        elif isinstance(pre, JuntaijoshiText):
+            return super().merge(pre)
+        elif isinstance(pre.katsuyo, k.ShushiMixin):
+            assert isinstance(pre, KatsuyoText)
+            assert (fkt := pre.as_fkt_shushi) is not None
+            return super().merge(fkt)
+
+        raise KatsuyoTextError(
+            f"Unsupported katsuyo_text in {type(self)}: {pre} "
+            f"type: {type(pre)} katsuyo: {type(pre.katsuyo)}"
+        )
+
+
+SETSUZOKUJOSHI_TE = SetuzokujoshiTeText()  # 「ても」は「て」で表現
+SETSUZOKUJOSHI_DE = SetuzokujoshiDeText()  # 「でも」は「で」で表現
+SETSUZOKUJOSHI_KEREDO = SetsuzokujoshiShushiText("けれど")
+SETSUZOKUJOSHI_KEDO = SetsuzokujoshiShushiText("けど")
 
 
 # ==============================================================================
@@ -1439,7 +1462,7 @@ SHUJOSHI_NONI = ShujoshiYogenText("のに")
 
 
 @attrs.define(frozen=True, slots=False)
-class ShujoshShushiiText(ShujoshiTextAppendant):
+class ShujoshShushiText(ShujoshiTextAppendant):
     """
     終助詞。終止形につくもの
     """
@@ -1464,7 +1487,7 @@ class ShujoshShushiiText(ShujoshiTextAppendant):
         )
 
 
-SHUJOSHI_NA = ShujoshShushiiText("な")
+SHUJOSHI_NA = ShujoshShushiText("な")
 
 
 @attrs.define(frozen=True, slots=False)

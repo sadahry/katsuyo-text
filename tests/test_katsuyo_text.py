@@ -2417,6 +2417,132 @@ def test_SETSUZOKUJOSHI_DE_error(msg, katsuyo_text):
                 gokan="遊",
                 katsuyo=GODAN_BA_GYO,
             ),
+            "遊ぶけれど",
+        ),
+        (
+            "上一段活用",
+            KatsuyoText(
+                gokan="見",
+                katsuyo=KAMI_ICHIDAN,
+            ),
+            "見るけれど",
+        ),
+        (
+            "下一段活用",
+            KatsuyoText(
+                gokan="求め",
+                katsuyo=SHIMO_ICHIDAN,
+            ),
+            "求めるけれど",
+        ),
+        (
+            "カ変活用",
+            KURU,
+            "くるけれど",
+        ),
+        (
+            "サ変活用",
+            KatsuyoText(
+                gokan="ウォーキング",
+                katsuyo=SA_GYO_HENKAKU_SURU,
+            ),
+            "ウォーキングするけれど",
+        ),
+        (
+            "サ変活用(する)",
+            KatsuyoText(
+                gokan="尊重",
+                katsuyo=SA_GYO_HENKAKU_SURU,
+            ),
+            "尊重するけれど",
+        ),
+        (
+            "サ変活用(ずる)",
+            KatsuyoText(
+                gokan="重ん",
+                katsuyo=SA_GYO_HENKAKU_ZURU,
+            ),
+            "重んずるけれど",
+        ),
+        (
+            "形容詞",
+            KatsuyoText(
+                gokan="美し",
+                katsuyo=KEIYOUSHI,
+            ),
+            "美しいけれど",
+        ),
+        (
+            "形容動詞",
+            KatsuyoText(
+                gokan="綺麗",
+                katsuyo=KEIYOUDOUSHI,
+            ),
+            "綺麗だけれど",
+        ),
+        (
+            "助動詞「た」",
+            JODOUSHI_TA,
+            "たけれど",
+        ),
+        (
+            "JuntaijoshiText",
+            JUNTAIJOSHI_NN,
+            "んけれど",
+        ),
+    ],
+)
+def test_SETSUZOKUJOSHI_KEREDO(msg, katsuyo_text, expected):
+    setsuzokujoshi = SETSUZOKUJOSHI_KEREDO
+    result = katsuyo_text + setsuzokujoshi
+    assert str(result) == expected, msg
+
+
+@pytest.mark.parametrize(
+    "msg, katsuyo_text",
+    [
+        (
+            "TaigenText",
+            TaigenText("それ"),
+        ),
+        (
+            "FukujoshiText",
+            FUKUZYOSHI_HODO,
+        ),
+        (
+            "SetsuzokujoshiText",
+            SETSUZOKUJOSHI_TE,
+        ),
+        (
+            "ShujoshiText",
+            SHUJOSHI_NA,
+        ),
+        (
+            "KakujoshiText",
+            KAKUJOSHI_NI,
+        ),
+        (
+            "KeijoshiText",
+            KEIJOSHI_MO,
+        ),
+    ],
+)
+def test_SETSUZOKUJOSHI_KEREDOerror(msg, katsuyo_text):
+    setsuzokujoshi = SETSUZOKUJOSHI_KEREDO
+    with pytest.raises(KatsuyoTextError):
+        katsuyo_text + setsuzokujoshi
+        assert False, msg
+
+
+@pytest.mark.parametrize(
+    "msg, katsuyo_text, expected",
+    [
+        (
+            "五段活用",
+            KatsuyoText(
+                gokan="遊",
+                katsuyo=GODAN_BA_GYO,
+            ),
             "遊ぶの",
         ),
         (
