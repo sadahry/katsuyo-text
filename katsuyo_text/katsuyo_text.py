@@ -1118,11 +1118,23 @@ class KakujoshiText(INonKatsuyoText, IKatsuyoTextAppendant["KakujoshiText"]):
 # TODO 特殊な活用系のHelper実装
 #      e.g., 同じ格助詞「に」であっても、目的を表す場合のみ動詞の連用形につくケースがある
 # 概ね体言と連体形に適用されるため、細かなハンドリングが現状行わなっていない
+
+# 以下から正規形を参照して作成
+# ref. http://sudachi.s3-website-ap-northeast-1.amazonaws.com/sudachidict-raw/20221021/small_lex.zip
 KAKUJOSHI_GA = KakujoshiText("が")
+KAKUJOSHI_DE = KakujoshiText("で")
+KAKUJOSHI_TO = KakujoshiText("と")
 KAKUJOSHI_NI = KakujoshiText("に")
 KAKUJOSHI_NO = KakujoshiText("の")
-KAKUJOSHI_DE = KakujoshiText("で")
-KAKUJOSHI_DA = KakujoshiText("だ")
+KAKUJOSHI_HE = KakujoshiText("へ")
+KAKUJOSHI_YO = KakujoshiText("よ")
+KAKUJOSHI_WO = KakujoshiText("を")
+KAKUJOSHI_NN = KakujoshiText("ん")
+KAKUJOSHI_KARA = KakujoshiText("から")
+KAKUJOSHI_TOTE = KakujoshiText("とて")
+KAKUJOSHI_NITE = KakujoshiText("にて")
+KAKUJOSHI_YORI = KakujoshiText("より")
+KAKUJOSHI_WOBA = KakujoshiText("をば")
 
 # ==============================================================================
 # 係助詞
