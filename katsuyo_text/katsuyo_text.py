@@ -1213,6 +1213,8 @@ class FukujoshiTaigenText(FukujoshiTextAppendant):
     def merge(self, pre: IKatsuyoTextSource) -> FukujoshiText:
         if isinstance(pre, TaigenText):
             return super().merge(pre)
+        elif isinstance(pre, JuntaijoshiText):
+            return super().merge(pre)
 
         raise KatsuyoTextError(
             f"Unsupported katsuyo_text in {type(self)}: {pre} "
@@ -1235,6 +1237,8 @@ class Kiri(FukujoshiTextAppendant):
         elif isinstance(pre, TaigenText):
             return super().merge(pre)
         elif isinstance(pre, SetsuzokujoshiText):
+            return super().merge(pre)
+        elif isinstance(pre, JuntaijoshiText):
             return super().merge(pre)
         elif isinstance(pre, KatsuyoText):
             if isinstance(pre.katsuyo, k.TaKatsuyo):
@@ -1299,6 +1303,8 @@ class ShujoshiYogenText(ShujoshiTextAppendant):
     def merge(self, pre: IKatsuyoTextSource) -> "ShujoshiText":
         if isinstance(pre, FixedKatsuyoText):
             return super().merge(pre)
+        elif isinstance(pre, JuntaijoshiText):
+            return super().merge(pre)
         elif isinstance(pre, KatsuyoText):
             if (fkt := pre.as_fkt_rentai) is not None:
                 return super().merge(fkt)
@@ -1325,6 +1331,8 @@ class ShujoshShushiiText(ShujoshiTextAppendant):
         elif isinstance(pre, KeijoshiText):
             return super().merge(pre)
         elif isinstance(pre, SetsuzokujoshiText):
+            return super().merge(pre)
+        elif isinstance(pre, JuntaijoshiText):
             return super().merge(pre)
         elif isinstance(pre.katsuyo, k.ShushiMixin):
             assert isinstance(pre, KatsuyoText)

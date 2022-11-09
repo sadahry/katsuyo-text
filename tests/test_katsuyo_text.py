@@ -28,6 +28,7 @@ from katsuyo_text.katsuyo_text import (
     SETSUZOKUJOSHI_TE,
     SETSUZOKUJOSHI_KEREDO,
     JUNTAIJOSHI_NO,
+    JUNTAIJOSHI_NN,
     SURU,
     KatsuyoText,
     KatsuyoTextError,
@@ -232,6 +233,11 @@ def test_error():
             KAKUJOSHI_NO,
             "の人",
         ),
+        (
+            "JuntaijoshiText",
+            JUNTAIJOSHI_NN,
+            "ん人",
+        ),
     ],
 )
 def test_TAIGEN(msg, katsuyo_text, expected):
@@ -348,6 +354,11 @@ def test_TAIGEN(msg, katsuyo_text, expected):
             KAKUJOSHI_NO,
             "のが",
         ),
+        (
+            "JuntaijoshiText",
+            JUNTAIJOSHI_NN,
+            "んが",
+        ),
     ],
 )
 def test_KAKUJOSHI(msg, katsuyo_text, expected):
@@ -457,6 +468,11 @@ def test_KAKUJOSHI(msg, katsuyo_text, expected):
             "KakujoshiText",
             KAKUJOSHI_NI,
             "にばかり",
+        ),
+        (
+            "JuntaijoshiText",
+            JUNTAIJOSHI_NN,
+            "んばかり",
         ),
     ],
 )
@@ -568,6 +584,11 @@ def test_FUKUZYOSHI_BAKARI(msg, katsuyo_text, expected):
             KAKUJOSHI_NI,
             "にまで",
         ),
+        (
+            "JuntaijoshiText",
+            JUNTAIJOSHI_NN,
+            "んまで",
+        ),
     ],
 )
 def test_FUKUZYOSHI_MADE(msg, katsuyo_text, expected):
@@ -677,6 +698,11 @@ def test_FUKUZYOSHI_MADE(msg, katsuyo_text, expected):
             "KakujoshiText",
             KAKUJOSHI_NI,
             "にだけ",
+        ),
+        (
+            "JuntaijoshiText",
+            JUNTAIJOSHI_NN,
+            "んだけ",
         ),
     ],
 )
@@ -788,6 +814,11 @@ def test_FUKUZYOSHI_DAKE(msg, katsuyo_text, expected):
             KAKUJOSHI_NI,
             "にほど",
         ),
+        (
+            "JuntaijoshiText",
+            JUNTAIJOSHI_NN,
+            "んほど",
+        ),
     ],
 )
 def test_FUKUZYOSHI_HODO(msg, katsuyo_text, expected):
@@ -897,6 +928,11 @@ def test_FUKUZYOSHI_HODO(msg, katsuyo_text, expected):
             "KakujoshiText",
             KAKUJOSHI_NI,
             "にくらい",
+        ),
+        (
+            "JuntaijoshiText",
+            JUNTAIJOSHI_NN,
+            "んくらい",
         ),
     ],
 )
@@ -1008,6 +1044,11 @@ def test_FUKUZYOSHI_KURAI(msg, katsuyo_text, expected):
             KAKUJOSHI_NI,
             "になど",
         ),
+        (
+            "JuntaijoshiText",
+            JUNTAIJOSHI_NN,
+            "んなど",
+        ),
     ],
 )
 def test_FUKUZYOSHI_NADO(msg, katsuyo_text, expected):
@@ -1117,6 +1158,11 @@ def test_FUKUZYOSHI_NADO(msg, katsuyo_text, expected):
             "KakujoshiText",
             KAKUJOSHI_NI,
             "になり",
+        ),
+        (
+            "JuntaijoshiText",
+            JUNTAIJOSHI_NN,
+            "んなり",
         ),
     ],
 )
@@ -1228,6 +1274,11 @@ def test_FUKUZYOSHI_NARI(msg, katsuyo_text, expected):
             KAKUJOSHI_NI,
             "にやら",
         ),
+        (
+            "JuntaijoshiText",
+            JUNTAIJOSHI_NN,
+            "んやら",
+        ),
     ],
 )
 def test_FUKUZYOSHI_YARA(msg, katsuyo_text, expected):
@@ -1337,6 +1388,11 @@ def test_FUKUZYOSHI_YARA(msg, katsuyo_text, expected):
             "KakujoshiText",
             KAKUJOSHI_NI,
             "にか",
+        ),
+        (
+            "JuntaijoshiText",
+            JUNTAIJOSHI_NN,
+            "んか",
         ),
     ],
 )
@@ -1448,6 +1504,11 @@ def test_FUKUZYOSHI_KA(msg, katsuyo_text, expected):
             KAKUJOSHI_NI,
             "にのみ",
         ),
+        (
+            "JuntaijoshiText",
+            JUNTAIJOSHI_NN,
+            "んのみ",
+        ),
     ],
 )
 def test_FUKUZYOSHI_NOMI(msg, katsuyo_text, expected):
@@ -1536,6 +1597,11 @@ def test_FUKUZYOSHI_NOMI(msg, katsuyo_text, expected):
             TaigenText("ひとり"),
             "ひとりきり",
         ),
+        (
+            "JuntaijoshiText",
+            JUNTAIJOSHI_NN,
+            "んきり",
+        ),
     ],
 )
 def test_FUKUZYOSHI_KIRI(msg, katsuyo_text, expected):
@@ -1593,6 +1659,11 @@ def test_FUKUZYOSHI_KIRI_error(msg, katsuyo_text):
             "TaigenText",
             TaigenText("２個"),
             "２個ずつ",
+        ),
+        (
+            "JuntaijoshiText",
+            JUNTAIJOSHI_NN,
+            "んずつ",
         ),
     ],
 )
@@ -1771,6 +1842,11 @@ def test_FUKUZYOSHI_ZUTSU_error(msg, katsuyo_text):
             JODOUSHI_TA,
             "たの",
         ),
+        (
+            "JuntaijoshiText",
+            JUNTAIJOSHI_NN,
+            "んの",
+        ),
     ],
 )
 def test_SHUJOSHI_NO(msg, katsuyo_text, expected):
@@ -1891,6 +1967,11 @@ def test_SHUJOSHI_NO_error(msg, katsuyo_text):
             "助動詞「た」",
             JODOUSHI_TA,
             "たのに",
+        ),
+        (
+            "JuntaijoshiText",
+            JUNTAIJOSHI_NN,
+            "んのに",
         ),
     ],
 )
@@ -2033,6 +2114,11 @@ def test_SHUJOSHI_NONI_error(msg, katsuyo_text):
             KEIJOSHI_MO,
             "もな",
         ),
+        (
+            "JuntaijoshiText",
+            JUNTAIJOSHI_NN,
+            "んな",
+        ),
     ],
 )
 def test_SHUJOSHI_NA(msg, katsuyo_text, expected):
@@ -2171,6 +2257,11 @@ def test_SHUJOSHI_NA_error(msg, katsuyo_text):
             KAKUJOSHI_NI,
             "にか",
         ),
+        (
+            "JuntaijoshiText",
+            JUNTAIJOSHI_NN,
+            "んか",
+        ),
     ],
 )
 def test_SHUJOSHI_KA(msg, katsuyo_text, expected):
@@ -2281,6 +2372,11 @@ def test_SHUJOSHI_KA(msg, katsuyo_text, expected):
             KAKUJOSHI_NI,
             "にかしら",
         ),
+        (
+            "JuntaijoshiText",
+            JUNTAIJOSHI_NN,
+            "んかしら",
+        ),
     ],
 )
 def test_SHUJOSHI_KASHIRA(msg, katsuyo_text, expected):
@@ -2390,6 +2486,11 @@ def test_SHUJOSHI_KASHIRA(msg, katsuyo_text, expected):
             "KakujoshiText",
             KAKUJOSHI_NI,
             "にの",
+        ),
+        (
+            "JuntaijoshiText",
+            JUNTAIJOSHI_NN,
+            "んの",
         ),
     ],
 )
