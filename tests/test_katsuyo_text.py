@@ -376,6 +376,132 @@ def test_KAKUJOSHI(msg, katsuyo_text, expected):
                 gokan="遊",
                 katsuyo=GODAN_BA_GYO,
             ),
+            "遊びも",
+        ),
+        (
+            "上一段活用",
+            KatsuyoText(
+                gokan="見",
+                katsuyo=KAMI_ICHIDAN,
+            ),
+            "見も",
+        ),
+        (
+            "下一段活用",
+            KatsuyoText(
+                gokan="求め",
+                katsuyo=SHIMO_ICHIDAN,
+            ),
+            "求めも",
+        ),
+        (
+            "カ変活用",
+            KURU,
+            "きも",
+        ),
+        (
+            "サ変活用",
+            KatsuyoText(
+                gokan="ウォーキング",
+                katsuyo=SA_GYO_HENKAKU_SURU,
+            ),
+            "ウォーキングしも",
+        ),
+        (
+            "サ変活用(する)",
+            KatsuyoText(
+                gokan="尊重",
+                katsuyo=SA_GYO_HENKAKU_SURU,
+            ),
+            "尊重しも",
+        ),
+        (
+            "サ変活用(ずる)",
+            KatsuyoText(
+                gokan="重ん",
+                katsuyo=SA_GYO_HENKAKU_ZURU,
+            ),
+            "重んじも",
+        ),
+        (
+            "形容詞",
+            KatsuyoText(
+                gokan="美し",
+                katsuyo=KEIYOUSHI,
+            ),
+            "美しくも",
+        ),
+        (
+            "形容動詞",
+            KatsuyoText(
+                gokan="綺麗",
+                katsuyo=KEIYOUDOUSHI,
+            ),
+            "綺麗でも",
+        ),
+        (
+            "TaigenText",
+            TaigenText("状態"),
+            "状態も",
+        ),
+        (
+            "FukujoshiText",
+            FUKUZYOSHI_HODO,
+            "ほども",
+        ),
+        (
+            "SetsuzokujoshiText",
+            SETSUZOKUJOSHI_TE,
+            "ても",
+        ),
+        (
+            "ShujoshiText",
+            SHUJOSHI_KA,
+            "かも",
+        ),
+        (
+            "KakujoshiText",
+            KAKUJOSHI_NI,
+            "にも",
+        ),
+        (
+            "JuntaijoshiText",
+            JUNTAIJOSHI_NN,
+            "んも",
+        ),
+    ],
+)
+def test_KEIJOSHI(msg, katsuyo_text, expected):
+    keijoshi = KEIJOSHI_MO
+    result = katsuyo_text + keijoshi
+    assert str(result) == expected, msg
+
+
+@pytest.mark.parametrize(
+    "msg, katsuyo_text",
+    [
+        (
+            "助動詞「た」",
+            JODOUSHI_TA,
+        ),
+    ],
+)
+def test_KEIJOSHI_error(msg, katsuyo_text):
+    keijoshi = KEIJOSHI_MO
+    with pytest.raises(KatsuyoTextError):
+        katsuyo_text + keijoshi
+        assert False, msg
+
+
+@pytest.mark.parametrize(
+    "msg, katsuyo_text, expected",
+    [
+        (
+            "五段活用",
+            KatsuyoText(
+                gokan="遊",
+                katsuyo=GODAN_BA_GYO,
+            ),
             "遊ぶばかり",
         ),
         (

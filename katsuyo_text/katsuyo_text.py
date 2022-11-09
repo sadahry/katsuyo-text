@@ -1116,17 +1116,38 @@ KAKUJOSHI_DA = KakujoshiText("だ")
 
 
 @attrs.define(frozen=True, slots=True)
-class KeijoshiText(INonKatsuyoText):
+class KeijoshiText(INonKatsuyoText, IKatsuyoTextAppendant["KeijoshiText"]):
     """
     係助詞
     """
 
-    pass
+    def _merge(self, pre: IKatsuyoTextSource) -> "KeijoshiText":
+        assert isinstance(pre, (FixedKatsuyoText, INonKatsuyoText))
+        return KeijoshiText(str(pre) + self.gokan)
+
+    def merge(self, pre: IKatsuyoTextSource) -> "KeijoshiText":
+        if isinstance(pre, (FixedKatsuyoText, INonKatsuyoText)):
+            return self._merge(pre)
+        else:
+            assert isinstance(pre, KatsuyoText)
+
+            if (fkt := pre.as_fkt_renyo_nai) is not None:
+                return self._merge(fkt)
+            elif (fkt := pre.as_fkt_renyo) is not None:
+                return self._merge(fkt)
+
+            raise KatsuyoTextError(
+                f"Unsupported katsuyo_text in merge of {type(self)}: {pre} "
+                f"type: {type(pre)} katsuyo: {type(pre.katsuyo)}"
+            )
 
 
-# TODO 特殊な活用系の実装
-KEIJOSHI_HA = KeijoshiText("は")
 KEIJOSHI_MO = KeijoshiText("も")
+KEIJOSHI_HA = KeijoshiText("は")
+KEIJOSHI_KOSO = KeijoshiText("こそ")
+# 「ぞ」の用例としては体言のみだったが細かく管理しない
+KEIJOSHI_ZO = KeijoshiText("ぞ")
+
 
 # ==============================================================================
 # 副助詞
