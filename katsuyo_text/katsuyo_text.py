@@ -1383,4 +1383,24 @@ class JuntaijoshiText(INonKatsuyoText):
     準体助詞
     """
 
-    pass
+    def _merge(self, pre: IKatsuyoTextSource) -> "JuntaijoshiText":
+        assert isinstance(pre, (FixedKatsuyoText, INonKatsuyoText))
+        return JuntaijoshiText(str(pre) + self.gokan)
+
+    def merge(self, pre: IKatsuyoTextSource) -> "JuntaijoshiText":
+        if isinstance(pre, (FixedKatsuyoText, INonKatsuyoText)):
+            return self._merge(pre)
+        else:
+            assert isinstance(pre, KatsuyoText)
+
+            if (fkt := pre.as_fkt_rentai) is not None:
+                return self._merge(fkt)
+
+            raise KatsuyoTextError(
+                f"Unsupported katsuyo_text in merge of {type(self)}: {pre} "
+                f"type: {type(pre)} katsuyo: {type(pre.katsuyo)}"
+            )
+
+
+JUNTAIJOSHI_NO = JuntaijoshiText("の")
+JUNTAIJOSHI_NN = JuntaijoshiText("ん")
