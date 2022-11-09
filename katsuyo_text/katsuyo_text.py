@@ -1399,6 +1399,30 @@ class SetuzokujoshiDeText(SetsuzokujoshiTextAppendant):
 
 
 @attrs.define(frozen=True, slots=False)
+class SetsuzokujoshiTomoText(SetsuzokujoshiTextAppendant):
+    """
+    接続助詞「とも」用のクラス
+    """
+
+    def merge(self, pre: IKatsuyoTextSource) -> "SetsuzokujoshiText":
+        if isinstance(pre, FixedKatsuyoText):
+            return super().merge(pre)
+        elif isinstance(pre.katsuyo, k.KeiyoushiKatsuyo):
+            assert isinstance(pre, KatsuyoText)
+            assert (fkt := pre.as_fkt_renyo) is not None
+            return super().merge(fkt)
+        elif isinstance(pre.katsuyo, k.ShushiMixin):
+            assert isinstance(pre, KatsuyoText)
+            assert (fkt := pre.as_fkt_shushi) is not None
+            return super().merge(fkt)
+
+        raise KatsuyoTextError(
+            f"Unsupported katsuyo_text in {type(self)}: {pre} "
+            f"type: {type(pre)} katsuyo: {type(pre.katsuyo)}"
+        )
+
+
+@attrs.define(frozen=True, slots=False)
 class SetsuzokujoshiRenyoText(SetsuzokujoshiTextAppendant):
     """
     接続助詞。連用形につくもの
@@ -1482,9 +1506,10 @@ SETSUZOKUJOSHI_NI = SetsuzokujoshiShushiText("に")  # 用例はない
 SETSUZOKUJOSHI_BA = SetsuzokujoshiKateiText("ば")
 SETSUZOKUJOSHI_KARA = SetsuzokujoshiShushiText("から")
 SETSUZOKUJOSHI_TSUTSU = SetsuzokujoshiRenyoText("つつ")
+SETSUZOKUJOSHI_TOMO = SetsuzokujoshiTomoText("とも")
 SETSUZOKUJOSHI_KEREDO = SetsuzokujoshiShushiText("けれど")
 SETSUZOKUJOSHI_KEDO = SetsuzokujoshiShushiText("けど")
-# 「雖も」は対応しない
+# 「雖も」「ては」「とて」は対応しない（用例がない）
 # 方言は対応しない
 
 # ==============================================================================

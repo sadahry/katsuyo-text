@@ -30,6 +30,7 @@ from katsuyo_text.katsuyo_text import (
     SETSUZOKUJOSHI_KEREDO,
     SETSUZOKUJOSHI_DO,
     SETSUZOKUJOSHI_TSUTSU,
+    SETSUZOKUJOSHI_TOMO,
     JUNTAIJOSHI_NO,
     JUNTAIJOSHI_NN,
     SURU,
@@ -2769,6 +2770,131 @@ def test_SETSUZOKUJOSHI_TSUTSU(msg, katsuyo_text, expected):
 )
 def test_SETSUZOKUJOSHI_TSUTSU_error(msg, katsuyo_text):
     setsuzokujoshi = SETSUZOKUJOSHI_TSUTSU
+    with pytest.raises(KatsuyoTextError):
+        katsuyo_text + setsuzokujoshi
+        assert False, msg
+
+
+@pytest.mark.parametrize(
+    "msg, katsuyo_text, expected",
+    [
+        (
+            "五段活用",
+            KatsuyoText(
+                gokan="遊",
+                katsuyo=GODAN_BA_GYO,
+            ),
+            "遊ぶとも",
+        ),
+        (
+            "上一段活用",
+            KatsuyoText(
+                gokan="見",
+                katsuyo=KAMI_ICHIDAN,
+            ),
+            "見るとも",
+        ),
+        (
+            "下一段活用",
+            KatsuyoText(
+                gokan="求め",
+                katsuyo=SHIMO_ICHIDAN,
+            ),
+            "求めるとも",
+        ),
+        (
+            "カ変活用",
+            KURU,
+            "くるとも",
+        ),
+        (
+            "サ変活用",
+            KatsuyoText(
+                gokan="ウォーキング",
+                katsuyo=SA_GYO_HENKAKU_SURU,
+            ),
+            "ウォーキングするとも",
+        ),
+        (
+            "サ変活用(する)",
+            KatsuyoText(
+                gokan="尊重",
+                katsuyo=SA_GYO_HENKAKU_SURU,
+            ),
+            "尊重するとも",
+        ),
+        (
+            "サ変活用(ずる)",
+            KatsuyoText(
+                gokan="重ん",
+                katsuyo=SA_GYO_HENKAKU_ZURU,
+            ),
+            "重んずるとも",
+        ),
+        (
+            "形容詞",
+            KatsuyoText(
+                gokan="美し",
+                katsuyo=KEIYOUSHI,
+            ),
+            "美しくとも",
+        ),
+        (
+            "形容動詞",
+            KatsuyoText(
+                gokan="綺麗",
+                katsuyo=KEIYOUDOUSHI,
+            ),
+            "綺麗だとも",
+        ),
+        (
+            "助動詞「た」",
+            JODOUSHI_TA,
+            "たとも",
+        ),
+    ],
+)
+def test_SETSUZOKUJOSHI_TOMO(msg, katsuyo_text, expected):
+    setsuzokujoshi = SETSUZOKUJOSHI_TOMO
+    result = katsuyo_text + setsuzokujoshi
+    assert str(result) == expected, msg
+
+
+@pytest.mark.parametrize(
+    "msg, katsuyo_text",
+    [
+        (
+            "TaigenText",
+            TaigenText("それ"),
+        ),
+        (
+            "FukujoshiText",
+            FUKUZYOSHI_HODO,
+        ),
+        (
+            "SetsuzokujoshiText",
+            SETSUZOKUJOSHI_TE,
+        ),
+        (
+            "ShujoshiText",
+            SHUJOSHI_NA,
+        ),
+        (
+            "KakujoshiText",
+            KAKUJOSHI_NI,
+        ),
+        (
+            "KeijoshiText",
+            KEIJOSHI_MO,
+        ),
+        (
+            "JuntaijoshiText",
+            JUNTAIJOSHI_NN,
+        ),
+    ],
+)
+def test_SETSUZOKUJOSHI_TOMO_error(msg, katsuyo_text):
+    setsuzokujoshi = SETSUZOKUJOSHI_TOMO
     with pytest.raises(KatsuyoTextError):
         katsuyo_text + setsuzokujoshi
         assert False, msg
