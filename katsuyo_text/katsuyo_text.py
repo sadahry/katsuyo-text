@@ -1556,5 +1556,7 @@ class JuntaijoshiText(INonKatsuyoText):
             )
 
 
+# 以下から正規形を参照して作成
+# ref. http://sudachi.s3-website-ap-northeast-1.amazonaws.com/sudachidict-raw/20221021/small_lex.zip
 JUNTAIJOSHI_NO = JuntaijoshiText("の")
 JUNTAIJOSHI_NN = JuntaijoshiText("ん")
