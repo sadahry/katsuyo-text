@@ -1170,6 +1170,8 @@ class KeijoshiText(INonKatsuyoText, IKatsuyoTextAppendant["KeijoshiText"]):
             )
 
 
+# 以下から正規形を参照して作成
+# ref. http://sudachi.s3-website-ap-northeast-1.amazonaws.com/sudachidict-raw/20221021/small_lex.zip
 KEIJOSHI_MO = KeijoshiText("も")
 KEIJOSHI_HA = KeijoshiText("は")
 KEIJOSHI_KOSO = KeijoshiText("こそ")
@@ -1416,6 +1418,8 @@ class SetsuzokujoshiShushiText(SetsuzokujoshiTextAppendant):
         )
 
 
+# 以下から正規形を参照して作成
+# ref. http://sudachi.s3-website-ap-northeast-1.amazonaws.com/sudachidict-raw/20221021/small_lex.zip
 SETSUZOKUJOSHI_TE = SetuzokujoshiTeText()  # 「ても」は「て」で表現
 SETSUZOKUJOSHI_DE = SetuzokujoshiDeText()  # 「でも」は「で」で表現
 SETSUZOKUJOSHI_KEREDO = SetsuzokujoshiShushiText("けれど")
