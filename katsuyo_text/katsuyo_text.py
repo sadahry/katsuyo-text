@@ -1420,14 +1420,48 @@ class SetsuzokujoshiShushiText(SetsuzokujoshiTextAppendant):
         )
 
 
+@attrs.define(frozen=True, slots=False)
+class SetsuzokujoshiKateiText(SetsuzokujoshiTextAppendant):
+    """
+    接続助詞。仮定形につくもの
+    """
+
+    def merge(self, pre: IKatsuyoTextSource) -> "SetsuzokujoshiText":
+        if isinstance(pre, FixedKatsuyoText):
+            return super().merge(pre)
+        elif isinstance(pre, JuntaijoshiText):
+            return super().merge(pre)
+        elif isinstance(pre.katsuyo, k.ShushiMixin):
+            assert isinstance(pre, KatsuyoText)
+
+            if isinstance(pre.katsuyo, k.TaKatsuyo):
+                raise KatsuyoTextError(
+                    f"Unsupported katsuyo_text in {type(self)}: {pre} "
+                    f"type: {type(pre)} katsuyo: {type(pre.katsuyo)}"
+                )
+
+            assert (fkt := pre.as_fkt_katei) is not None
+            return super().merge(fkt)
+
+        raise KatsuyoTextError(
+            f"Unsupported katsuyo_text in {type(self)}: {pre} "
+            f"type: {type(pre)} katsuyo: {type(pre.katsuyo)}"
+        )
+
+
 # 以下から正規形を参照して作成
 # ref. http://sudachi.s3-website-ap-northeast-1.amazonaws.com/sudachidict-raw/20221021/small_lex.zip
 # TODO 残りの接続助詞の実装
+SETSUZOKUJOSHI_GA = SetsuzokujoshiShushiText("が")
+SETSUZOKUJOSHI_SHI = SetsuzokujoshiShushiText("し")
 SETSUZOKUJOSHI_TE = SetuzokujoshiTeText()  # 「ても」は「て」で表現
 SETSUZOKUJOSHI_DE = SetuzokujoshiDeText()  # 「でも」は「で」で表現
+SETSUZOKUJOSHI_TO = SetsuzokujoshiShushiText("と")
+SETSUZOKUJOSHI_DO = SetsuzokujoshiKateiText("ど")  # 古文的だが、現代でも使われる
 SETSUZOKUJOSHI_KEREDO = SetsuzokujoshiShushiText("けれど")
 SETSUZOKUJOSHI_KEDO = SetsuzokujoshiShushiText("けど")
-
+# 「雖も」は対応しない
+# 方言は対応しない
 
 # ==============================================================================
 # 終助詞
