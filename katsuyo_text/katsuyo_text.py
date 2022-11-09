@@ -1489,7 +1489,6 @@ class SetsuzokujoshiKateiText(SetsuzokujoshiTextAppendant):
 
 # 以下から正規形を参照して作成
 # ref. http://sudachi.s3-website-ap-northeast-1.amazonaws.com/sudachidict-raw/20221021/small_lex.zip
-# TODO 残りの接続助詞の実装
 SETSUZOKUJOSHI_GA = SetsuzokujoshiShushiText("が")
 SETSUZOKUJOSHI_SHI = SetsuzokujoshiShushiText("し")
 SETSUZOKUJOSHI_TE = SetuzokujoshiTeText("て")  # 「ても」は「て」で表現
