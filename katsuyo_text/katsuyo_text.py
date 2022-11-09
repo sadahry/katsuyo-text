@@ -1260,7 +1260,7 @@ class FukujoshiTaigenText(FukujoshiTextAppendant):
 
 
 @attrs.define(frozen=True, slots=False)
-class Kiri(FukujoshiTextAppendant):
+class FukujoshiKiriText(FukujoshiTextAppendant):
     """
     副助詞のなかでも特殊な活用形である「きり」のクラス
     """
@@ -1301,7 +1301,7 @@ FUKUZYOSHI_YARA = FukujoshiGokanText("やら")
 FUKUZYOSHI_KA = FukujoshiGokanText("か")
 FUKUZYOSHI_NOMI = FukujoshiGokanText("のみ")
 FUKUZYOSHI_ZUTSU = FukujoshiTaigenText("ずつ")
-FUKUZYOSHI_KIRI = Kiri("きり")
+FUKUZYOSHI_KIRI = FukujoshiKiriText("きり")
 
 # ==============================================================================
 # 接続助詞
