@@ -1329,11 +1329,8 @@ class SetsuzokujoshiTextAppendant(
 
 class SetuzokujoshiTeText(SetsuzokujoshiTextAppendant):
     """
-    接続助詞「て」用のクラス
+    接続助詞「て」「たって」用のクラス
     """
-
-    def __init__(self):
-        super().__init__("て")
 
     def merge(self, pre: IKatsuyoTextSource) -> "SetsuzokujoshiText":
         if isinstance(pre, FixedKatsuyoText):
@@ -1345,7 +1342,7 @@ class SetuzokujoshiTeText(SetsuzokujoshiTextAppendant):
                 pre.katsuyo.shushi in ["ぐ", "ぬ", "ぶ", "む"]
             ):
                 raise KatsuyoTextError(
-                    f"Should be 「で」: {pre} "
+                    f"Should be 「で」or「だって」: {pre} "
                     f"type: {type(pre)} katsuyo: {type(pre.katsuyo)}"
                 )
 
@@ -1362,11 +1359,8 @@ class SetuzokujoshiTeText(SetsuzokujoshiTextAppendant):
 
 class SetuzokujoshiDeText(SetsuzokujoshiTextAppendant):
     """
-    接続助詞「で」用のクラス
+    接続助詞「で」「だって」用のクラス
     """
-
-    def __init__(self):
-        super().__init__("で")
 
     def merge(self, pre: IKatsuyoTextSource) -> "SetsuzokujoshiText":
         if isinstance(pre, FixedKatsuyoText):
@@ -1378,7 +1372,7 @@ class SetuzokujoshiDeText(SetsuzokujoshiTextAppendant):
                 pre.katsuyo.shushi not in ["ぐ", "ぬ", "ぶ", "む"]
             ):
                 raise KatsuyoTextError(
-                    f"Should be 「て」: {pre} "
+                    f"Should be 「て」or「たって」: {pre} "
                     f"type: {type(pre)} katsuyo: {type(pre.katsuyo)}"
                 )
             elif isinstance(pre.katsuyo, (k.KeiyoushiKatsuyo, k.KeiyoudoushiKatsuyo)):
@@ -1498,17 +1492,24 @@ class SetsuzokujoshiKateiText(SetsuzokujoshiTextAppendant):
 # TODO 残りの接続助詞の実装
 SETSUZOKUJOSHI_GA = SetsuzokujoshiShushiText("が")
 SETSUZOKUJOSHI_SHI = SetsuzokujoshiShushiText("し")
-SETSUZOKUJOSHI_TE = SetuzokujoshiTeText()  # 「ても」は「て」で表現
-SETSUZOKUJOSHI_DE = SetuzokujoshiDeText()  # 「でも」は「で」で表現
+SETSUZOKUJOSHI_TE = SetuzokujoshiTeText("て")  # 「ても」は「て」で表現
+SETSUZOKUJOSHI_DE = SetuzokujoshiDeText("で")  # 「でも」は「で」で表現
 SETSUZOKUJOSHI_TO = SetsuzokujoshiShushiText("と")
-SETSUZOKUJOSHI_DO = SetsuzokujoshiKateiText("ど")  # 古文的だが、現代でも使われる
+# 古文的だが、現代でも使われる
+# 形容動詞(e.g., 綺麗ならど)が不適切だが、現状は細かく対応していない
+SETSUZOKUJOSHI_DO = SetsuzokujoshiKateiText("ど")
 SETSUZOKUJOSHI_NI = SetsuzokujoshiShushiText("に")  # 用例はない
 SETSUZOKUJOSHI_BA = SetsuzokujoshiKateiText("ば")
 SETSUZOKUJOSHI_KARA = SetsuzokujoshiShushiText("から")
 SETSUZOKUJOSHI_TSUTSU = SetsuzokujoshiRenyoText("つつ")
 SETSUZOKUJOSHI_TOMO = SetsuzokujoshiTomoText("とも")
+# 形容詞(e.g., 美しいなり)が不適切だが、現状は細かく対応していない
+# 形容動詞(e.g., 綺麗だなり)が不適切だが、現状は細かく対応していない
+SETSUZOKUJOSHI_NARI = SetsuzokujoshiShushiText("なり")
+SETSUZOKUJOSHI_TATTE = SetuzokujoshiTeText("たって")
+SETSUZOKUJOSHI_DATTE = SetuzokujoshiDeText("だって")
+SETSUZOKUJOSHI_NAGARA = SetsuzokujoshiRenyoText("ながら")
 SETSUZOKUJOSHI_KEREDO = SetsuzokujoshiShushiText("けれど")
-SETSUZOKUJOSHI_KEDO = SetsuzokujoshiShushiText("けど")
 # 「雖も」「ては」「とて」は対応しない（用例がない）
 # 方言は対応しない
 

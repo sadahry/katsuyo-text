@@ -28,7 +28,7 @@ from katsuyo_text.katsuyo_text import (
     SETSUZOKUJOSHI_TE,
     SETSUZOKUJOSHI_DE,
     SETSUZOKUJOSHI_KEREDO,
-    SETSUZOKUJOSHI_DO,
+    SETSUZOKUJOSHI_BA,
     SETSUZOKUJOSHI_TSUTSU,
     SETSUZOKUJOSHI_TOMO,
     JUNTAIJOSHI_NO,
@@ -2546,7 +2546,7 @@ def test_SETSUZOKUJOSHI_KEREDO_error(msg, katsuyo_text):
                 gokan="遊",
                 katsuyo=GODAN_BA_GYO,
             ),
-            "遊べど",
+            "遊べば",
         ),
         (
             "上一段活用",
@@ -2554,7 +2554,7 @@ def test_SETSUZOKUJOSHI_KEREDO_error(msg, katsuyo_text):
                 gokan="見",
                 katsuyo=KAMI_ICHIDAN,
             ),
-            "見れど",
+            "見れば",
         ),
         (
             "下一段活用",
@@ -2562,12 +2562,12 @@ def test_SETSUZOKUJOSHI_KEREDO_error(msg, katsuyo_text):
                 gokan="求め",
                 katsuyo=SHIMO_ICHIDAN,
             ),
-            "求めれど",
+            "求めれば",
         ),
         (
             "カ変活用",
             KURU,
-            "くれど",
+            "くれば",
         ),
         (
             "サ変活用",
@@ -2575,7 +2575,7 @@ def test_SETSUZOKUJOSHI_KEREDO_error(msg, katsuyo_text):
                 gokan="ウォーキング",
                 katsuyo=SA_GYO_HENKAKU_SURU,
             ),
-            "ウォーキングすれど",
+            "ウォーキングすれば",
         ),
         (
             "サ変活用(する)",
@@ -2583,7 +2583,7 @@ def test_SETSUZOKUJOSHI_KEREDO_error(msg, katsuyo_text):
                 gokan="尊重",
                 katsuyo=SA_GYO_HENKAKU_SURU,
             ),
-            "尊重すれど",
+            "尊重すれば",
         ),
         (
             "サ変活用(ずる)",
@@ -2591,7 +2591,7 @@ def test_SETSUZOKUJOSHI_KEREDO_error(msg, katsuyo_text):
                 gokan="重ん",
                 katsuyo=SA_GYO_HENKAKU_ZURU,
             ),
-            "重んずれど",
+            "重んずれば",
         ),
         (
             "形容詞",
@@ -2599,7 +2599,7 @@ def test_SETSUZOKUJOSHI_KEREDO_error(msg, katsuyo_text):
                 gokan="美し",
                 katsuyo=KEIYOUSHI,
             ),
-            "美しけれど",
+            "美しければ",
         ),
         (
             "形容動詞",
@@ -2607,12 +2607,12 @@ def test_SETSUZOKUJOSHI_KEREDO_error(msg, katsuyo_text):
                 gokan="綺麗",
                 katsuyo=KEIYOUDOUSHI,
             ),
-            "綺麗ならど",
+            "綺麗ならば",
         ),
     ],
 )
-def test_SETSUZOKUJOSHI_DO(msg, katsuyo_text, expected):
-    setsuzokujoshi = SETSUZOKUJOSHI_DO
+def test_SETSUZOKUJOSHI_BA(msg, katsuyo_text, expected):
+    setsuzokujoshi = SETSUZOKUJOSHI_BA
     result = katsuyo_text + setsuzokujoshi
     assert str(result) == expected, msg
 
@@ -2650,8 +2650,8 @@ def test_SETSUZOKUJOSHI_DO(msg, katsuyo_text, expected):
         ),
     ],
 )
-def test_SETSUZOKUJOSHI_DO_error(msg, katsuyo_text):
-    setsuzokujoshi = SETSUZOKUJOSHI_DO
+def test_SETSUZOKUJOSHI_BA_error(msg, katsuyo_text):
+    setsuzokujoshi = SETSUZOKUJOSHI_BA
     with pytest.raises(KatsuyoTextError):
         katsuyo_text + setsuzokujoshi
         assert False, msg
