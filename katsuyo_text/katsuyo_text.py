@@ -956,9 +956,6 @@ class Desu(IJodoushiKatsuyoText):
             )
 
 
-JODOUSHI_DESU = Desu()
-
-
 class DaDantei(IJodoushiKatsuyoText):
     def __init__(self):
         super().__init__(
@@ -985,6 +982,7 @@ class DaDantei(IJodoushiKatsuyoText):
             )
 
 
+JODOUSHI_DESU = Desu()
 JODOUSHI_DA_DANTEI = DaDantei()
 
 
@@ -1206,13 +1204,6 @@ class FukujoshiRentaiText(FukujoshiTextAppendant):
             )
 
 
-FUKUZYOSHI_BAKARI = FukujoshiRentaiText("ばかり")
-FUKUZYOSHI_MADE = FukujoshiRentaiText("まで")
-FUKUZYOSHI_DAKE = FukujoshiRentaiText("だけ")
-FUKUZYOSHI_HODO = FukujoshiRentaiText("ほど")
-FUKUZYOSHI_KURAI = FukujoshiRentaiText("くらい")
-
-
 @attrs.define(frozen=True, slots=False)
 class FukujoshiGokanText(FukujoshiTextAppendant):
     """
@@ -1236,13 +1227,6 @@ class FukujoshiGokanText(FukujoshiTextAppendant):
         )
 
 
-FUKUZYOSHI_NADO = FukujoshiGokanText("など")
-FUKUZYOSHI_NARI = FukujoshiGokanText("なり")
-FUKUZYOSHI_YARA = FukujoshiGokanText("やら")
-FUKUZYOSHI_KA = FukujoshiGokanText("か")
-FUKUZYOSHI_NOMI = FukujoshiGokanText("のみ")
-
-
 @attrs.define(frozen=True, slots=False)
 class FukujoshiTaigenText(FukujoshiTextAppendant):
     """
@@ -1259,9 +1243,6 @@ class FukujoshiTaigenText(FukujoshiTextAppendant):
             f"Unsupported katsuyo_text in {type(self)}: {pre} "
             f"type: {type(pre)} katsuyo: {type(pre.katsuyo)}"
         )
-
-
-FUKUZYOSHI_ZUTSU = FukujoshiTaigenText("ずつ")
 
 
 @attrs.define(frozen=True, slots=False)
@@ -1293,6 +1274,17 @@ class Kiri(FukujoshiTextAppendant):
         )
 
 
+FUKUZYOSHI_BAKARI = FukujoshiRentaiText("ばかり")
+FUKUZYOSHI_MADE = FukujoshiRentaiText("まで")
+FUKUZYOSHI_DAKE = FukujoshiRentaiText("だけ")
+FUKUZYOSHI_HODO = FukujoshiRentaiText("ほど")
+FUKUZYOSHI_KURAI = FukujoshiRentaiText("くらい")
+FUKUZYOSHI_NADO = FukujoshiGokanText("など")
+FUKUZYOSHI_NARI = FukujoshiGokanText("なり")
+FUKUZYOSHI_YARA = FukujoshiGokanText("やら")
+FUKUZYOSHI_KA = FukujoshiGokanText("か")
+FUKUZYOSHI_NOMI = FukujoshiGokanText("のみ")
+FUKUZYOSHI_ZUTSU = FukujoshiTaigenText("ずつ")
 FUKUZYOSHI_KIRI = Kiri("きり")
 
 # ==============================================================================
@@ -1457,10 +1449,6 @@ class ShujoshiYogenText(ShujoshiTextAppendant):
         )
 
 
-SHUJOSHI_NO = ShujoshiYogenText("の")
-SHUJOSHI_NONI = ShujoshiYogenText("のに")
-
-
 @attrs.define(frozen=True, slots=False)
 class ShujoshShushiText(ShujoshiTextAppendant):
     """
@@ -1485,9 +1473,6 @@ class ShujoshShushiText(ShujoshiTextAppendant):
             f"Unsupported katsuyo_text in {type(self)}: {pre} "
             f"type: {type(pre)} katsuyo: {type(pre.katsuyo)}"
         )
-
-
-SHUJOSHI_NA = ShujoshShushiText("な")
 
 
 @attrs.define(frozen=True, slots=False)
@@ -1515,6 +1500,9 @@ class ShujoshiGokanText(ShujoshiTextAppendant):
             )
 
 
+SHUJOSHI_NO = ShujoshiYogenText("の")
+SHUJOSHI_NONI = ShujoshiYogenText("のに")
+SHUJOSHI_NA = ShujoshShushiText("な")
 SHUJOSHI_KA = ShujoshiGokanText("か")
 # 終助詞「やら」は副助詞として取得されるため、ここでは定義しない
 # SHUJOSHI_YARA = ShujoshiTaigenText("やら")
