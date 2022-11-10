@@ -16,7 +16,6 @@ from katsuyo_text.katsuyo_text import (
     SHUJOSHI_KASHIRA,
     SHUJOSHI_NA,
     SHUJOSHI_NO,
-    SHUJOSHI_NONI,
     KatsuyoTextError,
 )
 from katsuyo_text.katsuyo_text_appendant_detector import (
@@ -498,18 +497,6 @@ def test_spacy_katsuyo_text_appendants_detector(
             "の",
             "助詞-終助詞",
             [SHUJOSHI_NO],
-        ),
-        (
-            "あなたを愛するのに",
-            "に",
-            "助詞-格助詞",  # 特殊なケース
-            [SHUJOSHI_NONI],
-        ),
-        (
-            "その荷物は遠方のに",
-            "に",
-            "助詞-格助詞",  # 特殊なケース
-            [],
         ),
         (
             "あなたを愛しちゃうな",

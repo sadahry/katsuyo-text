@@ -1661,7 +1661,7 @@ class ShujoshiGokanText(ShujoshiTextAppendant):
 
 # TODO 残りの終助詞の実装
 SHUJOSHI_NO = ShujoshiYogenText("の")
-SHUJOSHI_NONI = ShujoshiYogenText("のに")
+# SHUJOSHI_NONI = ShujoshiYogenText("のに")  # ginzaでは「の」と「に」にわかれるため対応しない
 SHUJOSHI_NA = ShujoshShushiText("な")
 SHUJOSHI_KA = ShujoshiGokanText("か")
 # 終助詞「やら」は副助詞として取得されるため、ここでは定義しない
@@ -1670,7 +1670,6 @@ SHUJOSHI_KASHIRA = ShujoshiGokanText("かしら")
 
 ALL_SHUJOSHIS = {
     SHUJOSHI_NO,
-    SHUJOSHI_NONI,
     SHUJOSHI_NA,
     SHUJOSHI_KA,
     SHUJOSHI_KASHIRA,

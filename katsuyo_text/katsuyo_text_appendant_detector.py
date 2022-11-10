@@ -234,12 +234,6 @@ class SpacyKatsuyoTextAppendantDetector(IKatsuyoTextAppendantDetector):
             # 終助詞の判定
             # ==================================================
             return self.try_get_shujoshi(norm)
-        elif pos_tag == "ADP":
-            # 「のに」のみ対応
-            if norm in ["に"]:
-                return self._try_detect_noni(candidate)
-
-            return None, None
 
         return None, None
 
