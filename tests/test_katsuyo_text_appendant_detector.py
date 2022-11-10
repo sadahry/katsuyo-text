@@ -21,7 +21,7 @@ from katsuyo_text.katsuyo_text import (
 )
 from katsuyo_text.katsuyo_text_appendant_detector import (
     SpacyKatsuyoTextAppendantDetector,
-    DEFAULT_APPENDANTS_DETECTOR,
+    ALL_APPENDANTS_DETECTOR,
 )
 from katsuyo_text.katsuyo_text_helper import (
     IKatsuyoTextHelper,
@@ -44,7 +44,7 @@ from katsuyo_text.katsuyo_text_helper import (
 
 @pytest.fixture(scope="session")
 def spacy_appendants_detector():
-    return DEFAULT_APPENDANTS_DETECTOR
+    return ALL_APPENDANTS_DETECTOR
 
 
 def katsuyo_texts_appendants_detector_init_validation_error():

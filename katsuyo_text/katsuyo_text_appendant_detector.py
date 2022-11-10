@@ -127,11 +127,6 @@ class IKatsuyoTextAppendantDetector(abc.ABC):
         if shujoshi is not None:
             return shujoshi, None
 
-        if self.allow_not_registered_shujoshi:
-            return ShujoshiText(norm), KatsuyoTextErrorMessage(
-                f"Get Unsupported type in shujoshi: {norm}"
-            )
-
         # 例外が多いため、allowしない場合はwarningを出さない
         # return None, KatsuyoTextErrorMessage(
         #     f"Unsupported type in try_get_shujoshi: {norm}"
@@ -338,7 +333,7 @@ class SpacyKatsuyoTextAppendantDetector(IKatsuyoTextAppendantDetector):
         return self.try_get_shujoshi("のに")
 
 
-DEFAULT_APPENDANTS_DETECTOR = SpacyKatsuyoTextAppendantDetector(
+ALL_APPENDANTS_DETECTOR = SpacyKatsuyoTextAppendantDetector(
     helpers={
         Ukemi(),
         Shieki(),

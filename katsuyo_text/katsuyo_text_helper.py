@@ -319,7 +319,7 @@ class Youtai(IKatsuyoTextHelper):
 
 def bridge_Denbun_default(pre: kt.IKatsuyoTextSource) -> kt.KatsuyoText:
     if isinstance(pre, kt.INonKatsuyoText):
-        return pre + kt.KAKUJOSHI_DA + kt.JODOUSHI_SOUDA_DENBUN
+        return pre + kt.JODOUSHI_DA_DANTEI + kt.JODOUSHI_SOUDA_DENBUN
 
     raise kt.KatsuyoTextError(
         f"Unsupported katsuyo_text in {sys._getframe().f_code.co_name}: {pre} "
