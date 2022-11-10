@@ -38,6 +38,7 @@ from katsuyo_text.katsuyo_text_helper import (
     Youtai,
     Dantei,
     DanteiTeinei,
+    Teinei,
 )
 
 
@@ -350,6 +351,12 @@ def katsuyo_texts_appendants_detector_init_warning():
             [DanteiTeinei],
         ),
         (
+            "外で遊びます",
+            "ます",
+            "AUX",
+            [Teinei],
+        ),
+        (
             "遊んでる",
             "てる",
             "AUX",
@@ -539,11 +546,6 @@ def test_spacy_shujoshi_appendants_detector(
 @pytest.mark.parametrize(
     "text, norm, pos",
     [
-        (
-            "悲しみます",
-            "ます",
-            "AUX",
-        ),
         (
             "嫉妬しちゃう",
             "ちゃう",
