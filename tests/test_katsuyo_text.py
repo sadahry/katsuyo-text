@@ -1,10 +1,10 @@
 import pytest
 from katsuyo_text.katsuyo_text import (
-    FUKUZYOSHI_BAKARI,
-    FUKUZYOSHI_HODO,
-    FUKUZYOSHI_KIRI,
-    FUKUZYOSHI_NADO,
-    FUKUZYOSHI_ZUTSU,
+    FUKUJOSHI_BAKARI,
+    FUKUJOSHI_HODO,
+    FUKUJOSHI_KIRI,
+    FUKUJOSHI_NADO,
+    FUKUJOSHI_ZUTSU,
     KAKUJOSHI_NI,
     KAKUJOSHI_NO,
     KAKUJOSHI_GA,
@@ -214,7 +214,7 @@ def test_error():
         ),
         (
             "FukujoshiText",
-            FUKUZYOSHI_HODO,
+            FUKUJOSHI_HODO,
             "ほど人",
         ),
         (
@@ -334,7 +334,7 @@ def test_TAIGEN(msg, katsuyo_text, expected):
         ),
         (
             "FukujoshiText",
-            FUKUZYOSHI_HODO,
+            FUKUJOSHI_HODO,
             "ほどが",
         ),
         # 接続されるケースがあるが稀なためスキップ
@@ -450,7 +450,7 @@ def test_KakujoshiText(msg, katsuyo_text, expected):
         ),
         (
             "FukujoshiText",
-            FUKUZYOSHI_HODO,
+            FUKUJOSHI_HODO,
             "ほども",
         ),
         (
@@ -581,7 +581,7 @@ def test_KeijoshiText_error(msg, katsuyo_text):
         ),
         (
             "FukujoshiText",
-            FUKUZYOSHI_HODO,
+            FUKUJOSHI_HODO,
             "ほどばかり",
         ),
         (
@@ -607,7 +607,7 @@ def test_KeijoshiText_error(msg, katsuyo_text):
     ],
 )
 def test_FukujoshiRentaiText(msg, katsuyo_text, expected):
-    fukujoshi = FUKUZYOSHI_BAKARI
+    fukujoshi = FUKUJOSHI_BAKARI
     result = katsuyo_text + fukujoshi
     assert str(result) == expected, msg
 
@@ -696,7 +696,7 @@ def test_FukujoshiRentaiText(msg, katsuyo_text, expected):
         ),
         (
             "FukujoshiText",
-            FUKUZYOSHI_HODO,
+            FUKUJOSHI_HODO,
             "ほどなど",
         ),
         (
@@ -722,7 +722,7 @@ def test_FukujoshiRentaiText(msg, katsuyo_text, expected):
     ],
 )
 def test_FukujoshiGokanText(msg, katsuyo_text, expected):
-    fukujoshi = FUKUZYOSHI_NADO
+    fukujoshi = FUKUJOSHI_NADO
     result = katsuyo_text + fukujoshi
     assert str(result) == expected, msg
 
@@ -743,7 +743,7 @@ def test_FukujoshiGokanText(msg, katsuyo_text, expected):
     ],
 )
 def test_FukujoshiTaigenText(msg, katsuyo_text, expected):
-    fukujoshi = FUKUZYOSHI_ZUTSU
+    fukujoshi = FUKUJOSHI_ZUTSU
     result = katsuyo_text + fukujoshi
     assert str(result) == expected, msg
 
@@ -813,7 +813,7 @@ def test_FukujoshiTaigenText(msg, katsuyo_text, expected):
         ),
         (
             "FukujoshiText",
-            FUKUZYOSHI_HODO,
+            FUKUJOSHI_HODO,
         ),
         (
             "ShujoshiText",
@@ -834,7 +834,7 @@ def test_FukujoshiTaigenText(msg, katsuyo_text, expected):
     ],
 )
 def test_FukujoshiTaigenText_error(msg, katsuyo_text):
-    fukujoshi = FUKUZYOSHI_ZUTSU
+    fukujoshi = FUKUJOSHI_ZUTSU
     with pytest.raises(KatsuyoTextError):
         katsuyo_text + fukujoshi
         assert False, msg
@@ -928,7 +928,7 @@ def test_FukujoshiTaigenText_error(msg, katsuyo_text):
     ],
 )
 def test_FukujoshiKiriText(msg, katsuyo_text, expected):
-    fukujoshi = FUKUZYOSHI_KIRI
+    fukujoshi = FUKUJOSHI_KIRI
     result = katsuyo_text + fukujoshi
     assert str(result) == expected, msg
 
@@ -952,7 +952,7 @@ def test_FukujoshiKiriText(msg, katsuyo_text, expected):
         ),
         (
             "FukujoshiText",
-            FUKUZYOSHI_HODO,
+            FUKUJOSHI_HODO,
         ),
         (
             "ShujoshiText",
@@ -969,7 +969,7 @@ def test_FukujoshiKiriText(msg, katsuyo_text, expected):
     ],
 )
 def test_FukujoshiKiriText_error(msg, katsuyo_text):
-    fukujoshi = FUKUZYOSHI_KIRI
+    fukujoshi = FUKUJOSHI_KIRI
     with pytest.raises(KatsuyoTextError):
         katsuyo_text + fukujoshi
         assert False, msg
@@ -1169,7 +1169,7 @@ def test_SetuzokujoshiTeText(msg, katsuyo_text, expected):
         ),
         (
             "FukujoshiText",
-            FUKUZYOSHI_HODO,
+            FUKUJOSHI_HODO,
         ),
         (
             "SetsuzokujoshiText",
@@ -1457,7 +1457,7 @@ def test_SetuzokujoshiDeText(msg, katsuyo_text, expected):
         ),
         (
             "FukujoshiText",
-            FUKUZYOSHI_HODO,
+            FUKUJOSHI_HODO,
         ),
         (
             "SetsuzokujoshiText",
@@ -1583,7 +1583,7 @@ def test_SetsuzokujoshiShushiText(msg, katsuyo_text, expected):
         ),
         (
             "FukujoshiText",
-            FUKUZYOSHI_HODO,
+            FUKUJOSHI_HODO,
         ),
         (
             "SetsuzokujoshiText",
@@ -1703,7 +1703,7 @@ def test_SetsuzokujoshiKateiText(msg, katsuyo_text, expected):
         ),
         (
             "FukujoshiText",
-            FUKUZYOSHI_HODO,
+            FUKUJOSHI_HODO,
         ),
         (
             "SetsuzokujoshiText",
@@ -1821,7 +1821,7 @@ def test_SetsuzokujoshiRenyoText(msg, katsuyo_text, expected):
         ),
         (
             "FukujoshiText",
-            FUKUZYOSHI_HODO,
+            FUKUJOSHI_HODO,
         ),
         (
             "SetsuzokujoshiText",
@@ -1942,7 +1942,7 @@ def test_SetsuzokujoshiTomoText(msg, katsuyo_text, expected):
         ),
         (
             "FukujoshiText",
-            FUKUZYOSHI_HODO,
+            FUKUJOSHI_HODO,
         ),
         (
             "SetsuzokujoshiText",
@@ -2075,7 +2075,7 @@ def test_SHUJOSHI_NO(msg, katsuyo_text, expected):
         ),
         (
             "FukujoshiText",
-            FUKUZYOSHI_HODO,
+            FUKUJOSHI_HODO,
         ),
         (
             "SetsuzokujoshiText",
@@ -2201,7 +2201,7 @@ def test_SHUJOSHI_NONI(msg, katsuyo_text, expected):
         ),
         (
             "FukujoshiText",
-            FUKUZYOSHI_HODO,
+            FUKUJOSHI_HODO,
         ),
         (
             "SetsuzokujoshiText",
@@ -2347,7 +2347,7 @@ def test_SHUJOSHI_NA(msg, katsuyo_text, expected):
         ),
         (
             "FukujoshiText",
-            FUKUZYOSHI_HODO,
+            FUKUJOSHI_HODO,
         ),
         (
             "ShujoshiText",
@@ -2450,7 +2450,7 @@ def test_SHUJOSHI_NA_error(msg, katsuyo_text):
         ),
         (
             "FukujoshiText",
-            FUKUZYOSHI_HODO,
+            FUKUJOSHI_HODO,
             "ほどか",
         ),
         (
@@ -2565,7 +2565,7 @@ def test_SHUJOSHI_KA(msg, katsuyo_text, expected):
         ),
         (
             "FukujoshiText",
-            FUKUZYOSHI_HODO,
+            FUKUJOSHI_HODO,
             "ほどかしら",
         ),
         (
@@ -2680,7 +2680,7 @@ def test_SHUJOSHI_KASHIRA(msg, katsuyo_text, expected):
         ),
         (
             "FukujoshiText",
-            FUKUZYOSHI_HODO,
+            FUKUJOSHI_HODO,
             "ほどの",
         ),
         (
