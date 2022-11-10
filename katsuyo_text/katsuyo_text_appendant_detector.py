@@ -1,29 +1,14 @@
 from typing import Any, Optional, List, Set, Tuple, Type
 from itertools import dropwhile
 from katsuyo_text.katsuyo_text import (
-    FukujoshiText,
     KatsuyoTextErrorMessage,
     KatsuyoTextHasError,
     IKatsuyoTextAppendant,
     KatsuyoTextError,
-    ShujoshiText,
-    FUKUZYOSHI_BAKARI,
-    FUKUZYOSHI_MADE,
-    FUKUZYOSHI_DAKE,
-    FUKUZYOSHI_HODO,
-    FUKUZYOSHI_KURAI,
-    FUKUZYOSHI_NADO,
-    FUKUZYOSHI_NARI,
-    FUKUZYOSHI_KA,
-    FUKUZYOSHI_ZUTSU,
-    FUKUZYOSHI_NOMI,
-    FUKUZYOSHI_KIRI,
-    FUKUZYOSHI_YARA,
-    SHUJOSHI_NO,
-    SHUJOSHI_NONI,
-    SHUJOSHI_NA,
-    SHUJOSHI_KA,
-    SHUJOSHI_KASHIRA,
+    FukujoshiTextAppendant,
+    ShujoshiTextAppendant,
+    ALL_FUKUJOSHIS,
+    ALL_SHUJOSHIS,
 )
 from katsuyo_text.katsuyo_text_helper import (
     IKatsuyoTextHelper,
@@ -68,10 +53,8 @@ class IKatsuyoTextAppendantDetector(abc.ABC):
     def __init__(
         self,
         helpers: Set[IKatsuyoTextHelper],
-        fukujoshis: Set[FukujoshiText],
-        shujoshis: Set[ShujoshiText],
-        allow_not_registered_fukujoshi: bool = False,
-        allow_not_registered_shujoshi: bool = False,
+        fukujoshis: Set[FukujoshiTextAppendant],
+        shujoshis: Set[ShujoshiTextAppendant],
     ) -> None:
         # validate helpers
         for helper in helpers:
@@ -87,8 +70,6 @@ class IKatsuyoTextAppendantDetector(abc.ABC):
 
         self.fukujoshis_dict = {fukujoshi.gokan: fukujoshi for fukujoshi in fukujoshis}
         self.shujoshis_dict = {shujoshi.gokan: shujoshi for shujoshi in shujoshis}
-        self.allow_not_registered_fukujoshi = allow_not_registered_fukujoshi
-        self.allow_not_registered_shujoshi = allow_not_registered_shujoshi
 
     def try_get_helper(
         self, typ: Type[IKatsuyoTextHelper]
@@ -104,15 +85,10 @@ class IKatsuyoTextAppendantDetector(abc.ABC):
 
     def try_get_fukujoshi(
         self, norm: str
-    ) -> Tuple[Optional[FukujoshiText], Optional[KatsuyoTextErrorMessage]]:
+    ) -> Tuple[Optional[FukujoshiTextAppendant], Optional[KatsuyoTextErrorMessage]]:
         fukujoshi = self.fukujoshis_dict.get(norm)
         if fukujoshi is not None:
             return fukujoshi, None
-
-        if self.allow_not_registered_fukujoshi:
-            return FukujoshiText(norm), KatsuyoTextErrorMessage(
-                f"Get Unsupported type in fukujoshi: {norm}"
-            )
 
         # 例外が多いため、allowしない場合はwarningを出さない
         # return None, KatsuyoTextErrorMessage(
@@ -122,7 +98,7 @@ class IKatsuyoTextAppendantDetector(abc.ABC):
 
     def try_get_shujoshi(
         self, norm: str
-    ) -> Tuple[Optional[ShujoshiText], Optional[KatsuyoTextErrorMessage]]:
+    ) -> Tuple[Optional[ShujoshiTextAppendant], Optional[KatsuyoTextErrorMessage]]:
         shujoshi = self.shujoshis_dict.get(norm)
         if shujoshi is not None:
             return shujoshi, None
@@ -351,25 +327,6 @@ ALL_APPENDANTS_DETECTOR = SpacyKatsuyoTextAppendantDetector(
         DanteiTeinei(),
         # TODO 丁寧を足す
     },
-    fukujoshis={
-        FUKUZYOSHI_BAKARI,
-        FUKUZYOSHI_MADE,
-        FUKUZYOSHI_DAKE,
-        FUKUZYOSHI_HODO,
-        FUKUZYOSHI_KURAI,
-        FUKUZYOSHI_NADO,
-        FUKUZYOSHI_NARI,
-        FUKUZYOSHI_KA,
-        FUKUZYOSHI_ZUTSU,
-        FUKUZYOSHI_NOMI,
-        FUKUZYOSHI_KIRI,
-        FUKUZYOSHI_YARA,
-    },
-    shujoshis={
-        SHUJOSHI_NO,
-        SHUJOSHI_NONI,
-        SHUJOSHI_NA,
-        SHUJOSHI_KA,
-        SHUJOSHI_KASHIRA,
-    },
+    fukujoshis=ALL_FUKUJOSHIS,
+    shujoshis=ALL_SHUJOSHIS,
 )

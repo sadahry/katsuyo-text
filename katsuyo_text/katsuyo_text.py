@@ -1136,6 +1136,23 @@ KAKUJOSHI_NITE = KakujoshiText("にて")
 KAKUJOSHI_YORI = KakujoshiText("より")
 KAKUJOSHI_WOBA = KakujoshiText("をば")
 
+ALL_KAKUJOSHIS = {
+    KAKUJOSHI_GA,
+    KAKUJOSHI_DE,
+    KAKUJOSHI_TO,
+    KAKUJOSHI_NI,
+    KAKUJOSHI_NO,
+    KAKUJOSHI_HE,
+    KAKUJOSHI_YO,
+    KAKUJOSHI_WO,
+    KAKUJOSHI_NN,
+    KAKUJOSHI_KARA,
+    KAKUJOSHI_TOTE,
+    KAKUJOSHI_NITE,
+    KAKUJOSHI_YORI,
+    KAKUJOSHI_WOBA,
+}
+
 # ==============================================================================
 # 係助詞
 # NOTE: 活用形が明確ではないため、用例によっては厳密な活用形とはなっていない
@@ -1178,6 +1195,12 @@ KEIJOSHI_KOSO = KeijoshiText("こそ")
 # 「ぞ」の用例としては体言のみだったが細かく管理しない
 KEIJOSHI_ZO = KeijoshiText("ぞ")
 
+ALL_KEIJOSHIS = {
+    KEIJOSHI_MO,
+    KEIJOSHI_HA,
+    KEIJOSHI_KOSO,
+    KEIJOSHI_ZO,
+}
 
 # ==============================================================================
 # 副助詞
@@ -1290,18 +1313,33 @@ class FukujoshiKiriText(FukujoshiTextAppendant):
 
 # ref. http://sudachi.s3-website-ap-northeast-1.amazonaws.com/sudachidict-raw/20221021/small_lex.zip
 # TODO 残りの副助詞の実装
-FUKUZYOSHI_BAKARI = FukujoshiRentaiText("ばかり")
-FUKUZYOSHI_MADE = FukujoshiRentaiText("まで")
-FUKUZYOSHI_DAKE = FukujoshiRentaiText("だけ")
-FUKUZYOSHI_HODO = FukujoshiRentaiText("ほど")
-FUKUZYOSHI_KURAI = FukujoshiRentaiText("くらい")
-FUKUZYOSHI_NADO = FukujoshiGokanText("など")
-FUKUZYOSHI_NARI = FukujoshiGokanText("なり")
-FUKUZYOSHI_YARA = FukujoshiGokanText("やら")
-FUKUZYOSHI_KA = FukujoshiGokanText("か")
-FUKUZYOSHI_NOMI = FukujoshiGokanText("のみ")
-FUKUZYOSHI_ZUTSU = FukujoshiTaigenText("ずつ")
-FUKUZYOSHI_KIRI = FukujoshiKiriText("きり")
+FUKUJOSHI_BAKARI = FukujoshiRentaiText("ばかり")
+FUKUJOSHI_MADE = FukujoshiRentaiText("まで")
+FUKUJOSHI_DAKE = FukujoshiRentaiText("だけ")
+FUKUJOSHI_HODO = FukujoshiRentaiText("ほど")
+FUKUJOSHI_KURAI = FukujoshiRentaiText("くらい")
+FUKUJOSHI_NADO = FukujoshiGokanText("など")
+FUKUJOSHI_NARI = FukujoshiGokanText("なり")
+FUKUJOSHI_YARA = FukujoshiGokanText("やら")
+FUKUJOSHI_KA = FukujoshiGokanText("か")
+FUKUJOSHI_NOMI = FukujoshiGokanText("のみ")
+FUKUJOSHI_ZUTSU = FukujoshiTaigenText("ずつ")
+FUKUJOSHI_KIRI = FukujoshiKiriText("きり")
+
+ALL_FUKUJOSHIS = {
+    FUKUJOSHI_BAKARI,
+    FUKUJOSHI_MADE,
+    FUKUJOSHI_DAKE,
+    FUKUJOSHI_HODO,
+    FUKUJOSHI_KURAI,
+    FUKUJOSHI_NADO,
+    FUKUJOSHI_NARI,
+    FUKUJOSHI_YARA,
+    FUKUJOSHI_KA,
+    FUKUJOSHI_NOMI,
+    FUKUJOSHI_ZUTSU,
+    FUKUJOSHI_KIRI,
+}
 
 # ==============================================================================
 # 接続助詞
@@ -1512,6 +1550,25 @@ SETSUZOKUJOSHI_KEREDO = SetsuzokujoshiShushiText("けれど")
 # 「雖も」「ては」「とて」は対応しない（用例がない）
 # 方言は対応しない
 
+ALL_SETSUZOKUJOSHIS = {
+    SETSUZOKUJOSHI_GA,
+    SETSUZOKUJOSHI_SHI,
+    SETSUZOKUJOSHI_TE,
+    SETSUZOKUJOSHI_DE,
+    SETSUZOKUJOSHI_TO,
+    SETSUZOKUJOSHI_DO,
+    SETSUZOKUJOSHI_NI,
+    SETSUZOKUJOSHI_BA,
+    SETSUZOKUJOSHI_KARA,
+    SETSUZOKUJOSHI_TSUTSU,
+    SETSUZOKUJOSHI_TOMO,
+    SETSUZOKUJOSHI_NARI,
+    SETSUZOKUJOSHI_TATTE,
+    SETSUZOKUJOSHI_DATTE,
+    SETSUZOKUJOSHI_NAGARA,
+    SETSUZOKUJOSHI_KEREDO,
+}
+
 # ==============================================================================
 # 終助詞
 # NOTE: 活用形が明確ではないため、用例によっては厳密な活用形とはなっていない
@@ -1611,6 +1668,14 @@ SHUJOSHI_KA = ShujoshiGokanText("か")
 # SHUJOSHI_YARA = ShujoshiTaigenText("やら")
 SHUJOSHI_KASHIRA = ShujoshiGokanText("かしら")
 
+ALL_SHUJOSHIS = {
+    SHUJOSHI_NO,
+    SHUJOSHI_NONI,
+    SHUJOSHI_NA,
+    SHUJOSHI_KA,
+    SHUJOSHI_KASHIRA,
+}
+
 # ==============================================================================
 # 準体助詞
 # NOTE: 活用形が明確ではないため、用例によっては厳密な活用形とはなっていない
@@ -1647,3 +1712,8 @@ class JuntaijoshiText(INonKatsuyoText):
 # ref. http://sudachi.s3-website-ap-northeast-1.amazonaws.com/sudachidict-raw/20221021/small_lex.zip
 JUNTAIJOSHI_NO = JuntaijoshiText("の")
 JUNTAIJOSHI_NN = JuntaijoshiText("ん")
+
+ALL_JUNTAIJOSHIS = {
+    JUNTAIJOSHI_NO,
+    JUNTAIJOSHI_NN,
+}
