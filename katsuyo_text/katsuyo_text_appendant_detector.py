@@ -275,33 +275,6 @@ class SpacyKatsuyoTextAppendantDetector(IKatsuyoTextAppendantDetector):
 
         return None, KatsuyoTextErrorMessage(f"Unexpected {candidate.norm_} no matched")
 
-    def _try_detect_noni(
-        self, candidate: spacy.tokens.Token
-    ) -> Tuple[Optional[IKatsuyoTextAppendant], Optional[KatsuyoTextErrorMessage]]:
-        """
-        「のに」の判定
-        係り受けでは識別できないため、直接文法を読み込んで判定
-        ユーザー辞書での対応も可能
-        """
-        assert candidate.norm_ == "に"
-        left = candidate.doc[candidate.i - 1]
-        if left.norm_ not in ["の"]:
-            return None, None
-
-        no_left = left.doc[left.i - 1]
-        inflection = no_left.morph.get("Inflection")
-        if len(inflection) == 0:
-            return None, None
-
-        inflection = inflection[0].split(";")
-        conjugation_form = inflection[1]
-        if not conjugation_form.startswith("連体形") and (
-            not conjugation_form.startswith("終止形")
-        ):
-            return None, None
-
-        return self.try_get_shujoshi("のに")
-
 
 ALL_APPENDANTS_DETECTOR = SpacyKatsuyoTextAppendantDetector(
     helpers={
