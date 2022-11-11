@@ -85,17 +85,7 @@ class SpacyKatsuyoTextSourceDetector(IKatsuyoTextSourceDetector):
         # spacy.tokens.Tokenから抽出される活用形の特徴を表す変数
         tag = src.tag_
         lemma = src.lemma_
-        # sudachiの形態素解析結果(part_of_speech)5つ目以降(活用タイプ、活用形)が格納される
-        # 品詞によっては活用タイプ、活用形が存在しないため、ここでは配列の取得のみ行う
-        # e.g. 動詞
-        # > m.part_of_speech() # => ['動詞', '一般', '*', '*', '下一段-バ行', '連用形-一般']
-        # ref. https://github.com/explosion/spaCy/blob/v3.4.1/spacy/lang/ja/__init__.py#L102
-        # ref. https://github.com/WorksApplications/SudachiPy/blob/v0.5.4/README.md
-        # > Returns the part of speech as a six-element tuple. Tuple elements are four POS levels, conjugation type and conjugation form.
-        # ref. https://worksapplications.github.io/sudachi.rs/python/api/sudachipy.html#sudachipy.Morpheme.part_of_speech
-        inflection = src.morph.get("Inflection")
-        if len(inflection) > 0:
-            inflection = inflection[0].split(";")
+        conjugation_type, _ = get_conjugation(src)
 
         # There is no VBD tokens in Japanese
         # ref. https://universaldependencies.org/treebanks/ja_gsd/index.html#pos-tags
@@ -113,8 +103,7 @@ class SpacyKatsuyoTextSourceDetector(IKatsuyoTextSourceDetector):
                 return KatsuyoText(gokan="い", katsuyo=GODAN_IKU)
 
             # 活用タイプを取得して判定に利用
-            assert inflection, f"inflection is not empty: {src}"
-            conjugation_type = inflection[0]
+            assert conjugation_type is not None, f"inflection is not empty: {src}"
 
             # 活用形の判定
             katsuyo = self.VERB_KATSUYOS_BY_CONJUGATION_TYPE.get(conjugation_type)
@@ -149,3 +138,21 @@ class SpacyKatsuyoTextSourceDetector(IKatsuyoTextSourceDetector):
             return TaigenText(gokan=src.text)
 
         return None
+
+
+def get_conjugation(token):
+    # sudachiの形態素解析結果(part_of_speech)5つ目以降(活用タイプ、活用形)が格納される
+    # 品詞によっては活用タイプ、活用形が存在しないため、ここでは配列の取得のみ行う
+    # e.g. 動詞
+    # > m.part_of_speech() # => ['動詞', '一般', '*', '*', '下一段-バ行', '連用形-一般']
+    # ref. https://github.com/explosion/spaCy/blob/v3.4.1/spacy/lang/ja/__init__.py#L102
+    # ref. https://github.com/WorksApplications/SudachiPy/blob/v0.5.4/README.md
+    # > Returns the part of speech as a six-element tuple. Tuple elements are four POS levels, conjugation type and conjugation form.
+    # ref. https://worksapplications.github.io/sudachi.rs/python/api/sudachipy.html#sudachipy.Morpheme.part_of_speech
+    inflection = token.morph.get("Inflection")
+    if not inflection:
+        return None, None
+    inflection = inflection[0].split(";")
+    conjugation_type = inflection[0]
+    conjugation_form = inflection[1]
+    return conjugation_type, conjugation_form
