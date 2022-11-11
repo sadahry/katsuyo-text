@@ -11,7 +11,6 @@ from katsuyo_text.katsuyo import (
     GODAN_TA_GYO,
     GODAN_WAA_GYO,
     KAMI_ICHIDAN,
-    KEIYOUDOUSHI,
     KEIYOUSHI,
     SA_GYO_HENKAKU_SURU,
     SA_GYO_HENKAKU_ZURU,
@@ -77,8 +76,10 @@ class SpacyKatsuyoTextSourceDetector(IKatsuyoTextSourceDetector):
     }
     DOUSHI_PATTERN = re.compile(r"(動詞|.*動詞的)")
     KEIYOUSHI_PATTERN = re.compile(r"(形容詞|.*形容詞的)")
-    KEIYOUDOUSHI_PATTERN = re.compile(r"(形状詞|.*形状詞的)")
-    MEISHI_PATTERN = re.compile(r"(名詞|.*名詞的)")
+    # 「形状詞」=「形容動詞の語幹」
+    # universaldependenciesのADJは形状詞を形容動詞として扱うが、KatsuyoTextとしては形状詞は名詞として扱う
+    # ref. https://universaldependencies.org/treebanks/ja_gsd/ja_gsd-pos-ADJ.html
+    MEISHI_PATTERN = re.compile(r"(名詞|.*名詞的|形状詞|.*形状詞的)")
 
     def try_detect(self, src: spacy.tokens.Token) -> Optional[IKatsuyoTextSource]:
         # spacy.tokens.Tokenから抽出される活用形の特徴を表す変数
@@ -144,34 +145,7 @@ class SpacyKatsuyoTextSourceDetector(IKatsuyoTextSourceDetector):
             # ==================================================
             # e.g. 楽しい -> gokan=楽し + katsuyo=い
             return KatsuyoText(gokan=lemma[:-1], katsuyo=KEIYOUSHI)
-        elif self.KEIYOUDOUSHI_PATTERN.match(tag):
-            # ==================================================
-            # 形容動詞の変形
-            # ==================================================
-            # 「形状詞」=「形容動詞の語幹」
-            # universaldependenciesの形容動詞に語幹は含まれない
-            # see: https://universaldependencies.org/treebanks/ja_gsd/ja_gsd-pos-ADJ.html
-            # e.g. 健康 -> gokan=健康 + katsuyo=だ
-            return KatsuyoText(gokan=lemma, katsuyo=KEIYOUDOUSHI)
         elif self.MEISHI_PATTERN.match(tag):
-            # ==================================================
-            # 形容動詞の判定
-            # ==================================================
-            # 「形状詞」=「形容動詞の語幹」
-            # universaldependenciesの形容動詞に語幹は含まれない
-            # see: https://universaldependencies.org/treebanks/ja_gsd/ja_gsd-pos-ADJ.html
-            # e.g. 健康 -> gokan=健康 + katsuyo=だ
-            if src.pos_ == "ADJ":
-                return KatsuyoText(gokan=lemma, katsuyo=KEIYOUDOUSHI)
-            elif src.pos_ == "NOUN":
-                right = next(src.rights, None)
-                if right and right.lemma_ == "だ":
-                    return KatsuyoText(gokan=lemma, katsuyo=KEIYOUDOUSHI)
-            # ==================================================
-            # 名詞/固有名詞の変形
-            # ==================================================
-            # 名詞は形容動詞的に扱う
-            # e.g. 健康 -> gokan=健康 + katsuyo=だ
             return TaigenText(gokan=src.text)
 
         return None

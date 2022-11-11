@@ -53,10 +53,21 @@ def spacy_source_detector():
             "あなたは傲慢だ",
             "傲慢",
             "ADJ",
-            KatsuyoText(
-                gokan="傲慢",
-                katsuyo=KEIYOUDOUSHI,
-            ),
+            TaigenText("傲慢"),
+        ),
+        (
+            "形容動詞",
+            "あなたは傲慢で、",
+            "傲慢",
+            "ADJ",
+            TaigenText("傲慢"),
+        ),
+        (
+            "形容動詞",
+            "あなたは傲慢です",
+            "傲慢",
+            "NOUN",
+            TaigenText("傲慢"),
         ),
         # 名詞
         (
