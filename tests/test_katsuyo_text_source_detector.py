@@ -92,7 +92,7 @@ def test_spacy_katsuyo_text_source_detector(
 
 
 @pytest.mark.parametrize(
-    "msg, text, root_text, pos, expected",
+    "msg, text, last_text, last_pos, expected",
     [
         # ref, https://ja.wikipedia.org/wiki/五段活用
         (
@@ -544,10 +544,11 @@ def test_spacy_katsuyo_text_source_detector(
         (
             "サ行変格活用",
             "軽くウォーキングする",
-            "ウォーキング",
-            "VERB",
+            "する",
+            # rootが「ウォーキング」であるため「する」は助動詞的な扱い
+            "AUX",
             KatsuyoText(
-                gokan="ウォーキング",
+                gokan="",
                 katsuyo=SA_GYO_HENKAKU_SURU,
             ),
         ),
@@ -606,11 +607,11 @@ def test_spacy_katsuyo_text_source_detector(
     ],
 )
 def test_spacy_katsuyo_text_source_detector_verb(
-    nlp_ja, spacy_source_detector, msg, text, root_text, pos, expected
+    nlp_ja, spacy_source_detector, msg, text, last_text, last_pos, expected
 ):
     sent = next(nlp_ja(text).sents)
-    root_token = sent.root
-    assert root_token.text == root_text, "root token is not correct"
-    assert root_token.pos_ == pos, "root token is not correct"
+    root_token = sent[-1]
+    assert root_token.text == last_text, "last token is not correct"
+    assert root_token.pos_ == last_pos, "last token is not correct"
     result = spacy_source_detector.try_detect(root_token)
     assert result == expected, msg

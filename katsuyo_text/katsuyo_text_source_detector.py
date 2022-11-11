@@ -155,21 +155,6 @@ class SpacyKatsuyoTextSourceDetector(IKatsuyoTextSourceDetector):
             return KatsuyoText(gokan=lemma, katsuyo=KEIYOUDOUSHI)
         elif self.MEISHI_PATTERN.match(tag):
             # ==================================================
-            # 例外：サ変動詞の判定
-            # ==================================================
-            # 体言を含むサ変動詞の判定
-            # 名詞がVERBとして現れるため、conjugation_typeが取得できない
-            # # text = ウォーキングする
-            # 1       ウォーキング    ウォーキング    VERB    名詞-普通名詞-一般      _       0       root    _       SpaceAfter=No|BunsetuBILabel=B|BunsetuPositionType=ROOT|Reading=ウォーキング
-            # 2       する    する    AUX     動詞-非自立可能 _       1       aux     _       SpaceAfter=No|BunsetuBILabel=I|BunsetuPositionType=SYN_HEAD|Inf=サ行変格,終止形-一般|Reading=スル
-            if src.pos_ == "VERB":
-                right = next(src.rights, None)
-                if right and right.lemma_ == "する":
-                    return KatsuyoText(gokan=lemma, katsuyo=SA_GYO_HENKAKU_SURU)
-                # このパターンは存在しない
-                # elif right.lemma_ == "ずる":
-                #     return KatsuyoText(gokan=lemma, katsuyo=SA_GYO_HENKAKU_ZURU)
-            # ==================================================
             # 形容動詞の判定
             # ==================================================
             # 「形状詞」=「形容動詞の語幹」
