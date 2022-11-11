@@ -17,7 +17,6 @@ from katsuyo_text.katsuyo import (
     KA_GYO_HENKAKU_KURU,
     KA_GYO_HENKAKU_KURU_KANJI,
     KAMI_ICHIDAN,
-    KEIYOUDOUSHI,
     KEIYOUSHI,
     SA_GYO_HENKAKU_SURU,
     SA_GYO_HENKAKU_ZURU,
