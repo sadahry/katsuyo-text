@@ -25,6 +25,7 @@ from katsuyo_text.katsuyo_text import (
     TaigenText,
 )
 import abc
+import re
 import warnings
 import spacy
 
@@ -74,6 +75,10 @@ class SpacyKatsuyoTextSourceDetector(IKatsuyoTextSourceDetector):
         "下一段-マ行": SHIMO_ICHIDAN,
         "下一段-ラ行": SHIMO_ICHIDAN,
     }
+    DOUSHI_PATTERN = re.compile(r"(動詞|.*動詞的)")
+    KEIYOUSHI_PATTERN = re.compile(r"(形容詞|.*形容詞的)")
+    KEIYOUDOUSHI_PATTERN = re.compile(r"(形状詞|.*形状詞的)")
+    MEISHI_PATTERN = re.compile(r"(名詞|.*名詞的)")
 
     def try_detect(self, src: spacy.tokens.Token) -> Optional[IKatsuyoTextSource]:
         # spacy.tokens.Tokenから抽出される活用形の特徴を表す変数
@@ -95,7 +100,7 @@ class SpacyKatsuyoTextSourceDetector(IKatsuyoTextSourceDetector):
         # ref. https://universaldependencies.org/treebanks/ja_gsd/index.html#pos-tags
         # if pos_tag == "VBD":
 
-        if tag.startswith("動詞"):
+        if self.DOUSHI_PATTERN.match(tag):
             # ==================================================
             # 動詞の判定
             # ==================================================
@@ -133,13 +138,13 @@ class SpacyKatsuyoTextSourceDetector(IKatsuyoTextSourceDetector):
                 f"Unsupported conjugation_type of VERB: {conjugation_type}", UserWarning
             )
             return None
-        elif tag.startswith("形容詞"):
+        elif self.KEIYOUSHI_PATTERN.match(tag):
             # ==================================================
             # 形容詞の変形
             # ==================================================
             # e.g. 楽しい -> gokan=楽し + katsuyo=い
             return KatsuyoText(gokan=lemma[:-1], katsuyo=KEIYOUSHI)
-        elif tag.startswith("形状詞"):
+        elif self.KEIYOUDOUSHI_PATTERN.match(tag):
             # ==================================================
             # 形容動詞の変形
             # ==================================================
@@ -148,7 +153,7 @@ class SpacyKatsuyoTextSourceDetector(IKatsuyoTextSourceDetector):
             # see: https://universaldependencies.org/treebanks/ja_gsd/ja_gsd-pos-ADJ.html
             # e.g. 健康 -> gokan=健康 + katsuyo=だ
             return KatsuyoText(gokan=lemma, katsuyo=KEIYOUDOUSHI)
-        elif tag.startswith("名詞"):
+        elif self.MEISHI_PATTERN.match(tag):
             # ==================================================
             # 例外：サ変動詞の判定
             # ==================================================
