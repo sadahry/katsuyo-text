@@ -29,6 +29,11 @@ from katsuyo_text.katsuyo_text import (
     KatsuyoText,
     KatsuyoTextError,
     TaigenText,
+    FukushiText,
+    SettoText,
+    KandoushiText,
+    SetsuzokuText,
+    KigoText,
 )
 from katsuyo_text.katsuyo import (
     GODAN_BA_GYO,
@@ -242,6 +247,35 @@ def test_error():
             JUNTAIJOSHI_NN,
             "んが",
         ),
+        (
+            "FukushiText",
+            FukushiText("かなり"),
+            "かなりが",
+        ),
+        # 文法的には微妙だが、現状は許容している
+        (
+            "感動詞",
+            KandoushiText("ほら"),
+            "ほらが",
+        ),
+        # 文法的には微妙だが、現状は許容している
+        (
+            "接続詞",
+            SetsuzokuText("しかし"),
+            "しかしが",
+        ),
+        # 文法的には微妙だが、現状は許容している
+        (
+            "SettoText",
+            SettoText("前々"),
+            "前々が",
+        ),
+        # 記号は厳密にハンドリングせずに許容している
+        (
+            "KigoText",
+            KigoText("🥺"),
+            "🥺が",
+        ),
     ],
 )
 def test_KakujoshiText(msg, katsuyo_text, expected):
@@ -351,6 +385,34 @@ def test_KakujoshiText(msg, katsuyo_text, expected):
             "JuntaijoshiText",
             JUNTAIJOSHI_NN,
             "んも",
+        ),
+        # 文法的には微妙だが、現状は許容している
+        (
+            "FukushiText",
+            FukushiText("あんまり"),
+            "あんまりも",
+        ),
+        # 文法的には微妙だが、現状は許容している
+        (
+            "感動詞",
+            KandoushiText("ほら"),
+            "ほらも",
+        ),
+        (
+            "接続詞",
+            SetsuzokuText("しかし"),
+            "しかしも",
+        ),
+        (
+            "SettoText",
+            SettoText("前々"),
+            "前々も",
+        ),
+        # 記号は厳密にハンドリングせずに許容している
+        (
+            "KigoText",
+            KigoText("🥺"),
+            "🥺も",
         ),
     ],
 )
@@ -483,6 +545,33 @@ def test_KeijoshiText_error(msg, katsuyo_text):
             JUNTAIJOSHI_NN,
             "んばかり",
         ),
+        (
+            "FukushiText",
+            FukushiText("めっちゃ"),
+            "めっちゃばかり",
+        ),
+        # 文法的には微妙だが、現状は許容している
+        (
+            "感動詞",
+            KandoushiText("ほら"),
+            "ほらばかり",
+        ),
+        (
+            "接続詞",
+            SetsuzokuText("でも"),
+            "でもばかり",
+        ),
+        (
+            "SettoText",
+            SettoText("前々"),
+            "前々ばかり",
+        ),
+        # 記号は厳密にハンドリングせずに許容している
+        (
+            "KigoText",
+            KigoText("🥺"),
+            "🥺ばかり",
+        ),
     ],
 )
 def test_FukujoshiRentaiText(msg, katsuyo_text, expected):
@@ -598,6 +687,33 @@ def test_FukujoshiRentaiText(msg, katsuyo_text, expected):
             JUNTAIJOSHI_NN,
             "んなど",
         ),
+        (
+            "FukushiText",
+            FukushiText("めっちゃ"),
+            "めっちゃなど",
+        ),
+        # 文法的には微妙だが、現状は許容している
+        (
+            "感動詞",
+            KandoushiText("ほら"),
+            "ほらなど",
+        ),
+        (
+            "接続詞",
+            SetsuzokuText("でも"),
+            "でもなど",
+        ),
+        (
+            "SettoText",
+            SettoText("前々"),
+            "前々など",
+        ),
+        # 記号は厳密にハンドリングせずに許容している
+        (
+            "KigoText",
+            KigoText("🥺"),
+            "🥺など",
+        ),
     ],
 )
 def test_FukujoshiGokanText(msg, katsuyo_text, expected):
@@ -618,6 +734,12 @@ def test_FukujoshiGokanText(msg, katsuyo_text, expected):
             "JuntaijoshiText",
             JUNTAIJOSHI_NN,
             "んずつ",
+        ),
+        # 記号は厳密にハンドリングせずに許容している
+        (
+            "KigoText",
+            KigoText("🥺"),
+            "🥺ずつ",
         ),
     ],
 )
@@ -709,6 +831,22 @@ def test_FukujoshiTaigenText(msg, katsuyo_text, expected):
         (
             "KakujoshiText",
             KAKUJOSHI_NI,
+        ),
+        (
+            "FukushiText",
+            FukushiText("めっちゃ"),
+        ),
+        (
+            "感動詞",
+            KandoushiText("ほら"),
+        ),
+        (
+            "接続詞",
+            SetsuzokuText("でも"),
+        ),
+        (
+            "SettoText",
+            SettoText("前々"),
         ),
     ],
 )
@@ -804,6 +942,12 @@ def test_FukujoshiTaigenText_error(msg, katsuyo_text):
             JUNTAIJOSHI_NN,
             "んきり",
         ),
+        # 記号は厳密にハンドリングせずに許容している
+        (
+            "KigoText",
+            KigoText("🥺"),
+            "🥺きり",
+        ),
     ],
 )
 def test_FukujoshiKiriText(msg, katsuyo_text, expected):
@@ -844,6 +988,22 @@ def test_FukujoshiKiriText(msg, katsuyo_text, expected):
         (
             "KakujoshiText",
             KAKUJOSHI_NI,
+        ),
+        (
+            "FukushiText",
+            FukushiText("めっちゃ"),
+        ),
+        (
+            "感動詞",
+            KandoushiText("ほら"),
+        ),
+        (
+            "接続詞",
+            SetsuzokuText("でも"),
+        ),
+        (
+            "SettoText",
+            SettoText("前々"),
         ),
     ],
 )
@@ -999,6 +1159,12 @@ def test_FukujoshiKiriText_error(msg, katsuyo_text):
             ),
             "綺麗だって",
         ),
+        # 記号は厳密にハンドリングせずに許容している
+        (
+            "KigoText",
+            KigoText("🥺"),
+            "🥺て",
+        ),
     ],
 )
 def test_SetuzokujoshiTeText(msg, katsuyo_text, expected):
@@ -1065,6 +1231,22 @@ def test_SetuzokujoshiTeText(msg, katsuyo_text, expected):
         (
             "KeijoshiText",
             KEIJOSHI_MO,
+        ),
+        (
+            "FukushiText",
+            FukushiText("めっちゃ"),
+        ),
+        (
+            "感動詞",
+            KandoushiText("ほら"),
+        ),
+        (
+            "接続詞",
+            SetsuzokuText("でも"),
+        ),
+        (
+            "SettoText",
+            SettoText("前々"),
         ),
     ],
 )
@@ -1220,6 +1402,12 @@ def test_SetuzokujoshiTeText_error(msg, katsuyo_text):
         #     ),
         #     "綺麗だって",
         # ),
+        # 記号は厳密にハンドリングせずに許容している
+        (
+            "KigoText",
+            KigoText("🥺"),
+            "🥺で",
+        ),
     ],
 )
 def test_SetuzokujoshiDeText(msg, katsuyo_text, expected):
@@ -1354,6 +1542,22 @@ def test_SetuzokujoshiDeText(msg, katsuyo_text, expected):
             "KeijoshiText",
             KEIJOSHI_MO,
         ),
+        (
+            "FukushiText",
+            FukushiText("めっちゃ"),
+        ),
+        (
+            "感動詞",
+            KandoushiText("ほら"),
+        ),
+        (
+            "接続詞",
+            SetsuzokuText("でも"),
+        ),
+        (
+            "SettoText",
+            SettoText("前々"),
+        ),
     ],
 )
 def test_SetuzokujoshiDeText_error(msg, katsuyo_text):
@@ -1445,6 +1649,12 @@ def test_SetuzokujoshiDeText_error(msg, katsuyo_text):
             JUNTAIJOSHI_NN,
             "んけれど",
         ),
+        # 記号は厳密にハンドリングせずに許容している
+        (
+            "KigoText",
+            KigoText("🥺"),
+            "🥺けれど",
+        ),
     ],
 )
 def test_SetsuzokujoshiShushiText(msg, katsuyo_text, expected):
@@ -1479,6 +1689,22 @@ def test_SetsuzokujoshiShushiText(msg, katsuyo_text, expected):
         (
             "KeijoshiText",
             KEIJOSHI_MO,
+        ),
+        (
+            "FukushiText",
+            FukushiText("めっちゃ"),
+        ),
+        (
+            "感動詞",
+            KandoushiText("ほら"),
+        ),
+        (
+            "接続詞",
+            SetsuzokuText("でも"),
+        ),
+        (
+            "SettoText",
+            SettoText("前々"),
         ),
     ],
 )
@@ -1561,6 +1787,12 @@ def test_SetsuzokujoshiShushiText_error(msg, katsuyo_text):
             ),
             "綺麗ならば",
         ),
+        # 記号は厳密にハンドリングせずに許容している
+        (
+            "KigoText",
+            KigoText("🥺"),
+            "🥺ば",
+        ),
     ],
 )
 def test_SetsuzokujoshiKateiText(msg, katsuyo_text, expected):
@@ -1599,6 +1831,22 @@ def test_SetsuzokujoshiKateiText(msg, katsuyo_text, expected):
         (
             "KeijoshiText",
             KEIJOSHI_MO,
+        ),
+        (
+            "FukushiText",
+            FukushiText("めっちゃ"),
+        ),
+        (
+            "感動詞",
+            KandoushiText("ほら"),
+        ),
+        (
+            "接続詞",
+            SetsuzokuText("でも"),
+        ),
+        (
+            "SettoText",
+            SettoText("前々"),
         ),
     ],
 )
@@ -1665,6 +1913,12 @@ def test_SetsuzokujoshiKateiText_error(msg, katsuyo_text):
             ),
             "重んじつつ",
         ),
+        # 記号は厳密にハンドリングせずに許容している
+        (
+            "KigoText",
+            KigoText("🥺"),
+            "🥺つつ",
+        ),
     ],
 )
 def test_SetsuzokujoshiRenyoText(msg, katsuyo_text, expected):
@@ -1717,6 +1971,22 @@ def test_SetsuzokujoshiRenyoText(msg, katsuyo_text, expected):
         (
             "JuntaijoshiText",
             JUNTAIJOSHI_NN,
+        ),
+        (
+            "FukushiText",
+            FukushiText("めっちゃ"),
+        ),
+        (
+            "感動詞",
+            KandoushiText("ほら"),
+        ),
+        (
+            "接続詞",
+            SetsuzokuText("でも"),
+        ),
+        (
+            "SettoText",
+            SettoText("前々"),
         ),
     ],
 )
@@ -1804,6 +2074,12 @@ def test_SetsuzokujoshiRenyoText_error(msg, katsuyo_text):
             JODOUSHI_TA,
             "たとも",
         ),
+        # 記号は厳密にハンドリングせずに許容している
+        (
+            "KigoText",
+            KigoText("🥺"),
+            "🥺とも",
+        ),
     ],
 )
 def test_SetsuzokujoshiTomoText(msg, katsuyo_text, expected):
@@ -1842,6 +2118,22 @@ def test_SetsuzokujoshiTomoText(msg, katsuyo_text, expected):
         (
             "JuntaijoshiText",
             JUNTAIJOSHI_NN,
+        ),
+        (
+            "FukushiText",
+            FukushiText("めっちゃ"),
+        ),
+        (
+            "感動詞",
+            KandoushiText("ほら"),
+        ),
+        (
+            "接続詞",
+            SetsuzokuText("でも"),
+        ),
+        (
+            "SettoText",
+            SettoText("前々"),
         ),
     ],
 )
@@ -1937,9 +2229,15 @@ def test_SetsuzokujoshiTomoText_error(msg, katsuyo_text):
             JUNTAIJOSHI_NN,
             "んの",
         ),
+        # 記号は厳密にハンドリングせずに許容している
+        (
+            "KigoText",
+            KigoText("🥺"),
+            "🥺の",
+        ),
     ],
 )
-def test_SHUJOSHI_NO(msg, katsuyo_text, expected):
+def test_ShujoshiYogenText(msg, katsuyo_text, expected):
     shujoshi = SHUJOSHI_NO
     result = katsuyo_text + shujoshi
     assert str(result) == expected, msg
@@ -1972,12 +2270,28 @@ def test_SHUJOSHI_NO(msg, katsuyo_text, expected):
             "KeijoshiText",
             KEIJOSHI_MO,
         ),
+        (
+            "FukushiText",
+            FukushiText("めっちゃ"),
+        ),
+        (
+            "感動詞",
+            KandoushiText("ほら"),
+        ),
+        (
+            "接続詞",
+            SetsuzokuText("でも"),
+        ),
+        (
+            "SettoText",
+            SettoText("前々"),
+        ),
     ],
 )
-def test_SHUJOSHI_NO_error(msg, katsuyo_text):
-    fukujoshi = SHUJOSHI_NO
+def test_ShujoshiYogenText_error(msg, katsuyo_text):
+    shujoshi = SHUJOSHI_NO
     with pytest.raises(KatsuyoTextError):
-        katsuyo_text + fukujoshi
+        katsuyo_text + shujoshi
         assert False, msg
 
 
@@ -2083,6 +2397,12 @@ def test_SHUJOSHI_NO_error(msg, katsuyo_text):
             JUNTAIJOSHI_NN,
             "んな",
         ),
+        # 記号は厳密にハンドリングせずに許容している
+        (
+            "KigoText",
+            KigoText("🥺"),
+            "🥺な",
+        ),
     ],
 )
 def test_SHUJOSHI_NA(msg, katsuyo_text, expected):
@@ -2109,6 +2429,22 @@ def test_SHUJOSHI_NA(msg, katsuyo_text, expected):
         (
             "KakujoshiText",
             KAKUJOSHI_NI,
+        ),
+        (
+            "FukushiText",
+            FukushiText("めっちゃ"),
+        ),
+        (
+            "感動詞",
+            KandoushiText("ほら"),
+        ),
+        (
+            "接続詞",
+            SetsuzokuText("でも"),
+        ),
+        (
+            "SettoText",
+            SettoText("前々"),
         ),
     ],
 )
@@ -2226,6 +2562,32 @@ def test_SHUJOSHI_NA_error(msg, katsuyo_text):
             JUNTAIJOSHI_NN,
             "んか",
         ),
+        (
+            "FukushiText",
+            FukushiText("めっちゃ"),
+            "めっちゃか",
+        ),
+        (
+            "感動詞",
+            KandoushiText("んー"),
+            "んーか",
+        ),
+        (
+            "接続詞",
+            SetsuzokuText("でも"),
+            "でもか",
+        ),
+        (
+            "SettoText",
+            SettoText("前々"),
+            "前々か",
+        ),
+        # 記号は厳密にハンドリングせずに許容している
+        (
+            "KigoText",
+            KigoText("🥺"),
+            "🥺か",
+        ),
     ],
 )
 def test_SHUJOSHI_KA(msg, katsuyo_text, expected):
@@ -2341,6 +2703,32 @@ def test_SHUJOSHI_KA(msg, katsuyo_text, expected):
             JUNTAIJOSHI_NN,
             "んかしら",
         ),
+        (
+            "FukushiText",
+            FukushiText("めっちゃ"),
+            "めっちゃかしら",
+        ),
+        (
+            "感動詞",
+            KandoushiText("んー"),
+            "んーかしら",
+        ),
+        (
+            "接続詞",
+            SetsuzokuText("でも"),
+            "でもかしら",
+        ),
+        (
+            "SettoText",
+            SettoText("前々"),
+            "前々かしら",
+        ),
+        # 記号は厳密にハンドリングせずに許容している
+        (
+            "KigoText",
+            KigoText("🥺"),
+            "🥺かしら",
+        ),
     ],
 )
 def test_SHUJOSHI_KASHIRA(msg, katsuyo_text, expected):
@@ -2455,6 +2843,34 @@ def test_SHUJOSHI_KASHIRA(msg, katsuyo_text, expected):
             "JuntaijoshiText",
             JUNTAIJOSHI_NN,
             "んの",
+        ),
+        # 文法的には微妙だが、現状は許容している
+        (
+            "FukushiText",
+            FukushiText("めっちゃ"),
+            "めっちゃの",
+        ),
+        # 文法的には微妙だが、現状は許容している
+        (
+            "感動詞",
+            KandoushiText("んー"),
+            "んーの",
+        ),
+        (
+            "接続詞",
+            SetsuzokuText("しかし"),
+            "しかしの",
+        ),
+        (
+            "SettoText",
+            SettoText("前々"),
+            "前々の",
+        ),
+        # 記号は厳密にハンドリングせずに許容している
+        (
+            "KigoText",
+            KigoText("🥺"),
+            "🥺の",
         ),
     ],
 )

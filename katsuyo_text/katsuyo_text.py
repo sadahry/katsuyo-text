@@ -1328,6 +1328,8 @@ class FukujoshiTaigenText(FukujoshiTextAppendant):
     def merge(self, pre: IKatsuyoTextSource) -> FukujoshiText:
         if isinstance(pre, TaigenText):
             return super().merge(pre)
+        if isinstance(pre, KigoText):
+            return super().merge(pre)
         elif isinstance(pre, JuntaijoshiText):
             return super().merge(pre)
 
@@ -1349,6 +1351,8 @@ class FukujoshiKiriText(FukujoshiTextAppendant):
         elif isinstance(pre, TaigenText):
             return super().merge(pre)
         elif isinstance(pre, SetsuzokujoshiText):
+            return super().merge(pre)
+        if isinstance(pre, KigoText):
             return super().merge(pre)
         elif isinstance(pre, JuntaijoshiText):
             return super().merge(pre)
@@ -1428,6 +1432,8 @@ class SetuzokujoshiTeText(SetsuzokujoshiTextAppendant):
     def merge(self, pre: IKatsuyoTextSource) -> "SetsuzokujoshiText":
         if isinstance(pre, FixedKatsuyoText):
             return super().merge(pre)
+        elif isinstance(pre, KigoText):
+            return super().merge(pre)
         elif isinstance(pre, JuntaijoshiText):
             return super().merge(pre)
         elif isinstance(pre, KatsuyoText):
@@ -1457,6 +1463,8 @@ class SetuzokujoshiDeText(SetsuzokujoshiTextAppendant):
 
     def merge(self, pre: IKatsuyoTextSource) -> "SetsuzokujoshiText":
         if isinstance(pre, FixedKatsuyoText):
+            return super().merge(pre)
+        elif isinstance(pre, KigoText):
             return super().merge(pre)
         elif isinstance(pre, JuntaijoshiText):
             return super().merge(pre)
@@ -1494,6 +1502,8 @@ class SetsuzokujoshiTomoText(SetsuzokujoshiTextAppendant):
     def merge(self, pre: IKatsuyoTextSource) -> "SetsuzokujoshiText":
         if isinstance(pre, FixedKatsuyoText):
             return super().merge(pre)
+        elif isinstance(pre, KigoText):
+            return super().merge(pre)
         elif isinstance(pre.katsuyo, k.KeiyoushiKatsuyo):
             assert isinstance(pre, KatsuyoText)
             assert (fkt := pre.as_fkt_renyo) is not None
@@ -1518,6 +1528,8 @@ class SetsuzokujoshiRenyoText(SetsuzokujoshiTextAppendant):
     def merge(self, pre: IKatsuyoTextSource) -> "SetsuzokujoshiText":
         if isinstance(pre, FixedKatsuyoText):
             return super().merge(pre)
+        elif isinstance(pre, KigoText):
+            return super().merge(pre)
         elif isinstance(pre.katsuyo, k.IDoushiKatsuyo):
             assert isinstance(pre, KatsuyoText)
             assert (fkt := pre.as_fkt_renyo) is not None
@@ -1537,6 +1549,8 @@ class SetsuzokujoshiShushiText(SetsuzokujoshiTextAppendant):
 
     def merge(self, pre: IKatsuyoTextSource) -> "SetsuzokujoshiText":
         if isinstance(pre, FixedKatsuyoText):
+            return super().merge(pre)
+        elif isinstance(pre, KigoText):
             return super().merge(pre)
         elif isinstance(pre, JuntaijoshiText):
             return super().merge(pre)
@@ -1559,6 +1573,8 @@ class SetsuzokujoshiKateiText(SetsuzokujoshiTextAppendant):
 
     def merge(self, pre: IKatsuyoTextSource) -> "SetsuzokujoshiText":
         if isinstance(pre, FixedKatsuyoText):
+            return super().merge(pre)
+        elif isinstance(pre, KigoText):
             return super().merge(pre)
         elif isinstance(pre, JuntaijoshiText):
             return super().merge(pre)
@@ -1651,6 +1667,8 @@ class ShujoshiYogenText(ShujoshiTextAppendant):
     def merge(self, pre: IKatsuyoTextSource) -> "ShujoshiText":
         if isinstance(pre, FixedKatsuyoText):
             return super().merge(pre)
+        elif isinstance(pre, KigoText):
+            return super().merge(pre)
         elif isinstance(pre, JuntaijoshiText):
             return super().merge(pre)
         elif isinstance(pre, KatsuyoText):
@@ -1671,6 +1689,8 @@ class ShujoshShushiText(ShujoshiTextAppendant):
 
     def merge(self, pre: IKatsuyoTextSource) -> "ShujoshiText":
         if isinstance(pre, FixedKatsuyoText):
+            return super().merge(pre)
+        elif isinstance(pre, KigoText):
             return super().merge(pre)
         elif isinstance(pre, KeijoshiText):
             return super().merge(pre)
