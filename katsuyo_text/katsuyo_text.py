@@ -1231,6 +1231,12 @@ class KeijoshiText(INonKatsuyoText, IKatsuyoTextAppendant["KeijoshiText"]):
         else:
             assert isinstance(pre, KatsuyoText)
 
+            if isinstance(pre.katsuyo, (k.DesuKatsuyo, k.MasuKatsuyo)):
+                raise KatsuyoTextError(
+                    f"Unsupported katsuyo_text in merge of {type(self)}: {pre} "
+                    f"type: {type(pre)} katsuyo: {type(pre.katsuyo)}"
+                )
+
             if (fkt := pre.as_fkt_renyo_nai) is not None:
                 return self._merge(fkt)
             elif (fkt := pre.as_fkt_renyo) is not None:
@@ -1581,7 +1587,7 @@ class SetsuzokujoshiKateiText(SetsuzokujoshiTextAppendant):
         elif isinstance(pre.katsuyo, k.ShushiMixin):
             assert isinstance(pre, KatsuyoText)
 
-            if isinstance(pre.katsuyo, k.TaKatsuyo):
+            if isinstance(pre.katsuyo, (k.TaKatsuyo, k.DesuKatsuyo)):
                 raise KatsuyoTextError(
                     f"Unsupported katsuyo_text in {type(self)}: {pre} "
                     f"type: {type(pre)} katsuyo: {type(pre.katsuyo)}"

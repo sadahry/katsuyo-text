@@ -11,6 +11,8 @@ from katsuyo_text.katsuyo_text import (
     KEIJOSHI_MO,
     JODOUSHI_DA_KAKO_KANRYO,
     JODOUSHI_TA,
+    JODOUSHI_DESU,
+    JODOUSHI_MASU,
     KURU,
     KURU_KANJI,
     SHUJOSHI_KA,
@@ -211,6 +213,16 @@ def test_error():
             "助動詞「た」",
             JODOUSHI_TA,
             "たが",
+        ),
+        (
+            "助動詞「です」",
+            JODOUSHI_DESU,
+            "ですが",
+        ),
+        (
+            "助動詞「ます」",
+            JODOUSHI_MASU,
+            "ますが",
         ),
         (
             "TaigenText",
@@ -430,6 +442,14 @@ def test_KeijoshiText(msg, katsuyo_text, expected):
             "助動詞「た」",
             JODOUSHI_TA,
         ),
+        (
+            "助動詞「です」",
+            JODOUSHI_DESU,
+        ),
+        (
+            "助動詞「ます」",
+            JODOUSHI_MASU,
+        ),
     ],
 )
 def test_KeijoshiText_error(msg, katsuyo_text):
@@ -515,6 +535,16 @@ def test_KeijoshiText_error(msg, katsuyo_text):
             "助動詞「た」",
             JODOUSHI_TA,
             "たばかり",
+        ),
+        (
+            "助動詞「です」",
+            JODOUSHI_DESU,
+            "ですばかり",
+        ),
+        (
+            "助動詞「ます」",
+            JODOUSHI_MASU,
+            "ますばかり",
         ),
         (
             "TaigenText",
@@ -657,6 +687,16 @@ def test_FukujoshiRentaiText(msg, katsuyo_text, expected):
             "助動詞「た」",
             JODOUSHI_TA,
             "たなど",
+        ),
+        (
+            "助動詞「です」",
+            JODOUSHI_DESU,
+            "ですなど",
+        ),
+        (
+            "助動詞「ます」",
+            JODOUSHI_MASU,
+            "ますなど",
         ),
         (
             "TaigenText",
@@ -975,6 +1015,14 @@ def test_FukujoshiKiriText(msg, katsuyo_text, expected):
             ),
         ),
         (
+            "助動詞「です」",
+            JODOUSHI_DESU,
+        ),
+        (
+            "助動詞「ます」",
+            JODOUSHI_MASU,
+        ),
+        (
             "FukujoshiText",
             FUKUJOSHI_HODO,
         ),
@@ -1159,6 +1207,16 @@ def test_FukujoshiKiriText_error(msg, katsuyo_text):
                 katsuyo=KEIYOUDOUSHI,
             ),
             "綺麗だって",
+        ),
+        (
+            "助動詞「です」",
+            JODOUSHI_DESU,
+            "でして",
+        ),
+        (
+            "助動詞「ます」",
+            JODOUSHI_MASU,
+            "まして",
         ),
         # 記号は厳密にハンドリングせずに許容している
         (
@@ -1403,6 +1461,16 @@ def test_SetuzokujoshiTeText_error(msg, katsuyo_text):
         #     ),
         #     "綺麗だって",
         # ),
+        # (
+        #     "助動詞「です」",
+        #     JODOUSHI_DESU,
+        #     "でして",
+        # ),
+        # (
+        #     "助動詞「ます」",
+        #     JODOUSHI_MASU,
+        #     "まして",
+        # ),
         # 記号は厳密にハンドリングせずに許容している
         (
             "KigoText",
@@ -1646,6 +1714,16 @@ def test_SetuzokujoshiDeText_error(msg, katsuyo_text):
             "たけれど",
         ),
         (
+            "助動詞「です」",
+            JODOUSHI_DESU,
+            "ですけれど",
+        ),
+        (
+            "助動詞「ます」",
+            JODOUSHI_MASU,
+            "ますけれど",
+        ),
+        (
             "JuntaijoshiText",
             JUNTAIJOSHI_NN,
             "んけれど",
@@ -1788,6 +1866,12 @@ def test_SetsuzokujoshiShushiText_error(msg, katsuyo_text):
             ),
             "綺麗ならば",
         ),
+        # 聞き慣れないが文法的には正しい
+        (
+            "助動詞「ます」",
+            JODOUSHI_MASU,
+            "ますれば",
+        ),
         # 記号は厳密にハンドリングせずに許容している
         (
             "KigoText",
@@ -1808,6 +1892,10 @@ def test_SetsuzokujoshiKateiText(msg, katsuyo_text, expected):
         (
             "助動詞「た」",
             JODOUSHI_TA,
+        ),
+        (
+            "助動詞「です」",
+            JODOUSHI_DESU,
         ),
         (
             "TaigenText",
@@ -1950,6 +2038,14 @@ def test_SetsuzokujoshiRenyoText(msg, katsuyo_text, expected):
             JODOUSHI_TA,
         ),
         (
+            "助動詞「です」",
+            JODOUSHI_DESU,
+        ),
+        (
+            "助動詞「ます」",
+            JODOUSHI_MASU,
+        ),
+        (
             "TaigenText",
             TaigenText("状態"),
         ),
@@ -2074,6 +2170,16 @@ def test_SetsuzokujoshiRenyoText_error(msg, katsuyo_text):
             "助動詞「た」",
             JODOUSHI_TA,
             "たとも",
+        ),
+        (
+            "助動詞「です」",
+            JODOUSHI_DESU,
+            "ですとも",
+        ),
+        (
+            "助動詞「ます」",
+            JODOUSHI_MASU,
+            "ますとも",
         ),
         # 記号は厳密にハンドリングせずに許容している
         (
@@ -2226,6 +2332,16 @@ def test_SetsuzokujoshiTomoText_error(msg, katsuyo_text):
             "たの",
         ),
         (
+            "助動詞「です」",
+            JODOUSHI_DESU,
+            "ですの",
+        ),
+        (
+            "助動詞「ます」",
+            JODOUSHI_MASU,
+            "ますの",
+        ),
+        (
             "JuntaijoshiText",
             JUNTAIJOSHI_NN,
             "んの",
@@ -2372,6 +2488,16 @@ def test_ShujoshiYogenText_error(msg, katsuyo_text):
             "助動詞「た」",
             JODOUSHI_TA,
             "たな",
+        ),
+        (
+            "助動詞「です」",
+            JODOUSHI_DESU,
+            "ですな",
+        ),
+        (
+            "助動詞「ます」",
+            JODOUSHI_MASU,
+            "ますな",
         ),
         # NOTE: 現代語の表現として存在しうるが、
         #       取得する手段がなく、特殊なケースであるためサポートしない
@@ -2534,6 +2660,16 @@ def test_SHUJOSHI_NA_error(msg, katsuyo_text):
             "たか",
         ),
         (
+            "助動詞「です」",
+            JODOUSHI_DESU,
+            "ですか",
+        ),
+        (
+            "助動詞「ます」",
+            JODOUSHI_MASU,
+            "ますか",
+        ),
+        (
             "TaigenText",
             TaigenText("状態"),
             "状態か",
@@ -2675,6 +2811,16 @@ def test_SHUJOSHI_KA(msg, katsuyo_text, expected):
             "たかしら",
         ),
         (
+            "助動詞「です」",
+            JODOUSHI_DESU,
+            "ですかしら",
+        ),
+        (
+            "助動詞「ます」",
+            JODOUSHI_MASU,
+            "ますかしら",
+        ),
+        (
             "TaigenText",
             TaigenText("状態"),
             "状態かしら",
@@ -2814,6 +2960,16 @@ def test_SHUJOSHI_KASHIRA(msg, katsuyo_text, expected):
             "助動詞「た」",
             JODOUSHI_TA,
             "たの",
+        ),
+        (
+            "助動詞「です」",
+            JODOUSHI_DESU,
+            "ですの",
+        ),
+        (
+            "助動詞「ます」",
+            JODOUSHI_MASU,
+            "ますの",
         ),
         (
             "TaigenText",
