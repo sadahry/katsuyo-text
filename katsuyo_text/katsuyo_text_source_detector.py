@@ -85,6 +85,7 @@ class SpacyKatsuyoTextSourceDetector(IKatsuyoTextSourceDetector):
         # spacy.tokens.Tokenから抽出される活用形の特徴を表す変数
         tag = src.tag_
         lemma = src.lemma_
+        norm = src.norm_
         conjugation_type, _ = get_conjugation(src)
 
         # There is no VBD tokens in Japanese
@@ -95,12 +96,12 @@ class SpacyKatsuyoTextSourceDetector(IKatsuyoTextSourceDetector):
             # ==================================================
             # 動詞の判定
             # ==================================================
-            # 「いく」は特殊な変形
-            if lemma in ["行く", "逝く", "往く", "征く"]:
-                return KatsuyoText(gokan=lemma[:-1], katsuyo=GODAN_IKU)
-            elif lemma in ["いく", "ゆく"]:
+            # 「行く」は特殊な変形
+            if lemma in ["ゆく"]:
                 # 「ゆく」も「いく」に含める（過去・完了「た」を「ゆった」「ゆいた」とはできないため）
                 return KatsuyoText(gokan="い", katsuyo=GODAN_IKU)
+            if norm in ["行く", "逝く"]:
+                return KatsuyoText(gokan=lemma[:-1], katsuyo=GODAN_IKU)
 
             # 活用タイプを取得して判定に利用
             assert conjugation_type is not None, f"inflection is not empty: {src}"
