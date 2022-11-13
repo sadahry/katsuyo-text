@@ -159,9 +159,7 @@ class Shieki(IKatsuyoTextHelper):
 
 def bridge_Hitei_default(pre: kt.IKatsuyoTextSource) -> kt.KatsuyoText:
     if isinstance(pre, kt.INonKatsuyoText):
-        # TODO 助詞のハンドリング
-        # TODO 「で」にも切り替えられるように
-        return pre + kt.KAKUJOSHI_DE + kt.KEIJOSHI_HA + kt.HOJO_NAI
+        return pre + kt.KAKUJOSHI_GA + kt.HOJO_NAI
 
     if isinstance(
         pre.katsuyo,

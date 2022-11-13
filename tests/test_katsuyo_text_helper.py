@@ -312,8 +312,8 @@ def test_jodoushi_shieki_value_error(unsupported_katsuyo_text):
         # TODO 助詞のハンドリング
         (
             "TaigenText",
-            TaigenText("状態"),
-            "状態ではない",
+            TaigenText("症状"),
+            "症状がない",
         ),
     ],
 )
