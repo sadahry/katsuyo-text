@@ -130,6 +130,7 @@ def test_error():
         KURU_KANJI + 1
 
 
+# TODO KeiyoushiKatsuyo, KeiyoudoushiKatsuyo, TaKatsuyo, MasuKatsuyo, DesuKatsuyoのテスト
 # TODO KeijoshiTextTextのテストを追加
 # TODO SetsuzokujoshiTextのテストを追加
 
