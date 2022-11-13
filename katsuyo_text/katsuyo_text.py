@@ -748,6 +748,12 @@ class SoudaYoutai(IJodoushiKatsuyoText):
         else:
             assert isinstance(pre, KatsuyoText)
 
+            if isinstance(pre.katsuyo, (k.DesuKatsuyo, k.MasuKatsuyo)):
+                raise KatsuyoTextError(
+                    f"Unsupported katsuyo_text in {type(self)}: {pre} "
+                    f"type: {type(pre)} katsuyo: {type(pre.katsuyo)}"
+                )
+
             if isinstance(pre.katsuyo, (k.KeiyoushiKatsuyo, k.KeiyoudoushiKatsuyo)):
                 assert (fkt := pre.as_fkt_gokan) is not None
                 return fkt + self.katsuyo_text

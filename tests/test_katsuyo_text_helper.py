@@ -1,11 +1,7 @@
 import re
+
 import pytest
-from katsuyo_text.katsuyo_text import (
-    KURU,
-    KatsuyoText,
-    TaigenText,
-    KatsuyoTextError,
-)
+
 from katsuyo_text.katsuyo import (
     GODAN_BA_GYO,
     GODAN_GA_GYO,
@@ -17,30 +13,68 @@ from katsuyo_text.katsuyo import (
     GODAN_SA_GYO,
     GODAN_TA_GYO,
     GODAN_WAA_GYO,
-    IKatsuyo,
     KAMI_ICHIDAN,
     KEIYOUDOUSHI,
     KEIYOUSHI,
     SA_GYO_HENKAKU_SURU,
     SA_GYO_HENKAKU_ZURU,
     SHIMO_ICHIDAN,
+    IKatsuyo,
+)
+from katsuyo_text.katsuyo_text import (
+    FUKUJOSHI_BAKARI,
+    FUKUJOSHI_HODO,
+    FUKUJOSHI_KIRI,
+    FUKUJOSHI_NADO,
+    FUKUJOSHI_ZUTSU,
+    JODOUSHI_DA_KAKO_KANRYO,
+    JODOUSHI_DESU,
+    JODOUSHI_MASU,
+    JODOUSHI_TA,
+    JUNTAIJOSHI_NN,
+    JUNTAIJOSHI_NO,
+    KAKUJOSHI_GA,
+    KAKUJOSHI_NI,
+    KAKUJOSHI_NO,
+    KEIJOSHI_MO,
+    KURU,
+    KURU_KANJI,
+    SETSUZOKUJOSHI_BA,
+    SETSUZOKUJOSHI_DE,
+    SETSUZOKUJOSHI_KEREDO,
+    SETSUZOKUJOSHI_TE,
+    SETSUZOKUJOSHI_TOMO,
+    SETSUZOKUJOSHI_TSUTSU,
+    SHUJOSHI_KA,
+    SHUJOSHI_KASHIRA,
+    SHUJOSHI_NA,
+    SHUJOSHI_NO,
+    SURU,
+    FukushiText,
+    KandoushiText,
+    KatsuyoText,
+    KatsuyoTextError,
+    KigoText,
+    SetsuzokuText,
+    SettoText,
+    TaigenText,
 )
 from katsuyo_text.katsuyo_text_helper import (
+    Dantei,
+    DanteiTeinei,
     Denbun,
     HikyoReizi,
     Hitei,
+    KakoKanryo,
     Keizoku,
     KibouOthers,
+    KibouSelf,
     Shieki,
     Suitei,
+    Teinei,
     Touzen,
     Ukemi,
-    KibouSelf,
-    KakoKanryo,
     Youtai,
-    Dantei,
-    DanteiTeinei,
-    Teinei,
 )
 
 
@@ -132,6 +166,22 @@ def unsupported_katsuyo_text():
             TaigenText("状態"),
             "状態になられる",
         ),
+        (
+            "FukujoshiText",
+            FUKUJOSHI_HODO,
+            "ほどになられる",
+        ),
+        (
+            "KakujoshiText",
+            KAKUJOSHI_NO,
+            "のになられる",
+        ),
+        # 記号は厳密にハンドリングせずに許容している
+        (
+            "KigoText",
+            KigoText("🥺"),
+            "🥺になられる",
+        ),
     ],
 )
 def test_jodoushi_ukemi(msg, katsuyo_text, expected):
@@ -140,10 +190,56 @@ def test_jodoushi_ukemi(msg, katsuyo_text, expected):
     assert str(result) == expected, msg
 
 
-def test_jodoushi_ukemi_value_error(unsupported_katsuyo_text):
+@pytest.mark.parametrize(
+    "msg, katsuyo_text",
+    [
+        (
+            "助動詞「た」",
+            JODOUSHI_TA,
+        ),
+        (
+            "助動詞「です」",
+            JODOUSHI_DESU,
+        ),
+        (
+            "助動詞「ます」",
+            JODOUSHI_MASU,
+        ),
+        (
+            "SetsuzokujoshiText",
+            SETSUZOKUJOSHI_TE,
+        ),
+        (
+            "ShujoshiText",
+            SHUJOSHI_NO,
+        ),
+        (
+            "JuntaijoshiText",
+            JUNTAIJOSHI_NN,
+        ),
+        (
+            "FukushiText",
+            FukushiText("めっちゃ"),
+        ),
+        (
+            "感動詞",
+            KandoushiText("ほら"),
+        ),
+        (
+            "接続詞",
+            SetsuzokuText("でも"),
+        ),
+        (
+            "SettoText",
+            SettoText("前々"),
+        ),
+    ],
+)
+def test_jodoushi_ukemi_value_error(msg, katsuyo_text):
     jodoushi = Ukemi()
     with pytest.raises(KatsuyoTextError):
-        unsupported_katsuyo_text + jodoushi
+        katsuyo_text + jodoushi
+        assert False, msg
 
 
 @pytest.mark.parametrize(
@@ -223,6 +319,22 @@ def test_jodoushi_ukemi_value_error(unsupported_katsuyo_text):
             TaigenText("状態"),
             "状態にさせる",
         ),
+        (
+            "FukujoshiText",
+            FUKUJOSHI_HODO,
+            "ほどにさせる",
+        ),
+        (
+            "KakujoshiText",
+            KAKUJOSHI_NO,
+            "のにさせる",
+        ),
+        # 記号は厳密にハンドリングせずに許容している
+        (
+            "KigoText",
+            KigoText("🥺"),
+            "🥺にさせる",
+        ),
     ],
 )
 def test_jodoushi_shieki(msg, katsuyo_text, expected):
@@ -231,10 +343,56 @@ def test_jodoushi_shieki(msg, katsuyo_text, expected):
     assert str(result) == expected, msg
 
 
-def test_jodoushi_shieki_value_error(unsupported_katsuyo_text):
+@pytest.mark.parametrize(
+    "msg, katsuyo_text",
+    [
+        (
+            "助動詞「た」",
+            JODOUSHI_TA,
+        ),
+        (
+            "助動詞「です」",
+            JODOUSHI_DESU,
+        ),
+        (
+            "助動詞「ます」",
+            JODOUSHI_MASU,
+        ),
+        (
+            "SetsuzokujoshiText",
+            SETSUZOKUJOSHI_TE,
+        ),
+        (
+            "ShujoshiText",
+            SHUJOSHI_NO,
+        ),
+        (
+            "JuntaijoshiText",
+            JUNTAIJOSHI_NN,
+        ),
+        (
+            "FukushiText",
+            FukushiText("めっちゃ"),
+        ),
+        (
+            "感動詞",
+            KandoushiText("ほら"),
+        ),
+        (
+            "接続詞",
+            SetsuzokuText("でも"),
+        ),
+        (
+            "SettoText",
+            SettoText("前々"),
+        ),
+    ],
+)
+def test_jodoushi_shieki_value_error(msg, katsuyo_text):
     jodoushi = Shieki()
     with pytest.raises(KatsuyoTextError):
-        unsupported_katsuyo_text + jodoushi
+        katsuyo_text + jodoushi
+        assert False, msg
 
 
 @pytest.mark.parametrize(
@@ -309,11 +467,69 @@ def test_jodoushi_shieki_value_error(unsupported_katsuyo_text):
             ),
             "綺麗でない",
         ),
-        # TODO 助詞のハンドリング
         (
             "TaigenText",
             TaigenText("症状"),
             "症状がない",
+        ),
+        (
+            "FukujoshiText",
+            FUKUJOSHI_HODO,
+            "ほどではない",
+        ),
+        (
+            "SetsuzokujoshiText",
+            SETSUZOKUJOSHI_TE,
+            "てはない",
+        ),
+        (
+            "ShujoshiText",
+            SHUJOSHI_NO,
+            "のではない",
+        ),
+        (
+            "KeijoshiText",
+            KEIJOSHI_MO,
+            "もない",
+        ),
+        (
+            "KakujoshiText",
+            KAKUJOSHI_GA,
+            "がない",
+        ),
+        (
+            "JuntaijoshiText",
+            JUNTAIJOSHI_NO,
+            "のない",
+        ),
+        (
+            "FukushiText",
+            FukushiText("かなり"),
+            "かなりない",
+        ),
+        # 文法的には微妙だが、現状は許容している
+        (
+            "感動詞",
+            KandoushiText("ほら"),
+            "ほらない",
+        ),
+        # 文法的には微妙だが、現状は許容している
+        (
+            "接続詞",
+            SetsuzokuText("しかし"),
+            "しかしはない",
+        ),
+        # 文法的には微妙だが、現状は許容している
+        (
+            "SettoText",
+            SettoText("前々"),
+            "前々ではない",
+        ),
+        # 文法的には微妙だが、現状は許容している
+        (
+            "KigoText",
+            KigoText("🥺"),
+            "🥺ではない",
         ),
     ],
 )
@@ -323,10 +539,28 @@ def test_jodoushi_hiteii(msg, katsuyo_text, expected):
     assert str(result) == expected, msg
 
 
-def test_jodoushi_hitei_value_error(unsupported_katsuyo_text):
+@pytest.mark.parametrize(
+    "msg, katsuyo_text",
+    [
+        (
+            "助動詞「た」",
+            JODOUSHI_TA,
+        ),
+        (
+            "助動詞「です」",
+            JODOUSHI_DESU,
+        ),
+        (
+            "助動詞「ます」",
+            JODOUSHI_MASU,
+        ),
+    ],
+)
+def test_jodoushi_Hitei_self_value_error(msg, katsuyo_text):
     jodoushi = Hitei()
     with pytest.raises(KatsuyoTextError):
-        unsupported_katsuyo_text + jodoushi
+        katsuyo_text + jodoushi
+        assert False, msg
 
 
 @pytest.mark.parametrize(
@@ -411,8 +645,64 @@ def test_jodoushi_kibou_self(msg, katsuyo_text, expected):
             ),
         ),
         (
+            "助動詞「た」",
+            JODOUSHI_TA,
+        ),
+        (
+            "助動詞「です」",
+            JODOUSHI_DESU,
+        ),
+        (
+            "助動詞「ます」",
+            JODOUSHI_MASU,
+        ),
+        (
             "TaigenText",
             TaigenText("状態"),
+        ),
+        (
+            "FukujoshiText",
+            FUKUJOSHI_HODO,
+        ),
+        (
+            "SetsuzokujoshiText",
+            SETSUZOKUJOSHI_TE,
+        ),
+        (
+            "ShujoshiText",
+            SHUJOSHI_NO,
+        ),
+        (
+            "KeijoshiText",
+            KEIJOSHI_MO,
+        ),
+        (
+            "KakujoshiText",
+            KAKUJOSHI_GA,
+        ),
+        (
+            "JuntaijoshiText",
+            JUNTAIJOSHI_NO,
+        ),
+        (
+            "FukushiText",
+            FukushiText("かなり"),
+        ),
+        (
+            "感動詞",
+            KandoushiText("ほら"),
+        ),
+        (
+            "接続詞",
+            SetsuzokuText("しかし"),
+        ),
+        (
+            "SettoText",
+            SettoText("前々"),
+        ),
+        (
+            "KigoText",
+            KigoText("🥺"),
         ),
     ],
 )
@@ -507,6 +797,62 @@ def test_jodoushi_kibou_others(msg, katsuyo_text, expected):
         (
             "TaigenText",
             TaigenText("状態"),
+        ),
+        (
+            "助動詞「た」",
+            JODOUSHI_TA,
+        ),
+        (
+            "助動詞「です」",
+            JODOUSHI_DESU,
+        ),
+        (
+            "助動詞「ます」",
+            JODOUSHI_MASU,
+        ),
+        (
+            "FukujoshiText",
+            FUKUJOSHI_HODO,
+        ),
+        (
+            "SetsuzokujoshiText",
+            SETSUZOKUJOSHI_TE,
+        ),
+        (
+            "ShujoshiText",
+            SHUJOSHI_NO,
+        ),
+        (
+            "KeijoshiText",
+            KEIJOSHI_MO,
+        ),
+        (
+            "KakujoshiText",
+            KAKUJOSHI_GA,
+        ),
+        (
+            "JuntaijoshiText",
+            JUNTAIJOSHI_NO,
+        ),
+        (
+            "FukushiText",
+            FukushiText("かなり"),
+        ),
+        (
+            "感動詞",
+            KandoushiText("ほら"),
+        ),
+        (
+            "接続詞",
+            SetsuzokuText("しかし"),
+        ),
+        (
+            "SettoText",
+            SettoText("前々"),
+        ),
+        (
+            "KigoText",
+            KigoText("🥺"),
         ),
     ],
 )
@@ -667,6 +1013,71 @@ def test_jodoushi_kibou_others_value_error(msg, katsuyo_text):
             TaigenText("状態"),
             "状態だった",
         ),
+        (
+            "助動詞「です」",
+            JODOUSHI_DESU,
+            "でした",
+        ),
+        (
+            "助動詞「ます」",
+            JODOUSHI_MASU,
+            "ました",
+        ),
+        (
+            "FukujoshiText",
+            FUKUJOSHI_HODO,
+            "ほどだった",
+        ),
+        (
+            "SetsuzokujoshiText",
+            SETSUZOKUJOSHI_TE,
+            "てだった",
+        ),
+        (
+            "ShujoshiText",
+            SHUJOSHI_NO,
+            "のだった",
+        ),
+        (
+            "KeijoshiText",
+            KEIJOSHI_MO,
+            "もだった",
+        ),
+        (
+            "KakujoshiText",
+            KAKUJOSHI_GA,
+            "がだった",
+        ),
+        (
+            "JuntaijoshiText",
+            JUNTAIJOSHI_NO,
+            "のだった",
+        ),
+        (
+            "FukushiText",
+            FukushiText("かなり"),
+            "かなりだった",
+        ),
+        (
+            "感動詞",
+            KandoushiText("ほら"),
+            "ほらだった",
+        ),
+        (
+            "接続詞",
+            SetsuzokuText("しかし"),
+            "しかしだった",
+        ),
+        (
+            "SettoText",
+            SettoText("前々"),
+            "前々だった",
+        ),
+        (
+            "KigoText",
+            KigoText("🥺"),
+            "🥺だった",
+        ),
     ],
 )
 def test_jodoushi_kako_kanryo(msg, katsuyo_text, expected):
@@ -675,10 +1086,20 @@ def test_jodoushi_kako_kanryo(msg, katsuyo_text, expected):
     assert str(result) == expected, msg
 
 
-def test_jodoushi_kako_kanryo_value_error(unsupported_katsuyo_text):
+@pytest.mark.parametrize(
+    "msg, katsuyo_text",
+    [
+        (
+            "助動詞「た」",
+            JODOUSHI_TA,
+        ),
+    ],
+)
+def test_jodoushi_kako_kanryo_value_error(katsuyo_text, msg):
     jodoushi = KakoKanryo()
     with pytest.raises(KatsuyoTextError):
-        unsupported_katsuyo_text + jodoushi
+        katsuyo_text + jodoushi
+        assert False, msg
 
 
 @pytest.mark.parametrize(
@@ -753,11 +1174,76 @@ def test_jodoushi_kako_kanryo_value_error(unsupported_katsuyo_text):
             ),
             "綺麗そうだ",
         ),
-        # TODO 助詞のハンドリング
+        # TODO 意志推量「う」の実装
+        # (
+        #     "助動詞「です」",
+        #     JODOUSHI_DESU,
+        #     "でしょう",
+        # ),
+        # (
+        #     "助動詞「ます」",
+        #     JODOUSHI_MASU,
+        #     "ましょう",
+        # ),
         (
             "TaigenText",
             TaigenText("状態"),
             "状態そうだ",
+        ),
+        (
+            "FukujoshiText",
+            FUKUJOSHI_HODO,
+            "ほどそうだ",
+        ),
+        (
+            "SetsuzokujoshiText",
+            SETSUZOKUJOSHI_TE,
+            "てそうだ",
+        ),
+        (
+            "ShujoshiText",
+            SHUJOSHI_NO,
+            "のそうだ",
+        ),
+        (
+            "KeijoshiText",
+            KEIJOSHI_MO,
+            "もそうだ",
+        ),
+        (
+            "KakujoshiText",
+            KAKUJOSHI_GA,
+            "がそうだ",
+        ),
+        (
+            "JuntaijoshiText",
+            JUNTAIJOSHI_NO,
+            "のそうだ",
+        ),
+        (
+            "FukushiText",
+            FukushiText("かなり"),
+            "かなりそうだ",
+        ),
+        (
+            "感動詞",
+            KandoushiText("ほら"),
+            "ほらそうだ",
+        ),
+        (
+            "接続詞",
+            SetsuzokuText("しかし"),
+            "しかしそうだ",
+        ),
+        (
+            "SettoText",
+            SettoText("前々"),
+            "前々そうだ",
+        ),
+        (
+            "KigoText",
+            KigoText("🥺"),
+            "🥺そうだ",
         ),
     ],
 )
@@ -767,10 +1253,29 @@ def test_jodoushi_youtaii(msg, katsuyo_text, expected):
     assert str(result) == expected, msg
 
 
-def test_jodoushi_youtai_value_error(unsupported_katsuyo_text):
+@pytest.mark.parametrize(
+    "msg, katsuyo_text",
+    [
+        (
+            "助動詞「た」",
+            JODOUSHI_TA,
+        ),
+        # TODO 意志推量「う」の実装
+        (
+            "助動詞「です」",
+            JODOUSHI_DESU,
+        ),
+        (
+            "助動詞「ます」",
+            JODOUSHI_MASU,
+        ),
+    ],
+)
+def test_jodoushi_Youtai_value_error(msg, katsuyo_text):
     jodoushi = Youtai()
-    with pytest.raises(KatsuyoTextError):
-        unsupported_katsuyo_text + jodoushi
+    with pytest.raises(KatsuyoTextError, match=re.compile(r"Unsupported.*")):
+        katsuyo_text + jodoushi
+        assert False, msg
 
 
 @pytest.mark.parametrize(
@@ -845,11 +1350,82 @@ def test_jodoushi_youtai_value_error(unsupported_katsuyo_text):
             ),
             "綺麗だそうだ",
         ),
-        # TODO 助詞のハンドリング
         (
             "TaigenText",
             TaigenText("状態"),
             "状態だそうだ",
+        ),
+        (
+            "助動詞「た」",
+            JODOUSHI_TA,
+            "たそうだ",
+        ),
+        # 文法的に微妙だが許容する
+        (
+            "助動詞「です」",
+            JODOUSHI_DESU,
+            "ですそうだ",
+        ),
+        # 文法的に微妙だが許容する
+        (
+            "助動詞「ます」",
+            JODOUSHI_MASU,
+            "ますそうだ",
+        ),
+        (
+            "FukujoshiText",
+            FUKUJOSHI_HODO,
+            "ほどだそうだ",
+        ),
+        (
+            "SetsuzokujoshiText",
+            SETSUZOKUJOSHI_TE,
+            "てだそうだ",
+        ),
+        (
+            "ShujoshiText",
+            SHUJOSHI_NO,
+            "のだそうだ",
+        ),
+        (
+            "KeijoshiText",
+            KEIJOSHI_MO,
+            "もだそうだ",
+        ),
+        (
+            "KakujoshiText",
+            KAKUJOSHI_GA,
+            "がだそうだ",
+        ),
+        (
+            "JuntaijoshiText",
+            JUNTAIJOSHI_NO,
+            "のだそうだ",
+        ),
+        (
+            "FukushiText",
+            FukushiText("かなり"),
+            "かなりだそうだ",
+        ),
+        (
+            "感動詞",
+            KandoushiText("ほら"),
+            "ほらだそうだ",
+        ),
+        (
+            "接続詞",
+            SetsuzokuText("しかし"),
+            "しかしだそうだ",
+        ),
+        (
+            "SettoText",
+            SettoText("前々"),
+            "前々だそうだ",
+        ),
+        (
+            "KigoText",
+            KigoText("🥺"),
+            "🥺だそうだ",
         ),
     ],
 )
@@ -937,11 +1513,82 @@ def test_jodoushi_denbun_value_error(unsupported_katsuyo_text):
             ),
             "綺麗らしい",
         ),
-        # TODO 助詞のハンドリング
         (
             "TaigenText",
             TaigenText("状態"),
             "状態らしい",
+        ),
+        (
+            "助動詞「た」",
+            JODOUSHI_TA,
+            "たらしい",
+        ),
+        # 文法的に微妙だが許容する
+        (
+            "助動詞「です」",
+            JODOUSHI_DESU,
+            "ですらしい",
+        ),
+        # 文法的に微妙だが許容する
+        (
+            "助動詞「ます」",
+            JODOUSHI_MASU,
+            "ますらしい",
+        ),
+        (
+            "FukujoshiText",
+            FUKUJOSHI_HODO,
+            "ほどらしい",
+        ),
+        (
+            "SetsuzokujoshiText",
+            SETSUZOKUJOSHI_TE,
+            "てらしい",
+        ),
+        (
+            "ShujoshiText",
+            SHUJOSHI_NO,
+            "のらしい",
+        ),
+        (
+            "KeijoshiText",
+            KEIJOSHI_MO,
+            "もらしい",
+        ),
+        (
+            "KakujoshiText",
+            KAKUJOSHI_GA,
+            "がらしい",
+        ),
+        (
+            "JuntaijoshiText",
+            JUNTAIJOSHI_NO,
+            "のらしい",
+        ),
+        (
+            "FukushiText",
+            FukushiText("かなり"),
+            "かなりらしい",
+        ),
+        (
+            "感動詞",
+            KandoushiText("ほら"),
+            "ほららしい",
+        ),
+        (
+            "接続詞",
+            SetsuzokuText("しかし"),
+            "しかしらしい",
+        ),
+        (
+            "SettoText",
+            SettoText("前々"),
+            "前々らしい",
+        ),
+        (
+            "KigoText",
+            KigoText("🥺"),
+            "🥺らしい",
         ),
     ],
 )
@@ -1029,11 +1676,69 @@ def test_jodoushi_suitei_value_error(unsupported_katsuyo_text):
             ),
             "綺麗であるべきだ",
         ),
-        # TODO 助詞のハンドリング
         (
             "TaigenText",
             TaigenText("状態"),
             "状態であるべきだ",
+        ),
+        (
+            "FukujoshiText",
+            FUKUJOSHI_HODO,
+            "ほどであるべきだ",
+        ),
+        # 文法的に微妙だが許容する
+        (
+            "SetsuzokujoshiText",
+            SETSUZOKUJOSHI_TE,
+            "てであるべきだ",
+        ),
+        # 文法的に微妙だが許容する
+        (
+            "ShujoshiText",
+            SHUJOSHI_NO,
+            "のであるべきだ",
+        ),
+        (
+            "KeijoshiText",
+            KEIJOSHI_MO,
+            "もであるべきだ",
+        ),
+        (
+            "KakujoshiText",
+            KAKUJOSHI_GA,
+            "がであるべきだ",
+        ),
+        (
+            "JuntaijoshiText",
+            JUNTAIJOSHI_NO,
+            "のであるべきだ",
+        ),
+        (
+            "FukushiText",
+            FukushiText("かなり"),
+            "かなりであるべきだ",
+        ),
+        # 文法的に微妙だが許容する
+        (
+            "感動詞",
+            KandoushiText("ほら"),
+            "ほらであるべきだ",
+        ),
+        # 文法的に微妙だが許容する
+        (
+            "接続詞",
+            SetsuzokuText("しかし"),
+            "しかしであるべきだ",
+        ),
+        (
+            "SettoText",
+            SettoText("前々"),
+            "前々であるべきだ",
+        ),
+        (
+            "KigoText",
+            KigoText("🥺"),
+            "🥺であるべきだ",
         ),
     ],
 )
@@ -1043,10 +1748,29 @@ def test_jodoushi_touzen(msg, katsuyo_text, expected):
     assert str(result) == expected, msg
 
 
-def test_jodoushi_touzen_value_error(unsupported_katsuyo_text):
+@pytest.mark.parametrize(
+    "msg, katsuyo_text",
+    [
+        (
+            "助動詞「た」",
+            JODOUSHI_TA,
+        ),
+        (
+            "助動詞「です」",
+            JODOUSHI_DESU,
+        ),
+        # 文法的に微妙だが許容する
+        (
+            "助動詞「ます」",
+            JODOUSHI_MASU,
+        ),
+    ],
+)
+def test_jodoushi_touzen_value_error(katsuyo_text, msg):
     jodoushi = Touzen()
     with pytest.raises(KatsuyoTextError):
-        unsupported_katsuyo_text + jodoushi
+        katsuyo_text + jodoushi
+        assert False, msg
 
 
 @pytest.mark.parametrize(
@@ -1121,11 +1845,82 @@ def test_jodoushi_touzen_value_error(unsupported_katsuyo_text):
             ),
             "綺麗なようだ",
         ),
-        # TODO 助詞のハンドリング
         (
             "TaigenText",
             TaigenText("状態"),
             "状態のようだ",
+        ),
+        (
+            "助動詞「た」",
+            JODOUSHI_TA,
+            "たようだ",
+        ),
+        # 文法的に微妙だが許容する
+        (
+            "助動詞「です」",
+            JODOUSHI_DESU,
+            "ですようだ",
+        ),
+        # 文法的に微妙だが許容する
+        (
+            "助動詞「ます」",
+            JODOUSHI_MASU,
+            "ますようだ",
+        ),
+        (
+            "FukujoshiText",
+            FUKUJOSHI_HODO,
+            "ほどのようだ",
+        ),
+        (
+            "SetsuzokujoshiText",
+            SETSUZOKUJOSHI_TE,
+            "てのようだ",
+        ),
+        (
+            "ShujoshiText",
+            SHUJOSHI_NO,
+            "ののようだ",
+        ),
+        (
+            "KeijoshiText",
+            KEIJOSHI_MO,
+            "ものようだ",
+        ),
+        (
+            "KakujoshiText",
+            KAKUJOSHI_GA,
+            "がのようだ",
+        ),
+        (
+            "JuntaijoshiText",
+            JUNTAIJOSHI_NO,
+            "ののようだ",
+        ),
+        (
+            "FukushiText",
+            FukushiText("かなり"),
+            "かなりのようだ",
+        ),
+        (
+            "感動詞",
+            KandoushiText("ほら"),
+            "ほらのようだ",
+        ),
+        (
+            "接続詞",
+            SetsuzokuText("しかし"),
+            "しかしのようだ",
+        ),
+        (
+            "SettoText",
+            SettoText("前々"),
+            "前々のようだ",
+        ),
+        (
+            "KigoText",
+            KigoText("🥺"),
+            "🥺のようだ",
         ),
     ],
 )
@@ -1213,11 +2008,82 @@ def test_jodoushi_hikyo_reizi_value_error(unsupported_katsuyo_text):
             ),
             "綺麗なのだ",
         ),
-        # TODO 助詞のハンドリング
         (
             "TaigenText",
             TaigenText("状態"),
             "状態だ",
+        ),
+        (
+            "助動詞「た」",
+            JODOUSHI_TA,
+            "たのだ",
+        ),
+        # 文法的に微妙だが許容する
+        (
+            "助動詞「です」",
+            JODOUSHI_DESU,
+            "ですのだ",
+        ),
+        # 文法的に微妙だが許容する
+        (
+            "助動詞「ます」",
+            JODOUSHI_MASU,
+            "ますのだ",
+        ),
+        (
+            "FukujoshiText",
+            FUKUJOSHI_HODO,
+            "ほどだ",
+        ),
+        (
+            "SetsuzokujoshiText",
+            SETSUZOKUJOSHI_TE,
+            "てだ",
+        ),
+        (
+            "ShujoshiText",
+            SHUJOSHI_NO,
+            "のだ",
+        ),
+        (
+            "KeijoshiText",
+            KEIJOSHI_MO,
+            "もだ",
+        ),
+        (
+            "KakujoshiText",
+            KAKUJOSHI_GA,
+            "がだ",
+        ),
+        (
+            "JuntaijoshiText",
+            JUNTAIJOSHI_NO,
+            "のだ",
+        ),
+        (
+            "FukushiText",
+            FukushiText("かなり"),
+            "かなりだ",
+        ),
+        (
+            "感動詞",
+            KandoushiText("ほら"),
+            "ほらだ",
+        ),
+        (
+            "接続詞",
+            SetsuzokuText("しかし"),
+            "しかしだ",
+        ),
+        (
+            "SettoText",
+            SettoText("前々"),
+            "前々だ",
+        ),
+        (
+            "KigoText",
+            KigoText("🥺"),
+            "🥺だ",
         ),
     ],
 )
@@ -1305,11 +2171,80 @@ def test_jodoushi_dantei_value_error(unsupported_katsuyo_text):
             ),
             "綺麗です",
         ),
-        # TODO 助詞のハンドリング
         (
             "TaigenText",
             TaigenText("状態"),
             "状態です",
+        ),
+        (
+            "助動詞「た」",
+            JODOUSHI_TA,
+            "たのです",
+        ),
+        (
+            "助動詞「です」",
+            JODOUSHI_DESU,
+            "です",
+        ),
+        (
+            "助動詞「ます」",
+            JODOUSHI_MASU,
+            "ます",
+        ),
+        (
+            "FukujoshiText",
+            FUKUJOSHI_HODO,
+            "ほどです",
+        ),
+        (
+            "SetsuzokujoshiText",
+            SETSUZOKUJOSHI_TE,
+            "てです",
+        ),
+        (
+            "ShujoshiText",
+            SHUJOSHI_NO,
+            "のです",
+        ),
+        (
+            "KeijoshiText",
+            KEIJOSHI_MO,
+            "もです",
+        ),
+        (
+            "KakujoshiText",
+            KAKUJOSHI_GA,
+            "がです",
+        ),
+        (
+            "JuntaijoshiText",
+            JUNTAIJOSHI_NO,
+            "のです",
+        ),
+        (
+            "FukushiText",
+            FukushiText("かなり"),
+            "かなりです",
+        ),
+        (
+            "感動詞",
+            KandoushiText("ほら"),
+            "ほらです",
+        ),
+        (
+            "接続詞",
+            SetsuzokuText("しかし"),
+            "しかしです",
+        ),
+        (
+            "SettoText",
+            SettoText("前々"),
+            "前々です",
+        ),
+        (
+            "KigoText",
+            KigoText("🥺"),
+            "🥺です",
         ),
     ],
 )
@@ -1397,11 +2332,80 @@ def test_jodoushi_dantei_teinei_value_error(unsupported_katsuyo_text):
             ),
             "綺麗です",
         ),
-        # TODO 助詞のハンドリング
         (
             "TaigenText",
             TaigenText("状態"),
             "状態です",
+        ),
+        (
+            "助動詞「た」",
+            JODOUSHI_TA,
+            "たのです",
+        ),
+        (
+            "助動詞「です」",
+            JODOUSHI_DESU,
+            "です",
+        ),
+        (
+            "助動詞「ます」",
+            JODOUSHI_MASU,
+            "ます",
+        ),
+        (
+            "FukujoshiText",
+            FUKUJOSHI_HODO,
+            "ほどです",
+        ),
+        (
+            "SetsuzokujoshiText",
+            SETSUZOKUJOSHI_TE,
+            "てです",
+        ),
+        (
+            "ShujoshiText",
+            SHUJOSHI_NO,
+            "のです",
+        ),
+        (
+            "KeijoshiText",
+            KEIJOSHI_MO,
+            "もです",
+        ),
+        (
+            "KakujoshiText",
+            KAKUJOSHI_GA,
+            "がです",
+        ),
+        (
+            "JuntaijoshiText",
+            JUNTAIJOSHI_NO,
+            "のです",
+        ),
+        (
+            "FukushiText",
+            FukushiText("かなり"),
+            "かなりです",
+        ),
+        (
+            "感動詞",
+            KandoushiText("ほら"),
+            "ほらです",
+        ),
+        (
+            "接続詞",
+            SetsuzokuText("しかし"),
+            "しかしです",
+        ),
+        (
+            "SettoText",
+            SettoText("前々"),
+            "前々です",
+        ),
+        (
+            "KigoText",
+            KigoText("🥺"),
+            "🥺です",
         ),
     ],
 )
@@ -1567,6 +2571,48 @@ def test_jodoushi_teinei_value_error(unsupported_katsuyo_text):
             TaigenText("状態"),
             "状態でいる",
         ),
+        (
+            "FukujoshiText",
+            FUKUJOSHI_HODO,
+            "ほどでいる",
+        ),
+        (
+            "KakujoshiText",
+            KAKUJOSHI_GA,
+            "がでいる",
+        ),
+        (
+            "JuntaijoshiText",
+            JUNTAIJOSHI_NO,
+            "のでいる",
+        ),
+        (
+            "FukushiText",
+            FukushiText("かなり"),
+            "かなりでいる",
+        ),
+        # 文法的に微妙だが許容する
+        (
+            "感動詞",
+            KandoushiText("ほら"),
+            "ほらでいる",
+        ),
+        # 文法的に微妙だが許容する
+        (
+            "接続詞",
+            SetsuzokuText("しかし"),
+            "しかしでいる",
+        ),
+        (
+            "SettoText",
+            SettoText("前々"),
+            "前々でいる",
+        ),
+        (
+            "KigoText",
+            KigoText("🥺"),
+            "🥺でいる",
+        ),
     ],
 )
 def test_jodoushi_keizoku(msg, katsuyo_text, expected):
@@ -1575,7 +2621,37 @@ def test_jodoushi_keizoku(msg, katsuyo_text, expected):
     assert str(result) == expected, msg
 
 
-def test_jodoushi_keizoku_value_error(unsupported_katsuyo_text):
+@pytest.mark.parametrize(
+    "msg, katsuyo_text",
+    [
+        (
+            "助動詞「た」",
+            JODOUSHI_TA,
+        ),
+        (
+            "助動詞「です」",
+            JODOUSHI_DESU,
+        ),
+        (
+            "助動詞「ます」",
+            JODOUSHI_MASU,
+        ),
+        (
+            "SetsuzokujoshiText",
+            SETSUZOKUJOSHI_TE,
+        ),
+        (
+            "ShujoshiText",
+            SHUJOSHI_NO,
+        ),
+        (
+            "KeijoshiText",
+            KEIJOSHI_MO,
+        ),
+    ],
+)
+def test_jodoushi_Keizoku_value_error(msg, katsuyo_text):
     jodoushi = Keizoku()
     with pytest.raises(KatsuyoTextError):
-        unsupported_katsuyo_text + jodoushi
+        katsuyo_text + jodoushi
+        assert False, msg
