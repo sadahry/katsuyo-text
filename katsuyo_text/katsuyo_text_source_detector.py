@@ -22,6 +22,11 @@ from katsuyo_text.katsuyo_text import (
     IKatsuyoTextSource,
     KatsuyoText,
     TaigenText,
+    FukushiText,
+    SettoText,
+    KandoushiText,
+    SetsuzokuText,
+    KigoText,
 )
 import abc
 import re
@@ -79,7 +84,13 @@ class SpacyKatsuyoTextSourceDetector(IKatsuyoTextSourceDetector):
     # 「形状詞」=「形容動詞の語幹」
     # universaldependenciesのADJは形状詞を形容動詞として扱うが、KatsuyoTextとしては形状詞は名詞として扱う
     # ref. https://universaldependencies.org/treebanks/ja_gsd/ja_gsd-pos-ADJ.html
+    # 「記号」e.g., 「ε」
     MEISHI_PATTERN = re.compile(r"(名詞|.*名詞的|形状詞|.*形状詞的)")
+    FUKUSHI_PATTERN = re.compile(r"副詞")
+    KANDOUSHI_PATTERN = re.compile(r"感動詞")
+    SETSUZOKU_PATTERN = re.compile(r"接続詞")
+    SETTOU_PATTERN = re.compile(r"(接頭辞|連体詞)")
+    KIGO_PATTERN = re.compile(r"(記号|補助記号)")
 
     def try_detect(self, src: spacy.tokens.Token) -> Optional[IKatsuyoTextSource]:
         # spacy.tokens.Tokenから抽出される活用形の特徴を表す変数
@@ -137,6 +148,16 @@ class SpacyKatsuyoTextSourceDetector(IKatsuyoTextSourceDetector):
             return KatsuyoText(gokan=lemma[:-1], katsuyo=KEIYOUSHI)
         elif self.MEISHI_PATTERN.match(tag):
             return TaigenText(gokan=src.text)
+        elif self.FUKUSHI_PATTERN.match(tag):
+            return FukushiText(gokan=src.text)
+        elif self.SETTOU_PATTERN.match(tag):
+            return SettoText(gokan=src.text)
+        elif self.KANDOUSHI_PATTERN.match(tag):
+            return KandoushiText(gokan=src.text)
+        elif self.SETSUZOKU_PATTERN.match(tag):
+            return SetsuzokuText(gokan=src.text)
+        elif self.KIGO_PATTERN.match(tag):
+            return KigoText(gokan=src.text)
 
         return None
 

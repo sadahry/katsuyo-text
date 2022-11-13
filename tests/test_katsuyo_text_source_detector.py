@@ -2,6 +2,11 @@ import pytest
 from katsuyo_text.katsuyo_text import (
     KatsuyoText,
     TaigenText,
+    FukushiText,
+    SettoText,
+    KandoushiText,
+    SetsuzokuText,
+    KigoText,
 )
 from katsuyo_text.katsuyo import (
     GODAN_BA_GYO,
@@ -35,7 +40,6 @@ def spacy_source_detector():
 @pytest.mark.parametrize(
     "msg, text, root_text, pos, expected",
     [
-        # 形容詞
         (
             "形容詞",
             "あなたは美しい",
@@ -46,7 +50,6 @@ def spacy_source_detector():
                 katsuyo=KEIYOUSHI,
             ),
         ),
-        # 形容動詞
         (
             "形容動詞",
             "あなたは傲慢だ",
@@ -68,7 +71,6 @@ def spacy_source_detector():
             "NOUN",
             TaigenText("傲慢"),
         ),
-        # 名詞
         (
             "名詞",
             "それは明日かな",
@@ -78,7 +80,6 @@ def spacy_source_detector():
                 gokan="明日",
             ),
         ),
-        # 固有名詞
         (
             "固有名詞",
             "それはステファンだ",
@@ -86,6 +87,60 @@ def spacy_source_detector():
             "PROPN",
             TaigenText(
                 gokan="ステファン",
+            ),
+        ),
+        (
+            "数詞",
+            "それは230だ",
+            "230",
+            "NUM",
+            TaigenText(
+                gokan="230",
+            ),
+        ),
+        (
+            "副詞",
+            "それはとてもだ",
+            "とても",
+            "ADV",
+            FukushiText(
+                gokan="とても",
+            ),
+        ),
+        (
+            "感動詞",
+            "ほら",
+            "ほら",
+            "INTJ",
+            KandoushiText(
+                gokan="ほら",
+            ),
+        ),
+        (
+            "接続詞",
+            "しかし",
+            "しかし",
+            "CCONJ",
+            SetsuzokuText(
+                gokan="しかし",
+            ),
+        ),
+        (
+            "記号",
+            "εが",
+            "ε",
+            "NOUN",
+            KigoText(
+                gokan="ε",
+            ),
+        ),
+        (
+            "記号",
+            "εが",
+            "ε",
+            "NOUN",
+            KigoText(
+                gokan="ε",
             ),
         ),
     ],
@@ -99,6 +154,122 @@ def test_spacy_katsuyo_text_source_detector(
     assert root_token.pos_ == pos, "root token is not correct"
     result = spacy_source_detector.try_detect(root_token)
     assert result == expected, msg
+
+
+@pytest.mark.parametrize(
+    "tag, text, target_i, target_text, target_pos, expected",
+    [
+        (
+            "接尾辞-名詞的-一般",
+            "田中さん",
+            -1,
+            "さん",
+            "NOUN",
+            TaigenText(
+                gokan="さん",
+            ),
+        ),
+        (
+            "接尾辞-形容詞的",
+            "田中っぽい",
+            -1,
+            "っぽい",
+            "PART",
+            KatsuyoText(
+                gokan="っぽ",
+                katsuyo=KEIYOUSHI,
+            ),
+        ),
+        (
+            "接尾辞-形状詞的",
+            "田中げ",
+            -1,
+            "げ",
+            "PART",
+            TaigenText(
+                gokan="げ",
+            ),
+        ),
+        (
+            "接尾辞-動詞的",
+            "汗ばむ",
+            -1,
+            "ばむ",
+            "NOUN",
+            KatsuyoText(
+                gokan="ば",
+                katsuyo=GODAN_MA_GYO,
+            ),
+        ),
+        (
+            "連体詞",
+            "あの惣菜",
+            0,
+            "あの",
+            "DET",
+            SettoText(
+                gokan="あの",
+            ),
+        ),
+        (
+            "接頭辞",
+            "お惣菜",
+            0,
+            "お",
+            "NOUN",
+            SettoText(
+                gokan="お",
+            ),
+        ),
+        (
+            "補助記号-句点",
+            "これは。",
+            -1,
+            "。",
+            "PUNCT",
+            KigoText(
+                gokan="。",
+            ),
+        ),
+        (
+            "補助記号-読点",
+            "これは、",
+            -1,
+            "、",
+            "PUNCT",
+            KigoText(
+                gokan="、",
+            ),
+        ),
+        (
+            "補助記号-ＡＡ-顔文字",
+            "これですm(__)m",
+            -1,
+            "m(__)m",
+            "PUNCT",
+            KigoText(
+                gokan="m(__)m",
+            ),
+        ),
+    ],
+)
+def test_spacy_katsuyo_text_source_detector_detail(
+    nlp_ja,
+    spacy_source_detector,
+    tag,
+    text,
+    target_i,
+    target_text,
+    target_pos,
+    expected,
+):
+    sent = next(nlp_ja(text).sents)
+    target_token = sent[target_i]
+    assert target_token.text == target_text, "target_token is not correct"
+    assert target_token.pos_ == target_pos, "target_token is not correct"
+    assert target_token.tag_ == tag, "target_token is not correct"
+    result = spacy_source_detector.try_detect(target_token)
+    assert result == expected, tag
 
 
 @pytest.mark.parametrize(
