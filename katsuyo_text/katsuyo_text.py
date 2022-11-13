@@ -1060,27 +1060,12 @@ JODOUSHI_DEIRU = Deiru()
 # ==============================================================================
 
 
-@attrs.define(frozen=True, slots=True)
-class TaigenText(INonKatsuyoText, IKatsuyoTextAppendant["TaigenText"]):
+# 現状、文法的な活用判断が困難であるため
+# INonKatsuyoTextとして扱うようにしている
+class TaigenText(INonKatsuyoText):
     """体言"""
 
-    def _merge(self, pre: IKatsuyoTextSource) -> "TaigenText":
-        assert isinstance(pre, (FixedKatsuyoText, INonKatsuyoText))
-        return TaigenText(str(pre) + self.gokan)
-
-    def merge(self, pre: IKatsuyoTextSource) -> "TaigenText":
-        if isinstance(pre, (FixedKatsuyoText, INonKatsuyoText)):
-            return self._merge(pre)
-        else:
-            assert isinstance(pre, KatsuyoText)
-
-            if (fkt := pre.as_fkt_rentai) is not None:
-                return self._merge(fkt)
-
-            raise KatsuyoTextError(
-                f"Unsupported katsuyo_text in merge of {type(self)}: {pre} "
-                f"type: {type(pre)} katsuyo: {type(pre.katsuyo)}"
-            )
+    pass
 
 
 # ==============================================================================
