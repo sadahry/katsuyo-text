@@ -623,11 +623,10 @@ def bridge_Keizoku_default(pre: kt.IKatsuyoTextSource) -> kt.KatsuyoText:
         pre,
         (
             kt.TaigenText,
-            kt.FukujoshiText,
+            kt.FukushiText,
             kt.KakujoshiText,
             kt.JuntaijoshiText,
-            kt.FukushiText,
-            kt.FukushiText,
+            kt.FukujoshiText,
             kt.KandoushiText,
             kt.SetsuzokuText,
             kt.SettoText,
