@@ -10,7 +10,6 @@ A = TypeVar(
     # 以下はINonKatsuyoTextの実装クラス
     "KakujoshiText",
     "KeijoshiText",
-    "TaigenText",
     "FukujoshiText",
     "SetsuzokujoshiText",
     "ShujoshiText",
@@ -23,7 +22,6 @@ M = TypeVar(
     # 以下はINonKatsuyoTextの実装クラス
     "KakujoshiText",
     "KeijoshiText",
-    "TaigenText",
     "FukujoshiText",
     "SetsuzokujoshiText",
     "ShujoshiText",
