@@ -1273,7 +1273,7 @@ def test_jodoushi_youtaii(msg, katsuyo_text, expected):
 )
 def test_jodoushi_Youtai_value_error(msg, katsuyo_text):
     jodoushi = Youtai()
-    with pytest.raises(KatsuyoTextError, match=re.compile(r"Unsupported.*")):
+    with pytest.raises(KatsuyoTextError):
         katsuyo_text + jodoushi
         assert False, msg
 
