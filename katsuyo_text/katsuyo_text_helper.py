@@ -619,8 +619,21 @@ class Teinei(IKatsuyoTextHelper):
 
 
 def bridge_Keizoku_default(pre: kt.IKatsuyoTextSource) -> kt.KatsuyoText:
-    ここに係助詞から入れていく
-    if isinstance(pre, (kt.TaigenText, kt.FukujoshiText, kakujoshi)):
+    if isinstance(
+        pre,
+        (
+            kt.TaigenText,
+            kt.FukujoshiText,
+            kt.KakujoshiText,
+            kt.JuntaijoshiText,
+            kt.FukushiText,
+            kt.FukushiText,
+            kt.KandoushiText,
+            kt.SetsuzokuText,
+            kt.SettoText,
+            kt.KigoText,
+        ),
+    ):
         return pre + kt.JODOUSHI_DEIRU
 
     if isinstance(
