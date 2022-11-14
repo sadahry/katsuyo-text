@@ -26,7 +26,18 @@ M = TypeVar(
     "SetsuzokujoshiText",
     "ShujoshiText",
     "JuntaijoshiText",
+    "INonKatsuyoTextAsContextual",
 )
+
+# Helperクラス(ContexualNonKatsuyoText)で活用する
+INonKatsuyoTextAsContextual = Union[
+    "TaigenText",
+    "FukushiText",
+    "SettoText",
+    "KandoushiText",
+    "SetsuzokuText",
+    "KigoText",
+]
 
 
 class KatsuyoTextError(ValueError):
