@@ -107,17 +107,17 @@ class SpacyKatsuyoTextSourceDetector(IKatsuyoTextSourceDetector):
     # ref. https://universaldependencies.org/treebanks/ja_gsd/ja_gsd-pos-ADJ.html
     # 「記号」e.g., 「ε」
     MEISHI_PATTERN = re.compile(r"(名詞|.*名詞的|形状詞|.*形状詞的)")
-    FUKUSHI_PATTERN = re.compile(r"副詞")
-    KANDOUSHI_PATTERN = re.compile(r"感動詞")
-    SETSUZOKU_PATTERN = re.compile(r"接続詞")
+    FUKUSHI_PATTERN = "副詞"
+    KANDOUSHI_PATTERN = "感動詞"
+    SETSUZOKU_PATTERN = "接続詞"
     SETTOU_PATTERN = re.compile(r"(接頭辞|連体詞)")
     KIGO_PATTERN = re.compile(r"(記号|補助記号)")
-    KAKUJOSHI_PATTERN = re.compile("助詞-格助詞")
-    KEIJOSHI_PATTERN = re.compile("助詞-係助詞")
-    FUKUJOSHI_PATTERN = re.compile("助詞-副助詞")
-    SETSUZOKUJOSHI_PATTERN = re.compile("助詞-接続助詞")
-    SHUJOSHI_PATTERN = re.compile("助詞-終助詞")
-    JUNTAIJOSHI_PATTERN = re.compile("助詞-準体助詞")
+    KAKUJOSHI_PATTERN = "助詞-格助詞"
+    KEIJOSHI_PATTERN = "助詞-係助詞"
+    FUKUJOSHI_PATTERN = "助詞-副助詞"
+    SETSUZOKUJOSHI_PATTERN = "助詞-接続助詞"
+    SHUJOSHI_PATTERN = "助詞-終助詞"
+    JUNTAIJOSHI_PATTERN = "助詞-準体助詞"
 
     def try_detect(self, src: spacy.tokens.Token) -> Optional[IKatsuyoTextSource]:
         # spacy.tokens.Tokenから抽出される活用形の特徴を表す変数
@@ -175,27 +175,27 @@ class SpacyKatsuyoTextSourceDetector(IKatsuyoTextSourceDetector):
             return KatsuyoText(gokan=lemma[:-1], katsuyo=KEIYOUSHI)
         elif self.MEISHI_PATTERN.match(tag):
             return TaigenText(gokan=src.text)
-        elif self.FUKUSHI_PATTERN.match(tag):
+        elif tag.startswith(self.FUKUSHI_PATTERN):
             return FukushiText(gokan=src.text)
         elif self.SETTOU_PATTERN.match(tag):
             return SettoText(gokan=src.text)
-        elif self.KANDOUSHI_PATTERN.match(tag):
+        elif tag.startswith(self.KANDOUSHI_PATTERN):
             return KandoushiText(gokan=src.text)
-        elif self.SETSUZOKU_PATTERN.match(tag):
+        elif tag.startswith(self.SETSUZOKU_PATTERN):
             return SetsuzokuText(gokan=src.text)
         elif self.KIGO_PATTERN.match(tag):
             return KigoText(gokan=src.text)
-        elif self.KAKUJOSHI_PATTERN.match(tag):
+        elif tag.startswith(self.KAKUJOSHI_PATTERN):
             return KakujoshiText(gokan=src.text)
-        elif self.KEIJOSHI_PATTERN.match(tag):
+        elif tag.startswith(self.KEIJOSHI_PATTERN):
             return KeijoshiText(gokan=src.text)
-        elif self.FUKUJOSHI_PATTERN.match(tag):
+        elif tag.startswith(self.FUKUJOSHI_PATTERN):
             return FukujoshiText(gokan=src.text)
-        elif self.SETSUZOKUJOSHI_PATTERN.match(tag):
+        elif tag.startswith(self.SETSUZOKUJOSHI_PATTERN):
             return SetsuzokujoshiText(gokan=src.text)
-        elif self.SHUJOSHI_PATTERN.match(tag):
+        elif tag.startswith(self.SHUJOSHI_PATTERN):
             return ShujoshiText(gokan=src.text)
-        elif self.JUNTAIJOSHI_PATTERN.match(tag):
+        elif tag.startswith(self.JUNTAIJOSHI_PATTERN):
             return JuntaijoshiText(gokan=src.text)
 
         return None
