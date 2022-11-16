@@ -41,22 +41,26 @@ FixedKatsuyo = NewType("FixedKatsuyo", str)
 NO_KATSUYO = FixedKatsuyo("")
 
 
+class IKatsuyoForm:
+    pass
+
+
 @attrs.define(frozen=True, slots=False)
-class MizenMixin:
+class MizenMixin(IKatsuyoForm):
     """未然形"""
 
     mizen: FixedKatsuyo
 
 
 @attrs.define(frozen=True, slots=False)
-class RenyoMixin:
+class RenyoMixin(IKatsuyoForm):
     """連用形"""
 
     renyo: FixedKatsuyo
 
 
 @attrs.define(frozen=True, slots=False)
-class ShushiMixin:
+class ShushiMixin(IKatsuyoForm):
     """終止形"""
 
     shushi: FixedKatsuyo
@@ -66,14 +70,14 @@ class ShushiMixin:
 
 
 @attrs.define(frozen=True, slots=False)
-class RentaiMixin:
+class RentaiMixin(IKatsuyoForm):
     """連体形"""
 
     rentai: FixedKatsuyo
 
 
 @attrs.define(frozen=True, slots=False)
-class KateiMixin:
+class KateiMixin(IKatsuyoForm):
     """
     仮定形
     已然形(izen)は仮定形に含める
@@ -83,7 +87,7 @@ class KateiMixin:
 
 
 @attrs.define(frozen=True, slots=False)
-class MeireiMixin:
+class MeireiMixin(IKatsuyoForm):
     """命令形"""
 
     meirei: FixedKatsuyo
@@ -93,7 +97,7 @@ class MeireiMixin:
 
 
 @attrs.define(frozen=True, slots=False)
-class MizenUMixin:
+class MizenUMixin(IKatsuyoForm):
     """
     未然形が意思・推量の語尾（あるいは助動詞）の
     「う」に続くとき、活用語尾が変化する活用形が存在する。
@@ -103,7 +107,7 @@ class MizenUMixin:
 
 
 @attrs.define(frozen=True, slots=False)
-class MizenReruMixin:
+class MizenReruMixin(IKatsuyoForm):
     """
     未然形が受身の「れる」使役の「せる」に続くとき、
     活用語尾が変化する活用形が存在する。
@@ -113,7 +117,7 @@ class MizenReruMixin:
 
 
 @attrs.define(frozen=True, slots=False)
-class MizenRareruMixin:
+class MizenRareruMixin(IKatsuyoForm):
     """
     未然形が受身の「られる」や否定の「ぬ」に続くとき、
     活用語尾が変化する活用形が存在する。
@@ -123,7 +127,7 @@ class MizenRareruMixin:
 
 
 @attrs.define(frozen=True, slots=False)
-class RenyoTaMixin:
+class RenyoTaMixin(IKatsuyoForm):
     """
     連用形に「た・て」などが続くとき、
     活用語尾が変化する活用形が存在する。
@@ -133,7 +137,7 @@ class RenyoTaMixin:
 
 
 @attrs.define(frozen=True, slots=False)
-class RenyoNaiMixin:
+class RenyoNaiMixin(IKatsuyoForm):
     """
     連用形に「ない」などが続くとき、
     活用語尾が変化する活用形が存在する。
@@ -474,6 +478,8 @@ class KeiyoudoushiKatsuyo(
 
 KEIYOUDOUSHI = KeiyoudoushiKatsuyo(
     mizen=FixedKatsuyo("だろ"),
+    # NOTE: 活用としては形容動詞の連用形は「で」が正しいが、
+    #       動詞との紐付きや「させる」等の助動詞の活用との関係から「に」を採用
     renyo=FixedKatsuyo("に"),
     renyo_ta=FixedKatsuyo("だっ"),
     renyo_nai=FixedKatsuyo("で"),
