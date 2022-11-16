@@ -26,7 +26,6 @@ M = TypeVar(
     "SetsuzokujoshiText",
     "ShujoshiText",
     "JuntaijoshiText",
-    "IKatsuyoTextSource",
 )
 
 
