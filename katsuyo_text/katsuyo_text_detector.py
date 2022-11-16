@@ -77,7 +77,7 @@ class IKatsuyoTextAppendantDetector(abc.ABC):
         self.helpers_dict = {type(helper): helper for helper in helpers}
 
         # check helpers_dict
-        if len(self.helpers_dict) > 0:
+        if log_warning and len(self.helpers_dict) > 0:
             for supported_helper in self.SUPPORTED_HELPERS:
                 if not issubclass(supported_helper, tuple(self.helpers_dict.keys())):
                     warnings.warn(
