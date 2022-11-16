@@ -11,6 +11,7 @@ from katsuyo_text.katsuyo_text_helper import (
     IJodoushiHelper,
     Teinei,
     Dantei,
+    DanteiTeinei,
 )
 from katsuyo_text.katsuyo_text import (
     KatsuyoTextError,
@@ -73,6 +74,8 @@ def convert(
 
     if prev_kt is not None:
         result += str(prev_kt)
+    elif prev_token is not None:
+        result += prev_token.text
 
     return result
 
@@ -122,7 +125,34 @@ def convert(
         ),
     ],
 )
-def test_convert(nlp_ja, msg, sentence, convert_map, expected):
+def test_convert_teinei(nlp_ja, msg, sentence, convert_map, expected):
+    sent = next(nlp_ja(sentence).sents)
+    result = convert(sent, convert_map)
+    assert str(result) == expected, msg
+
+
+@pytest.mark.parametrize(
+    "msg, sentence, convert_map, expected",
+    [
+        (
+            "DanteiTeinei->Dantei",
+            "誕生日でした",
+            {
+                DanteiTeinei(): Dantei(),
+            },
+            "誕生日だった",
+        ),
+        (
+            "DanteiTeinei->Dantei",
+            "大丈夫ですかね",
+            {
+                DanteiTeinei(): Dantei(),
+            },
+            "大丈夫かね",
+        ),
+    ],
+)
+def test_convert_dantei_teinei(nlp_ja, msg, sentence, convert_map, expected):
     sent = next(nlp_ja(sentence).sents)
     result = convert(sent, convert_map)
     assert str(result) == expected, msg
