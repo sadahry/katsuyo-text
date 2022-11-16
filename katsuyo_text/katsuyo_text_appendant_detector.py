@@ -144,7 +144,7 @@ class SpacyKatsuyoTextAppendantDetector(IKatsuyoTextAppendantDetector):
         appendants: List[IKatsuyoTextAppendant] = []
         has_error = False
 
-        # NOTE: srcに紐づくトークンを取得するのに、依存関係を見ずにsrcトークンのindex以降のトークンを見る
+        # NOTE: srcに紐づくトークンを取得するのに、依存関係を見ずにsrcトークンのindex以降のトークンすべてを見る
         #       これは、srcがrootとなるとは限らないことと、sentをあらかじめ必要な長さに分割していることを前提としている
         candidates = dropwhile(lambda t: t.i <= src.i, sent)
         for candidate in candidates:
@@ -300,3 +300,21 @@ ALL_APPENDANTS_DETECTOR = SpacyKatsuyoTextAppendantDetector(
     fukujoshis=ALL_FUKUJOSHIS,
     shujoshis=ALL_SHUJOSHIS,
 )
+
+
+def get_conjugation(token):
+    # sudachiの形態素解析結果(part_of_speech)5つ目以降(活用タイプ、活用形)が格納される
+    # 品詞によっては活用タイプ、活用形が存在しないため、ここでは配列の取得のみ行う
+    # e.g. 動詞
+    # > m.part_of_speech() # => ['動詞', '一般', '*', '*', '下一段-バ行', '連用形-一般']
+    # ref. https://github.com/explosion/spaCy/blob/v3.4.1/spacy/lang/ja/__init__.py#L102
+    # ref. https://github.com/WorksApplications/SudachiPy/blob/v0.5.4/README.md
+    # > Returns the part of speech as a six-element tuple. Tuple elements are four POS levels, conjugation type and conjugation form.
+    # ref. https://worksapplications.github.io/sudachi.rs/python/api/sudachipy.html#sudachipy.Morpheme.part_of_speech
+    inflection = token.morph.get("Inflection")
+    if not inflection:
+        return None, None
+    inflection = inflection[0].split(";")
+    conjugation_type = inflection[0]
+    conjugation_form = inflection[1]
+    return conjugation_type, conjugation_form

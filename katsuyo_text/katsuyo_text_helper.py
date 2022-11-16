@@ -1,6 +1,5 @@
-from attrs import evolve
 from collections.abc import Callable
-from typing import Optional, Type, cast
+from typing import Optional, cast
 import abc
 import sys
 import katsuyo_text.katsuyo as k
@@ -682,65 +681,3 @@ class Keizoku(IKatsuyoTextHelper[kt.KatsuyoText]):
             return pre + kt.JODOUSHI_TEIRU
 
         return None
-
-
-# ==============================================================================
-# INonKatsuyoText
-# ==============================================================================
-
-
-class ContexualNonKatsuyoText(IKatsuyoTextHelper[kt.INonKatsuyoTextAsContextual]):
-    """
-    INonKatsuyoTextを文脈に応じて変換するヘルパー
-    bridgeに文脈に応じた処理を含める
-    """
-
-    def __init__(
-        self,
-        nkt: kt.INonKatsuyoTextAsContextual,
-        bridge: Optional[
-            Callable[[kt.IKatsuyoTextSource], kt.INonKatsuyoTextAsContextual]
-        ] = None,
-    ) -> None:
-        self.nkt = nkt
-        super().__init__(bridge)
-
-    def try_merge(
-        self, pre: kt.IKatsuyoTextSource
-    ) -> Optional[kt.INonKatsuyoTextAsContextual]:
-        if isinstance(pre, kt.INonKatsuyoText):
-            return self._merge(pre)
-
-        return None
-
-    def _merge(
-        self, pre: kt.IKatsuyoTextSource, katsuyo_form: Type[k.IKatsuyo] = None
-    ) -> kt.INonKatsuyoTextAsContextual:
-        if isinstance(pre, kt.INonKatsuyoText):
-            return evolve(self.nkt, gokan=str(pre) + str(self.nkt))
-
-        assert isinstance(pre, kt.KatsuyoText)
-        assert katsuyo_form is not None, "katsuyo_form is required"
-
-        fkt = None
-        match katsuyo_form:
-            case k.MizenMixin:
-                fkt = pre.as_fkt_mizen
-            case k.RenyoMixin:
-                fkt = pre.as_fkt_renyo
-            case k.ShushiMixin:
-                fkt = pre.as_fkt_shushi
-            case k.RentaiMixin:
-                fkt = pre.as_fkt_rentai
-            case k.KateiMixin:
-                fkt = pre.as_fkt_katei
-            case k.MeireiMixin:
-                fkt = pre.as_fkt_meirei
-
-        if fkt is None:
-            raise kt.KatsuyoTextError(
-                f"Unsupported katsuyo_form: {katsuyo_form} "
-                f"pre: {pre} type: {type(pre)} katsuyo: {type(pre.katsuyo)}"
-            )
-
-        return evolve(self.nkt, gokan=fkt + str(self.nkt))
