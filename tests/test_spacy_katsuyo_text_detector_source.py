@@ -7,6 +7,12 @@ from katsuyo_text.katsuyo_text import (
     KandoushiText,
     SetsuzokuText,
     KigoText,
+    KakujoshiText,
+    KeijoshiText,
+    FukujoshiText,
+    SetsuzokujoshiText,
+    ShujoshiText,
+    JuntaijoshiText,
 )
 from katsuyo_text.katsuyo import (
     GODAN_BA_GYO,
@@ -267,6 +273,70 @@ def test_spacy_katsuyo_text_source_detector_detail(
     target_token = sent[target_i]
     assert target_token.text == target_text, "target_token is not correct"
     assert target_token.pos_ == target_pos, "target_token is not correct"
+    assert target_token.tag_ == tag, "target_token is not correct"
+    result = spacy_source_detector.try_detect(target_token)
+    assert result == expected, tag
+
+
+@pytest.mark.parametrize(
+    "tag, text, target_i, target_text, expected",
+    [
+        (
+            "助詞-格助詞",
+            "田中さんの",
+            -1,
+            "の",
+            KakujoshiText("の"),
+        ),
+        (
+            "助詞-係助詞",
+            "田中さんこそ",
+            -1,
+            "こそ",
+            KeijoshiText("こそ"),
+        ),
+        (
+            "助詞-副助詞",
+            "田中さんばかり",
+            -1,
+            "ばかり",
+            FukujoshiText("ばかり"),
+        ),
+        (
+            "助詞-接続助詞",
+            "田中さんだけど",
+            -1,
+            "けど",
+            SetsuzokujoshiText("けど"),
+        ),
+        (
+            "助詞-終助詞",
+            "田中さんなの",
+            -1,
+            "の",
+            ShujoshiText("の"),
+        ),
+        (
+            "助詞-準体助詞",
+            "田中さんなので",
+            -2,
+            "の",
+            JuntaijoshiText("の"),
+        ),
+    ],
+)
+def test_spacy_katsuyo_text_source_detector_joshi(
+    nlp_ja,
+    spacy_source_detector,
+    tag,
+    text,
+    target_i,
+    target_text,
+    expected,
+):
+    sent = next(nlp_ja(text).sents)
+    target_token = sent[target_i]
+    assert target_token.text == target_text, "target_token is not correct"
     assert target_token.tag_ == tag, "target_token is not correct"
     result = spacy_source_detector.try_detect(target_token)
     assert result == expected, tag

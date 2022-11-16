@@ -29,6 +29,12 @@ from katsuyo_text.katsuyo_text import (
     KandoushiText,
     SetsuzokuText,
     KigoText,
+    KakujoshiText,
+    KeijoshiText,
+    FukujoshiText,
+    SetsuzokujoshiText,
+    ShujoshiText,
+    JuntaijoshiText,
     KURU,
     KURU_KANJI,
     ALL_FUKUJOSHIS,
@@ -106,6 +112,12 @@ class SpacyKatsuyoTextSourceDetector(IKatsuyoTextSourceDetector):
     SETSUZOKU_PATTERN = re.compile(r"接続詞")
     SETTOU_PATTERN = re.compile(r"(接頭辞|連体詞)")
     KIGO_PATTERN = re.compile(r"(記号|補助記号)")
+    KAKUJOSHI_PATTERN = re.compile("助詞-格助詞")
+    KEIJOSHI_PATTERN = re.compile("助詞-係助詞")
+    FUKUJOSHI_PATTERN = re.compile("助詞-副助詞")
+    SETSUZOKUJOSHI_PATTERN = re.compile("助詞-接続助詞")
+    SHUJOSHI_PATTERN = re.compile("助詞-終助詞")
+    JUNTAIJOSHI_PATTERN = re.compile("助詞-準体助詞")
 
     def try_detect(self, src: spacy.tokens.Token) -> Optional[IKatsuyoTextSource]:
         # spacy.tokens.Tokenから抽出される活用形の特徴を表す変数
@@ -173,6 +185,18 @@ class SpacyKatsuyoTextSourceDetector(IKatsuyoTextSourceDetector):
             return SetsuzokuText(gokan=src.text)
         elif self.KIGO_PATTERN.match(tag):
             return KigoText(gokan=src.text)
+        elif self.KAKUJOSHI_PATTERN.match(tag):
+            return KakujoshiText(gokan=src.text)
+        elif self.KEIJOSHI_PATTERN.match(tag):
+            return KeijoshiText(gokan=src.text)
+        elif self.FUKUJOSHI_PATTERN.match(tag):
+            return FukujoshiText(gokan=src.text)
+        elif self.SETSUZOKUJOSHI_PATTERN.match(tag):
+            return SetsuzokujoshiText(gokan=src.text)
+        elif self.SHUJOSHI_PATTERN.match(tag):
+            return ShujoshiText(gokan=src.text)
+        elif self.JUNTAIJOSHI_PATTERN.match(tag):
+            return JuntaijoshiText(gokan=src.text)
 
         return None
 
