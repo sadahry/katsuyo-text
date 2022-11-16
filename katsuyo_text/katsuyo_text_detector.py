@@ -4,7 +4,6 @@ from katsuyo_text.katsuyo_text import (
     KatsuyoTextErrorMessage,
     KatsuyoTextHasError,
     IKatsuyoTextAppendant,
-    KatsuyoTextError,
     FukujoshiTextAppendant,
     ShujoshiTextAppendant,
 )
