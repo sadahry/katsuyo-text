@@ -599,9 +599,7 @@ def test_spacy_katsuyo_text_appendants_detector_warning(
     ],
 )
 @pytest.mark.filterwarnings("ignore:Unsupported")
-def test_spacy_katsuyo_text_appendants_detector_ignore_warning(
-    nlp_ja, spacy_appendants_detector, text, norm, pos
-):
+def test_spacy_katsuyo_text_appendants_detector_ignore_warning(nlp_ja, text, norm, pos):
     spacy_appendants_detector_ignore_warning = SpacyKatsuyoTextAppendantDetector(
         log_warning=False
     )
