@@ -105,6 +105,14 @@ def convert(
             "公園へ行かれるか",
         ),
         (
+            "Teinei->None",
+            "すみません",
+            {
+                Teinei(): None,
+            },
+            "すまない",
+        ),
+        (
             "Teinei->Dantei",
             "公園へ行きました",
             {
