@@ -13,6 +13,17 @@ from katsuyo_text.katsuyo_text import (
     SetsuzokujoshiText,
     ShujoshiText,
     JuntaijoshiText,
+    JODOUSHI_RERU,
+    JODOUSHI_RARERU,
+    JODOUSHI_NAI,
+    JODOUSHI_TAI,
+    JODOUSHI_TA,
+    JODOUSHI_DA_DANTEI,
+    JODOUSHI_DA_KAKO_KANRYO,
+    JODOUSHI_RASHII,
+    JODOUSHI_BEKIDA,
+    JODOUSHI_DESU,
+    JODOUSHI_MASU,
 )
 from katsuyo_text.katsuyo import (
     GODAN_BA_GYO,
@@ -866,3 +877,317 @@ def test_spacy_katsuyo_text_source_detector_verb(
     assert root_token.pos_ == last_pos, "last token is not correct"
     result = spacy_source_detector.try_detect(root_token)
     assert result == expected, msg
+
+
+# ref. https://github.com/sadahry/katsuyo-text/blob/4efa53fef4fbb006e167545c35f63f6a9a944be8/tests/test_spacy_katsuyo_text_detector_appendant.py#L84
+@pytest.mark.parametrize(
+    "text, lemma, pos, expected",
+    [
+        (
+            "あなたに行動をされる",
+            "れる",
+            "AUX",
+            JODOUSHI_RERU.katsuyo_text,
+        ),
+        (
+            "称号が与えられる",
+            "られる",
+            "AUX",
+            JODOUSHI_RARERU.katsuyo_text,
+        ),
+        (
+            "あなたを愛させる",
+            "せる",
+            "AUX",
+            KatsuyoText(
+                gokan="せ",
+                katsuyo=SHIMO_ICHIDAN,
+            ),
+        ),
+        (
+            "子供を寝させる",
+            "させる",
+            "AUX",
+            KatsuyoText(
+                gokan="させ",
+                katsuyo=SHIMO_ICHIDAN,
+            ),
+        ),
+        (
+            "子供を愛さない",
+            "ない",
+            "AUX",
+            JODOUSHI_NAI.katsuyo_text,
+        ),
+        (
+            "子供が寝ない",
+            "ない",
+            "AUX",
+            JODOUSHI_NAI.katsuyo_text,
+        ),
+        (
+            "宿題もせず",
+            "ず",
+            "AUX",
+            JODOUSHI_NAI.katsuyo_text,
+        ),
+        (
+            "子供は産まぬ",
+            # 「ぬ」のnormは「ず」になる
+            "ぬ",
+            "AUX",
+            JODOUSHI_NAI.katsuyo_text,
+        ),
+        (
+            "子供は産まん",
+            # 「ん」のnormは「ず」になる
+            "ぬ",
+            "AUX",
+            JODOUSHI_NAI.katsuyo_text,
+        ),
+        (
+            "あなたを愛したい",
+            "たい",
+            "AUX",
+            JODOUSHI_TAI.katsuyo_text,
+        ),
+        (
+            "子供が遊びたがる",
+            "たがる",
+            "AUX",
+            KatsuyoText(
+                gokan="たが",
+                katsuyo=GODAN_RA_GYO,
+            ),
+        ),
+        (
+            "とても歩いた",
+            "た",
+            "AUX",
+            JODOUSHI_TA.katsuyo_text,
+        ),
+        (
+            "とても走った",
+            "た",
+            "AUX",
+            JODOUSHI_TA.katsuyo_text,
+        ),
+        (
+            "とても遊んだ",
+            "だ",
+            "AUX",
+            JODOUSHI_DA_KAKO_KANRYO.katsuyo_text,
+        ),
+        # 「そう」は「様態」「伝聞」の意味を持つためテスト追加
+        (
+            "とても遊びそう",
+            "そう",
+            "AUX",
+            TaigenText("そう"),
+        ),
+        (
+            "とてもきそう",
+            "そう",
+            "AUX",
+            TaigenText("そう"),
+        ),
+        (
+            "とてもしそう",
+            "そう",
+            "AUX",
+            TaigenText("そう"),
+        ),
+        (
+            "とても重そう",
+            "そう",
+            "AUX",
+            TaigenText("そう"),
+        ),
+        # っぽい  PART    接尾辞-形容詞的
+        (
+            "とても保守的っぽそう",
+            "そう",
+            "AUX",
+            TaigenText("そう"),
+        ),
+        (
+            "とても困難そう",
+            "そう",
+            "AUX",
+            TaigenText("そう"),
+        ),
+        # 辞書にある「〜的」
+        (
+            "その発想は保守的そう",
+            "そう",
+            "AUX",
+            TaigenText("そう"),
+        ),
+        # 辞書にない「〜的」
+        (
+            "その発想はパリピ的そう",
+            "そう",
+            # ja_ginzaだとこうなっただけ。モデルに応じて変わるかも。
+            "ADV",
+            TaigenText("そう"),
+        ),
+        (
+            "とても遊ぶそう",
+            "そう",
+            "AUX",
+            TaigenText("そう"),
+        ),
+        (
+            "とてもくるそう",
+            "そう",
+            "AUX",
+            TaigenText("そう"),
+        ),
+        (
+            "とてもするそう",
+            "そう",
+            "AUX",
+            TaigenText("そう"),
+        ),
+        (
+            "とても重いそう",
+            "そう",
+            "AUX",
+            TaigenText("そう"),
+        ),
+        (
+            "とても保守的っぽいそう",
+            "そう",
+            "AUX",
+            TaigenText("そう"),
+        ),
+        (
+            "とても困難だそう",
+            "そう",
+            "AUX",
+            FukushiText("そう"),
+        ),
+        # 辞書にある「〜的」
+        (
+            "その発想は保守的だそう",
+            "そう",
+            "AUX",
+            FukushiText("そう"),
+        ),
+        # 辞書にない「〜的」
+        (
+            "パリピ的だそう",
+            "そう",
+            "AUX",
+            FukushiText("そう"),
+        ),
+        # NOTE: 明確に意味を判別できないケースが存在するが、テストケースには追加しない
+        #       たとえば「ご飯を食べたそう」において、
+        #       「すでにご飯を食べてきたそうだ（過去の「た」＋伝聞の「そうだ」）」か
+        #       「食べたいと思っていそうだ（希望の「たい」＋様態の「そうだ」）」の区別がつかない
+        #
+        #       文章全体の意味を成立させるうえで問題は発生しないためBugとはしないが、
+        #       意味を扱ううえでは問題となるため、改善の余地がある。
+        # (
+        #     "ご飯を食べたそう",
+        #     "そう",
+        #     "AUX",
+        #     [Union[Denbun, Youtai]],
+        # ),
+        (
+            "とても良いらしい",
+            "らしい",
+            "AUX",
+            JODOUSHI_RASHII.katsuyo_text,
+        ),
+        (
+            "とても困難らしい",
+            "らしい",
+            "AUX",
+            JODOUSHI_RASHII.katsuyo_text,
+        ),
+        (
+            "するべき",
+            "べし",
+            "AUX",
+            JODOUSHI_BEKIDA.katsuyo_text,
+        ),
+        (
+            "つくるべし",
+            "べし",
+            "AUX",
+            JODOUSHI_BEKIDA.katsuyo_text,
+        ),
+        (
+            "遊ぶよう",
+            "よう",
+            "AUX",
+            TaigenText("よう"),
+        ),
+        (
+            "とても良いよう",
+            "よう",
+            "AUX",
+            TaigenText("よう"),
+        ),
+        (
+            "とても困難なよう",
+            "よう",
+            "AUX",
+            TaigenText("よう"),
+        ),
+        # NOTE: 名詞として扱われる場合、「よう」がrootとなりappendantとしては
+        #       何も抽出されない
+        (
+            "まるで宝石のよう",
+            "よう",
+            "NOUN",
+            TaigenText("よう"),
+        ),
+        (
+            "まるで宝石だ",
+            "だ",
+            "AUX",
+            JODOUSHI_DA_DANTEI.katsuyo_text,
+        ),
+        (
+            "まるで宝石です",
+            "です",
+            "AUX",
+            JODOUSHI_DESU.katsuyo_text,
+        ),
+        (
+            "外で遊びます",
+            "ます",
+            "AUX",
+            JODOUSHI_MASU.katsuyo_text,
+        ),
+        (
+            "遊んでる",
+            "でる",
+            "AUX",
+            KatsuyoText(
+                gokan="で",
+                katsuyo=SHIMO_ICHIDAN,
+            ),
+        ),
+        (
+            "笑ってる",
+            "てる",
+            "AUX",
+            KatsuyoText(
+                gokan="て",
+                katsuyo=SHIMO_ICHIDAN,
+            ),
+        ),
+    ],
+)
+def test_spacy_katsuyo_text_source_detector_jodoushi(
+    nlp_ja, spacy_source_detector, text, lemma, pos, expected
+):
+    sent = next(nlp_ja(text).sents)
+    last_token = sent[-1]
+    assert last_token.lemma_ == lemma, "last token is not correct"
+    assert last_token.pos_ == pos, "last token is not correct"
+    result = spacy_source_detector.try_detect(last_token)
+    assert result == expected

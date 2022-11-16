@@ -40,6 +40,17 @@ from katsuyo_text.katsuyo_text import (
     ALL_FUKUJOSHIS,
     ALL_SHUJOSHIS,
     ALL_SETSUZOKUJOSHIS,
+    JODOUSHI_RERU,
+    JODOUSHI_RARERU,
+    JODOUSHI_NAI,
+    JODOUSHI_TAI,
+    JODOUSHI_TA,
+    JODOUSHI_DA_DANTEI,
+    JODOUSHI_DA_KAKO_KANRYO,
+    JODOUSHI_RASHII,
+    JODOUSHI_BEKIDA,
+    JODOUSHI_DESU,
+    JODOUSHI_MASU,
 )
 from katsuyo_text.katsuyo_text_helper import (
     Denbun,
@@ -101,7 +112,28 @@ class SpacyKatsuyoTextSourceDetector(IKatsuyoTextSourceDetector):
         "下一段-マ行": SHIMO_ICHIDAN,
         "下一段-ラ行": SHIMO_ICHIDAN,
     }
+    JODOUSHI_BY_LEMMA = {
+        "れる": JODOUSHI_RERU.katsuyo_text,
+        "られる": JODOUSHI_RARERU.katsuyo_text,
+        # "せる" -> KatsuyoText
+        # "させる" -> KatsuyoText
+        "ない": JODOUSHI_NAI.katsuyo_text,
+        "ず": JODOUSHI_NAI.katsuyo_text,
+        "ぬ": JODOUSHI_NAI.katsuyo_text,
+        "たい": JODOUSHI_TAI.katsuyo_text,
+        # "たがる" -> KatsuyoText
+        "た": JODOUSHI_TA.katsuyo_text,
+        # "だ" -> 例外的に区別
+        # "そう" -> TaigenText|FukushiText
+        "らしい": JODOUSHI_RASHII.katsuyo_text,
+        "べし": JODOUSHI_BEKIDA.katsuyo_text,
+        # "よう" -> TaigenText
+        "です": JODOUSHI_DESU.katsuyo_text,
+        "ます": JODOUSHI_MASU.katsuyo_text,
+        # "てる" -> KatsuyoText
+    }
     DOUSHI_PATTERN = re.compile(r"(動詞|.*動詞的)")
+    JODOUSHI_PATTERN = "助動詞"
     KEIYOUSHI_PATTERN = re.compile(r"(形容詞|.*形容詞的)")
     # 「形状詞」=「形容動詞の語幹」
     # universaldependenciesのADJは形状詞を形容動詞として扱うが、KatsuyoTextとしては形状詞は名詞として扱う
@@ -166,6 +198,32 @@ class SpacyKatsuyoTextSourceDetector(IKatsuyoTextSourceDetector):
 
             warnings.warn(
                 f"Unsupported conjugation_type of VERB: {conjugation_type}", UserWarning
+            )
+            return None
+        elif tag.startswith(self.JODOUSHI_PATTERN):
+            # 活用タイプを取得して判定に利用
+            assert conjugation_type is not None, f"inflection is not empty: {src}"
+
+            # 活用形の判定
+            katsuyo = self.VERB_KATSUYOS_BY_CONJUGATION_TYPE.get(conjugation_type)
+            if katsuyo:
+                return KatsuyoText(gokan=lemma[:-1], katsuyo=katsuyo)
+
+            # 例外的な活用形の判定
+            # 過去完了「だ」と断定「だ」の区別
+            if lemma == "だ":
+                if norm == "た":
+                    return JODOUSHI_DA_KAKO_KANRYO.katsuyo_text
+                else:
+                    assert norm == "だ"
+                    return JODOUSHI_DA_DANTEI.katsuyo_text
+
+            jodoushi = self.JODOUSHI_BY_LEMMA.get(lemma)
+            if jodoushi:
+                return jodoushi
+
+            warnings.warn(
+                f"Unsupported conjugation_type of AUX: {conjugation_type}", UserWarning
             )
             return None
         elif self.KEIYOUSHI_PATTERN.match(tag):
