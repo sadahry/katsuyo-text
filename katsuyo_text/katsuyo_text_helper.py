@@ -43,6 +43,15 @@ class IKatsuyoTextHelper(kt.IKatsuyoTextAppendant[kt.M]):
 # ==============================================================================
 
 
+class IJodoushiHelper(IKatsuyoTextHelper[kt.KatsuyoText]):
+    pass
+
+
+# ==============================================================================
+# 助動詞::受身
+# ==============================================================================
+
+
 def bridge_Ukemi_default(pre: kt.IKatsuyoTextSource) -> kt.KatsuyoText:
     # デフォルトでは動詞「なる」でブリッジ
     naru = kt.KatsuyoText(
@@ -76,7 +85,7 @@ def bridge_Ukemi_default(pre: kt.IKatsuyoTextSource) -> kt.KatsuyoText:
     )
 
 
-class Ukemi(IKatsuyoTextHelper[kt.KatsuyoText]):
+class Ukemi(IJodoushiHelper):
     def __init__(
         self,
         bridge: Optional[
@@ -143,7 +152,7 @@ def bridge_Shieki_default(pre: kt.IKatsuyoTextSource) -> kt.KatsuyoText:
     )
 
 
-class Shieki(IKatsuyoTextHelper[kt.KatsuyoText]):
+class Shieki(IJodoushiHelper):
     def __init__(
         self,
         bridge: Optional[
@@ -215,7 +224,7 @@ def bridge_Hitei_default(pre: kt.IKatsuyoTextSource) -> kt.KatsuyoText:
     )
 
 
-class Hitei(IKatsuyoTextHelper[kt.KatsuyoText]):
+class Hitei(IJodoushiHelper):
     # 現状、出力文字列としては「ない」のみサポート
     # TODO オプションで「ぬ」を選択できるように
 
@@ -244,7 +253,7 @@ class Hitei(IKatsuyoTextHelper[kt.KatsuyoText]):
 # ==============================================================================
 
 
-class KibouSelf(IKatsuyoTextHelper[kt.KatsuyoText]):
+class KibouSelf(IJodoushiHelper):
     def __init__(
         self,
         # デフォルトでは特に何もbridgeしない
@@ -261,7 +270,7 @@ class KibouSelf(IKatsuyoTextHelper[kt.KatsuyoText]):
         return None
 
 
-class KibouOthers(IKatsuyoTextHelper[kt.KatsuyoText]):
+class KibouOthers(IJodoushiHelper):
     def __init__(
         self,
         # デフォルトでは特に何もbridgeしない
@@ -298,7 +307,7 @@ def bridge_KakoKanryo_default(pre: kt.IKatsuyoTextSource) -> kt.KatsuyoText:
     )
 
 
-class KakoKanryo(IKatsuyoTextHelper[kt.KatsuyoText]):
+class KakoKanryo(IJodoushiHelper):
     def __init__(
         self,
         bridge: Optional[
@@ -351,7 +360,7 @@ def bridge_Youtai_default(pre: kt.IKatsuyoTextSource) -> kt.KatsuyoText:
     )
 
 
-class Youtai(IKatsuyoTextHelper[kt.KatsuyoText]):
+class Youtai(IJodoushiHelper):
     def __init__(
         self,
         bridge: Optional[
@@ -388,7 +397,7 @@ def bridge_Denbun_default(pre: kt.IKatsuyoTextSource) -> kt.KatsuyoText:
     )
 
 
-class Denbun(IKatsuyoTextHelper[kt.KatsuyoText]):
+class Denbun(IJodoushiHelper):
     def __init__(
         self,
         bridge: Optional[
@@ -423,7 +432,7 @@ def bridge_Suitei_default(pre: kt.IKatsuyoTextSource) -> kt.KatsuyoText:
     )
 
 
-class Suitei(IKatsuyoTextHelper[kt.KatsuyoText]):
+class Suitei(IJodoushiHelper):
     def __init__(
         self,
         bridge: Optional[
@@ -463,7 +472,7 @@ def bridge_Touzen_default(pre: kt.IKatsuyoTextSource) -> kt.KatsuyoText:
     )
 
 
-class Touzen(IKatsuyoTextHelper[kt.KatsuyoText]):
+class Touzen(IJodoushiHelper):
     def __init__(
         self,
         bridge: Optional[
@@ -500,7 +509,7 @@ def bridge_HikyoReizi_default(pre: kt.IKatsuyoTextSource) -> kt.KatsuyoText:
 #       文末表現として「このようだ」となる際はrootに「よう」がつくため
 #       文末の品詞を分解する機能として扱ううえでは
 #       「比況」にて連体詞を扱うロジックはIKatsuyoTextHelperに含めない
-class HikyoReizi(IKatsuyoTextHelper[kt.KatsuyoText]):
+class HikyoReizi(IJodoushiHelper):
     def __init__(
         self,
         bridge: Optional[
@@ -533,7 +542,7 @@ def bridge_Dantei_default(pre: kt.IKatsuyoTextSource) -> kt.KatsuyoText:
     )
 
 
-class Dantei(IKatsuyoTextHelper[kt.KatsuyoText]):
+class Dantei(IJodoushiHelper):
     def __init__(
         self,
         bridge: Optional[
@@ -563,7 +572,7 @@ def bridge_DanteiTeinei_default(pre: kt.IKatsuyoTextSource) -> kt.KatsuyoText:
     )
 
 
-class DanteiTeinei(IKatsuyoTextHelper[kt.KatsuyoText]):
+class DanteiTeinei(IJodoushiHelper):
     def __init__(
         self,
         bridge: Optional[
@@ -597,7 +606,7 @@ def bridge_Teinei_default(pre: kt.IKatsuyoTextSource) -> kt.KatsuyoText:
     return bridge_DanteiTeinei_default(pre)
 
 
-class Teinei(IKatsuyoTextHelper[kt.KatsuyoText]):
+class Teinei(IJodoushiHelper):
     def __init__(
         self,
         bridge: Optional[
@@ -657,7 +666,7 @@ def bridge_Keizoku_default(pre: kt.IKatsuyoTextSource) -> kt.KatsuyoText:
     )
 
 
-class Keizoku(IKatsuyoTextHelper[kt.KatsuyoText]):
+class Keizoku(IJodoushiHelper):
     # 現状、出力文字列としては「ている」「でいる」のみサポート
     # TODO オプションで「てる」「でる」を選択できるように
 
