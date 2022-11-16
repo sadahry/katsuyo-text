@@ -1990,7 +1990,7 @@ def test_jodoushi_hikyo_reizi_value_error(unsupported_katsuyo_text):
                 gokan="綺麗",
                 katsuyo=KEIYOUDOUSHI,
             ),
-            "綺麗なのだ",
+            "綺麗だ",
         ),
         (
             "TaigenText",

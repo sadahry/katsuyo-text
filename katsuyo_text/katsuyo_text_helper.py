@@ -533,6 +533,10 @@ class HikyoReizi(IJodoushiHelper):
 
 
 def bridge_Dantei_default(pre: kt.IKatsuyoTextSource) -> kt.KatsuyoText:
+    if isinstance(pre.katsuyo, k.KeiyoudoushiKatsuyo):
+        # 変形しない
+        assert isinstance(pre, kt.KatsuyoText)
+        return pre
     if isinstance(pre, kt.KatsuyoText):
         return pre + kt.KAKUJOSHI_NO + kt.JODOUSHI_DA_DANTEI
 
