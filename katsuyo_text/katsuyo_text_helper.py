@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Optional, cast
+from typing import Optional, Set, cast
 import abc
 import sys
 import katsuyo_text.katsuyo as k
@@ -693,3 +693,22 @@ class Keizoku(IJodoushiHelper):
             return pre + kt.JODOUSHI_TEIRU
 
         return None
+
+
+ALL_JODOUSHI_HELPERS: Set[IKatsuyoTextHelper] = {
+    Ukemi(),
+    Shieki(),
+    Hitei(),
+    KibouSelf(),
+    KibouOthers(),
+    KakoKanryo(),
+    Youtai(),
+    Denbun(),
+    Suitei(),
+    Touzen(),
+    HikyoReizi(),
+    Keizoku(),
+    Dantei(),
+    DanteiTeinei(),
+    Teinei(),
+}

@@ -57,6 +57,7 @@ from katsuyo_text.katsuyo_text_helper import (
     Dantei,
     DanteiTeinei,
     Teinei,
+    ALL_JODOUSHI_HELPERS,
 )
 from katsuyo_text.katsuyo_text_detector import (
     IKatsuyoTextSourceDetector,
@@ -364,23 +365,7 @@ def get_conjugation(token):
 
 
 ALL_APPENDANTS_DETECTOR = SpacyKatsuyoTextAppendantDetector(
-    helpers={
-        Ukemi(),
-        Shieki(),
-        Hitei(),
-        KibouSelf(),
-        KibouOthers(),
-        KakoKanryo(),
-        Youtai(),
-        Denbun(),
-        Suitei(),
-        Touzen(),
-        HikyoReizi(),
-        Keizoku(),
-        Dantei(),
-        DanteiTeinei(),
-        Teinei(),
-    },
+    helpers=ALL_JODOUSHI_HELPERS,
     fukujoshis=ALL_FUKUJOSHIS,
     setsuzokujoshis=ALL_SETSUZOKUJOSHIS,
     shujoshis=ALL_SHUJOSHIS,
