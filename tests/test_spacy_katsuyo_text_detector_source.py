@@ -27,7 +27,7 @@ from katsuyo_text.katsuyo import (
     SA_GYO_HENKAKU_ZURU,
     SHIMO_ICHIDAN,
 )
-from katsuyo_text.katsuyo_text_source_detector import (
+from katsuyo_text.spacy_katsuyo_text_detector import (
     SpacyKatsuyoTextSourceDetector,
 )
 

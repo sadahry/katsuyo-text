@@ -18,7 +18,7 @@ from katsuyo_text.katsuyo_text import (
     SHUJOSHI_NO,
     KatsuyoTextError,
 )
-from katsuyo_text.katsuyo_text_appendant_detector import (
+from katsuyo_text.spacy_katsuyo_text_detector import (
     SpacyKatsuyoTextAppendantDetector,
     ALL_APPENDANTS_DETECTOR,
 )
