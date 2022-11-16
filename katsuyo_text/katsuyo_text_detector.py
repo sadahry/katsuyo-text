@@ -71,12 +71,12 @@ class IKatsuyoTextAppendantDetector(abc.ABC):
             if not isinstance(helper, self.SUPPORTED_HELPERS):
                 raise ValueError(f"Unsupported appendant helper: {helper}")
 
-        self.appendants_dict = {type(helper): helper for helper in helpers}
+        self.helpers_dict = {type(helper): helper for helper in helpers}
 
-        # check appendants_dict
-        if len(self.appendants_dict) > 0:
+        # check helpers_dict
+        if len(self.helpers_dict) > 0:
             for supported_helper in self.SUPPORTED_HELPERS:
-                if not issubclass(supported_helper, tuple(self.appendants_dict.keys())):
+                if not issubclass(supported_helper, tuple(self.helpers_dict.keys())):
                     warnings.warn(
                         f"this object doesn't have helper: {supported_helper}"
                     )
@@ -88,7 +88,7 @@ class IKatsuyoTextAppendantDetector(abc.ABC):
         self, typ: Type[IKatsuyoTextHelper]
     ) -> Tuple[Optional[IKatsuyoTextHelper], Optional[KatsuyoTextErrorMessage]]:
         # TODO ignoreリストの追加
-        helper = self.appendants_dict.get(typ)
+        helper = self.helpers_dict.get(typ)
         if helper is not None:
             return helper, None
 
