@@ -12,6 +12,22 @@ from katsuyo_text.katsuyo_text import (
     FUKUJOSHI_NOMI,
     FUKUJOSHI_YARA,
     FUKUJOSHI_ZUTSU,
+    SETSUZOKUJOSHI_GA,
+    SETSUZOKUJOSHI_SHI,
+    SETSUZOKUJOSHI_TE,
+    SETSUZOKUJOSHI_DE,
+    SETSUZOKUJOSHI_TO,
+    SETSUZOKUJOSHI_DO,
+    SETSUZOKUJOSHI_NI,
+    SETSUZOKUJOSHI_BA,
+    SETSUZOKUJOSHI_KARA,
+    SETSUZOKUJOSHI_TSUTSU,
+    SETSUZOKUJOSHI_TOMO,
+    SETSUZOKUJOSHI_NARI,
+    SETSUZOKUJOSHI_TATTE,
+    SETSUZOKUJOSHI_DATTE,
+    SETSUZOKUJOSHI_NAGARA,
+    SETSUZOKUJOSHI_KEREDO,
     SHUJOSHI_KA,
     SHUJOSHI_KASHIRA,
     SHUJOSHI_NA,
@@ -499,6 +515,138 @@ def test_spacy_katsuyo_text_appendants_detector(
             "助詞-副助詞",
             [FUKUJOSHI_KIRI],
         ),
+    ],
+)
+def test_spacy_fukujoshi_appendants_detector(
+    nlp_ja, spacy_appendants_detector, text, norm, tag, expected
+):
+    sent = next(nlp_ja(text).sents)
+    last_token = sent[-1]
+    assert last_token.norm_ == norm, "last token is not correct"
+    assert last_token.tag_ == tag, "last token is not correct"
+    appendants, has_error = spacy_appendants_detector.detect_from_sent(sent, sent.root)
+    assert not has_error, "has error in detection"
+    assert appendants == expected
+
+
+@pytest.mark.parametrize(
+    "text, lemma, tag, expected",
+    [
+        (
+            "あなたを愛するが、",
+            "が",
+            "助詞-接続助詞",
+            SETSUZOKUJOSHI_GA,
+        ),
+        (
+            "あなたを愛するし、",
+            "し",
+            "助詞-接続助詞",
+            SETSUZOKUJOSHI_SHI,
+        ),
+        (
+            "あなたを愛して、",
+            "て",
+            "助詞-接続助詞",
+            SETSUZOKUJOSHI_TE,
+        ),
+        (
+            "あなたと遊んで、",
+            "で",
+            "助詞-接続助詞",
+            SETSUZOKUJOSHI_DE,
+        ),
+        (
+            "あなたを愛すると、",
+            "と",
+            "助詞-接続助詞",
+            SETSUZOKUJOSHI_TO,
+        ),
+        (
+            "あなたを愛すれど、",
+            "ど",
+            "助詞-接続助詞",
+            SETSUZOKUJOSHI_DO,
+        ),
+        # 用例がないためスキップ
+        # (
+        #     "あなたは要するに、",
+        #     "に",
+        #     "助詞-接続助詞",
+        #     SETSUZOKUJOSHI_NI,
+        # ),
+        (
+            "あなたを愛すれば、",
+            "ば",
+            "助詞-接続助詞",
+            SETSUZOKUJOSHI_BA,
+        ),
+        (
+            "あなたを愛するから、",
+            "から",
+            "助詞-接続助詞",
+            SETSUZOKUJOSHI_KARA,
+        ),
+        (
+            "あなたを愛しつつ、",
+            "つつ",
+            "助詞-接続助詞",
+            SETSUZOKUJOSHI_TSUTSU,
+        ),
+        (
+            "あなたを愛するとも、",
+            "とも",
+            "助詞-接続助詞",
+            SETSUZOKUJOSHI_TOMO,
+        ),
+        (
+            "あなたを愛するなり大切にするなり、",
+            "なり",
+            "助詞-接続助詞",
+            SETSUZOKUJOSHI_NARI,
+        ),
+        (
+            "あなたを愛したって、",
+            "たって",
+            "助詞-接続助詞",
+            SETSUZOKUJOSHI_TATTE,
+        ),
+        (
+            "あなたが遊んだって、",
+            # "だって", # sudachiの辞書の正規形が正しくない「たって」となるためlemmaで対応
+            "だって",
+            "助詞-接続助詞",
+            SETSUZOKUJOSHI_DATTE,
+        ),
+        (
+            "あなたと遊びながら、",
+            "ながら",
+            "助詞-接続助詞",
+            SETSUZOKUJOSHI_NAGARA,
+        ),
+        (
+            "あなたと遊ぶけれど、",
+            "けれど",
+            "助詞-接続助詞",
+            SETSUZOKUJOSHI_KEREDO,
+        ),
+    ],
+)
+def test_spacy_setsuzokujoshi_appendants_detector(
+    nlp_ja, spacy_appendants_detector, text, lemma, tag, expected
+):
+    sent = next(nlp_ja(text).sents)
+    last_token = sent[-2]
+    assert last_token.lemma_ == lemma, "last token is not correct"
+    assert last_token.tag_ == tag, "last token is not correct"
+    appendants, has_error = spacy_appendants_detector.try_detect(last_token)
+    assert not has_error, "has error in detection"
+    assert appendants == expected
+
+
+@pytest.mark.parametrize(
+    "text, norm, tag, expected",
+    [
         (
             "あなたを愛するの",
             "の",

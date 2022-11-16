@@ -33,6 +33,7 @@ from katsuyo_text.katsuyo_text import (
     KURU_KANJI,
     ALL_FUKUJOSHIS,
     ALL_SHUJOSHIS,
+    ALL_SETSUZOKUJOSHIS,
 )
 from katsuyo_text.katsuyo_text_helper import (
     Denbun,
@@ -205,6 +206,7 @@ class SpacyKatsuyoTextAppendantDetector(IKatsuyoTextAppendantDetector):
         pos_tag = candidate.pos_
         tag = candidate.tag_
         norm = candidate.norm_
+        lemma = candidate.lemma_
 
         if pos_tag == "AUX":
             # ==================================================
@@ -266,6 +268,12 @@ class SpacyKatsuyoTextAppendantDetector(IKatsuyoTextAppendantDetector):
             # 副助詞の判定
             # ==================================================
             return self.try_get_fukujoshi(norm)
+        elif tag == "助詞-接続助詞":
+            # ==================================================
+            # 接続助詞の判定
+            # ==================================================
+            # sudachiの辞書のnorm「だって」が正しくないためlemmaで対応
+            return self.try_get_setsuzokujoshi(lemma)
         elif tag == "助詞-終助詞":
             # ==================================================
             # 終助詞の判定
@@ -350,5 +358,6 @@ ALL_APPENDANTS_DETECTOR = SpacyKatsuyoTextAppendantDetector(
         Teinei(),
     },
     fukujoshis=ALL_FUKUJOSHIS,
+    setsuzokujoshis=ALL_SETSUZOKUJOSHIS,
     shujoshis=ALL_SHUJOSHIS,
 )

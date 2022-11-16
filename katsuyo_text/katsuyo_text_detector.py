@@ -5,6 +5,7 @@ from katsuyo_text.katsuyo_text import (
     KatsuyoTextHasError,
     IKatsuyoTextAppendant,
     FukujoshiTextAppendant,
+    SetsuzokujoshiTextAppendant,
     ShujoshiTextAppendant,
 )
 from katsuyo_text.katsuyo_text_helper import (
@@ -64,8 +65,8 @@ class IKatsuyoTextAppendantDetector(abc.ABC):
         self,
         helpers: Set[IKatsuyoTextHelper] = set(),
         fukujoshis: Set[FukujoshiTextAppendant] = set(),
+        setsuzokujoshis: Set[SetsuzokujoshiTextAppendant] = set(),
         shujoshis: Set[ShujoshiTextAppendant] = set(),
-        # TODO setsuzokujoshis
         log_warning: bool = True,
     ) -> None:
         # validate helpers
@@ -84,6 +85,9 @@ class IKatsuyoTextAppendantDetector(abc.ABC):
                     )
 
         self.fukujoshis_dict = {fukujoshi.gokan: fukujoshi for fukujoshi in fukujoshis}
+        self.setsuzokujoshis_dict = {
+            setsuzokujoshi.gokan: setsuzokujoshi for setsuzokujoshi in setsuzokujoshis
+        }
         self.shujoshis_dict = {shujoshi.gokan: shujoshi for shujoshi in shujoshis}
         self.log_warning = log_warning
 
@@ -112,6 +116,22 @@ class IKatsuyoTextAppendantDetector(abc.ABC):
         if self.log_warning:
             return None, KatsuyoTextErrorMessage(
                 f"Unsupported type in try_get_fukujoshi: {norm}"
+            )
+
+        return None, None
+
+    def try_get_setsuzokujoshi(
+        self, norm: str
+    ) -> Tuple[
+        Optional[SetsuzokujoshiTextAppendant], Optional[KatsuyoTextErrorMessage]
+    ]:
+        setsuzokujoshi = self.setsuzokujoshis_dict.get(norm)
+        if setsuzokujoshi is not None:
+            return setsuzokujoshi, None
+
+        if self.log_warning:
+            return None, KatsuyoTextErrorMessage(
+                f"Unsupported type in try_get_setsuzokujoshi: {norm}"
             )
 
         return None, None
