@@ -63,21 +63,24 @@ class IKatsuyoTextAppendantDetector(abc.ABC):
 
     def __init__(
         self,
-        helpers: Set[IKatsuyoTextHelper],
-        fukujoshis: Set[FukujoshiTextAppendant],
-        shujoshis: Set[ShujoshiTextAppendant],
+        helpers: Set[IKatsuyoTextHelper] = set(),
+        fukujoshis: Set[FukujoshiTextAppendant] = set(),
+        shujoshis: Set[ShujoshiTextAppendant] = set(),
     ) -> None:
         # validate helpers
         for helper in helpers:
             if not isinstance(helper, self.SUPPORTED_HELPERS):
-                raise KatsuyoTextError(f"Unsupported appendant helper: {helper}")
+                raise ValueError(f"Unsupported appendant helper: {helper}")
 
         self.appendants_dict = {type(helper): helper for helper in helpers}
 
         # check appendants_dict
-        for supported_helper in self.SUPPORTED_HELPERS:
-            if not issubclass(supported_helper, tuple(self.appendants_dict.keys())):
-                warnings.warn(f"this object doesn't have helper: {supported_helper}")
+        if len(self.appendants_dict) > 0:
+            for supported_helper in self.SUPPORTED_HELPERS:
+                if not issubclass(supported_helper, tuple(self.appendants_dict.keys())):
+                    warnings.warn(
+                        f"this object doesn't have helper: {supported_helper}"
+                    )
 
         self.fukujoshis_dict = {fukujoshi.gokan: fukujoshi for fukujoshi in fukujoshis}
         self.shujoshis_dict = {shujoshi.gokan: shujoshi for shujoshi in shujoshis}
