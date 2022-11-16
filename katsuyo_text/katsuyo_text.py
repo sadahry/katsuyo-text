@@ -301,7 +301,6 @@ class HojoKatsuyoText(KatsuyoText):
             return pre + self
         elif isinstance(pre, INonKatsuyoText):
             if isinstance(pre, KakujoshiText):
-                # TODO 助詞の精査
                 return pre + self
 
             raise KatsuyoTextError(
@@ -824,7 +823,6 @@ class Rashii(IJodoushiKatsuyoText):
             if isinstance(pre, TaigenText):
                 return pre + self.katsuyo_text
             elif isinstance(pre, KakujoshiText):
-                # TODO 助詞の精査
                 return pre + self.katsuyo_text
 
             raise KatsuyoTextError(
@@ -900,7 +898,6 @@ class Youda(IJodoushiKatsuyoText):
             return pre + self.katsuyo_text
         if isinstance(pre, INonKatsuyoText):
             if isinstance(pre, KakujoshiText):
-                # TODO 助詞の精査
                 return pre + self.katsuyo_text
 
             # 定義上は連体詞「この」等に接続するが、現状はサポートしない
