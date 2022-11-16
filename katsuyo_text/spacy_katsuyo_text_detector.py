@@ -213,16 +213,6 @@ class SpacyKatsuyoTextAppendantDetector(IKatsuyoTextAppendantDetector):
             # NOTE: inflectionの情報のみでは、助動詞の活用形を判定できない
             #       e.g. せる -> Inf=下一段-サ行,終止形-一般 となる
 
-            # TODO 無視する助動詞のリスト化
-            if norm in {
-                "ちゃう",
-                "やがる",
-                # 「する」の助動詞はSpacyKatsuyoTextSourceDetectorで対処されるので
-                # ここでは無視する
-                "為る",
-            }:
-                return None, None
-
             if norm in ["れる", "られる"]:
                 return self.try_get_helper(Ukemi)
             elif norm in ["せる", "させる"]:
@@ -253,7 +243,10 @@ class SpacyKatsuyoTextAppendantDetector(IKatsuyoTextAppendantDetector):
             elif norm in ["てる"]:
                 return self.try_get_helper(Keizoku)
 
-            return None, KatsuyoTextErrorMessage(f"Unsupported AUX: {norm}")
+            if self.log_warning:
+                return None, KatsuyoTextErrorMessage(f"Unsupported AUX: {norm}")
+
+            return None, None
         elif pos_tag == "ADJ":
             # 「ない」のみ対応
             # NOTE: 必ずしも正確に否定表現を解析できるとは限らない

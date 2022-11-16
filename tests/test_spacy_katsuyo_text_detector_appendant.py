@@ -69,7 +69,7 @@ def katsuyo_texts_appendants_detector_init_warning():
     "text, norm, pos, expected",
     [
         (
-            "あなたに愛される",
+            "あなたに行動をされる",
             "れる",
             "AUX",
             [Ukemi],
@@ -301,7 +301,7 @@ def katsuyo_texts_appendants_detector_init_warning():
             [Suitei],
         ),
         (
-            "表彰するべき",
+            "するべき",
             "べし",
             "AUX",
             [Touzen],
@@ -506,7 +506,7 @@ def test_spacy_katsuyo_text_appendants_detector(
             [SHUJOSHI_NO],
         ),
         (
-            "あなたを愛しちゃうな",
+            "きっと泣くな",
             "な",
             "助詞-終助詞",
             [SHUJOSHI_NA],
@@ -564,6 +564,7 @@ def test_spacy_shujoshi_appendants_detector(
         ),
     ],
 )
+@pytest.mark.filterwarnings("ignore:Unsupported")
 def test_spacy_katsuyo_text_appendants_detector_ignore(
     nlp_ja, spacy_appendants_detector, text, norm, pos
 ):
@@ -572,5 +573,5 @@ def test_spacy_katsuyo_text_appendants_detector_ignore(
     assert last_token.norm_ == norm, "last token is not correct"
     assert last_token.pos_ == pos, "last token is not correct"
     appendants, has_error = spacy_appendants_detector.detect_from_sent(sent, sent.root)
-    assert not has_error, "has error in detection"
+    assert has_error, "has error in detection"
     assert appendants == [], f"{norm} will be ignored"

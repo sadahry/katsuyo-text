@@ -65,6 +65,7 @@ class IKatsuyoTextAppendantDetector(abc.ABC):
         helpers: Set[IKatsuyoTextHelper] = set(),
         fukujoshis: Set[FukujoshiTextAppendant] = set(),
         shujoshis: Set[ShujoshiTextAppendant] = set(),
+        log_warning: bool = True,
     ) -> None:
         # validate helpers
         for helper in helpers:
@@ -83,6 +84,7 @@ class IKatsuyoTextAppendantDetector(abc.ABC):
 
         self.fukujoshis_dict = {fukujoshi.gokan: fukujoshi for fukujoshi in fukujoshis}
         self.shujoshis_dict = {shujoshi.gokan: shujoshi for shujoshi in shujoshis}
+        self.log_warning = log_warning
 
     def try_get_helper(
         self, typ: Type[IKatsuyoTextHelper]
@@ -92,9 +94,12 @@ class IKatsuyoTextAppendantDetector(abc.ABC):
         if helper is not None:
             return helper, None
 
-        return None, KatsuyoTextErrorMessage(
-            f"Unsupported type in try_get_helper: {typ}"
-        )
+        if self.log_warning:
+            return None, KatsuyoTextErrorMessage(
+                f"Unsupported type in try_get_helper: {typ}"
+            )
+
+        return None, None
 
     def try_get_fukujoshi(
         self, norm: str
@@ -103,10 +108,11 @@ class IKatsuyoTextAppendantDetector(abc.ABC):
         if fukujoshi is not None:
             return fukujoshi, None
 
-        # 例外が多いため、allowしない場合はwarningを出さない
-        # return None, KatsuyoTextErrorMessage(
-        #     f"Unsupported type in try_get_fukujoshi: {norm}"
-        # )
+        if self.log_warning:
+            return None, KatsuyoTextErrorMessage(
+                f"Unsupported type in try_get_fukujoshi: {norm}"
+            )
+
         return None, None
 
     def try_get_shujoshi(
@@ -116,10 +122,11 @@ class IKatsuyoTextAppendantDetector(abc.ABC):
         if shujoshi is not None:
             return shujoshi, None
 
-        # 例外が多いため、allowしない場合はwarningを出さない
-        # return None, KatsuyoTextErrorMessage(
-        #     f"Unsupported type in try_get_shujoshi: {norm}"
-        # )
+        if self.log_warning:
+            return None, KatsuyoTextErrorMessage(
+                f"Unsupported type in try_get_shujoshi: {norm}"
+            )
+
         return None, None
 
     @abc.abstractmethod
