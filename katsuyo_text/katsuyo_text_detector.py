@@ -65,6 +65,7 @@ class IKatsuyoTextAppendantDetector(abc.ABC):
         helpers: Set[IKatsuyoTextHelper] = set(),
         fukujoshis: Set[FukujoshiTextAppendant] = set(),
         shujoshis: Set[ShujoshiTextAppendant] = set(),
+        # TODO setsuzokujoshis
         log_warning: bool = True,
     ) -> None:
         # validate helpers

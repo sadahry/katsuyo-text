@@ -562,6 +562,7 @@ def test_spacy_shujoshi_appendants_detector(
             "やがる",
             "AUX",
         ),
+        # TODO 副助詞, 終助詞, 接続助詞
     ],
 )
 @pytest.mark.filterwarnings("ignore:Unsupported")
@@ -596,6 +597,7 @@ def test_spacy_katsuyo_text_appendants_detector_warning(
             "やがる",
             "AUX",
         ),
+        # TODO 副助詞, 終助詞, 接続助詞
     ],
 )
 @pytest.mark.filterwarnings("ignore:Unsupported")
