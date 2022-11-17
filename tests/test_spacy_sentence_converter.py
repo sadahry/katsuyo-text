@@ -123,6 +123,15 @@ def convert(
             },
             "公園へ行くのだった",
         ),
+        # TODO 接続助詞「て」のHelper実装
+        # (
+        #     "Teinei->Dantei",
+        #     "そう言われましても",
+        #     {
+        #         Teinei(): Dantei(),
+        #     },
+        #     "そう言われるのであっても",
+        # ),
     ],
 )
 def test_convert_teinei(nlp_ja, msg, sentence, convert_map, expected):
