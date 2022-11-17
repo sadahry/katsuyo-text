@@ -169,7 +169,7 @@ def convert(
                 )
             convert_kt = convert_map.get(kt)
             if convert_kt is not None:
-                prev_kt = prev_kt + convert_kt
+                prev_kt += convert_kt
             prev_token = token
             continue
 
@@ -184,13 +184,14 @@ def convert(
             continue
 
         assert kt is not None
-        prev_kt = prev_kt + kt
+        prev_kt += kt
         prev_token = token
         continue
 
     if prev_kt is not None:
         result += str(prev_kt)
-    elif prev_token is not None:
+    else:
+        assert prev_token is not None
         result += prev_token.text
 
     return result
