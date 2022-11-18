@@ -41,6 +41,12 @@ class IKatsuyoTextHelper(kt.IKatsuyoTextAppendant, Generic[kt.M]):
     def try_merge(self, pre: kt.IKatsuyoTextSource) -> Optional[kt.M]:
         raise NotImplementedError()
 
+    def __eq__(self, obj):
+        return hash(self) == hash(obj)
+
+    def __hash__(self):
+        return hash(self.__class__.__name__) + hash(self.bridge)
+
 
 # ==============================================================================
 # 助動詞
@@ -818,3 +824,9 @@ class TatteDatte(ISetsuzokujoshiHelper):
             return pre + kt.SETSUZOKUJOSHI_TATTE
 
         return None
+
+
+ALL_SETSUZOKUJOSHI_HELPERS: Set[IKatsuyoTextHelper] = {
+    TeDe(),
+    TatteDatte(),
+}

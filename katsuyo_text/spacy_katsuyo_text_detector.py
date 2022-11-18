@@ -68,7 +68,10 @@ from katsuyo_text.katsuyo_text_helper import (
     Dantei,
     DanteiTeinei,
     Teinei,
+    TeDe,
+    TatteDatte,
     ALL_JODOUSHI_HELPERS,
+    ALL_SETSUZOKUJOSHI_HELPERS,
 )
 from katsuyo_text.katsuyo_text_detector import (
     IKatsuyoTextSourceDetector,
@@ -356,6 +359,10 @@ class SpacyKatsuyoTextAppendantDetector(IKatsuyoTextAppendantDetector):
             # 接続助詞の判定
             # ==================================================
             # sudachiの辞書のnorm「だって」が正しくないためlemmaで対応
+            if lemma in ["たって", "だって"]:
+                return self.try_get_helper(TatteDatte)
+            elif lemma in ["て", "で"]:
+                return self.try_get_helper(TeDe)
             return self.try_get_setsuzokujoshi(lemma)
         elif tag == "助詞-終助詞":
             # ==================================================
@@ -423,7 +430,7 @@ def get_conjugation(token):
 
 
 ALL_APPENDANTS_DETECTOR = SpacyKatsuyoTextAppendantDetector(
-    helpers=ALL_JODOUSHI_HELPERS,
+    helpers=ALL_JODOUSHI_HELPERS | ALL_SETSUZOKUJOSHI_HELPERS,
     fukujoshis=ALL_FUKUJOSHIS,
     setsuzokujoshis=ALL_SETSUZOKUJOSHIS,
     shujoshis=ALL_SHUJOSHIS,

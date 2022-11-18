@@ -25,6 +25,8 @@ from katsuyo_text.katsuyo_text_helper import (
     Dantei,
     DanteiTeinei,
     Teinei,
+    TeDe,
+    TatteDatte,
 )
 import abc
 import warnings
@@ -59,6 +61,8 @@ class IKatsuyoTextAppendantDetector(abc.ABC):
         Dantei,
         DanteiTeinei,
         Teinei,
+        TeDe,
+        TatteDatte,
     )
 
     def __init__(
@@ -121,17 +125,17 @@ class IKatsuyoTextAppendantDetector(abc.ABC):
         return None, None
 
     def try_get_setsuzokujoshi(
-        self, norm: str
+        self, lemma: str
     ) -> Tuple[
         Optional[SetsuzokujoshiTextAppendant], Optional[KatsuyoTextErrorMessage]
     ]:
-        setsuzokujoshi = self.setsuzokujoshis_dict.get(norm)
+        setsuzokujoshi = self.setsuzokujoshis_dict.get(lemma)
         if setsuzokujoshi is not None:
             return setsuzokujoshi, None
 
         if self.log_warning:
             return None, KatsuyoTextErrorMessage(
-                f"Unsupported type in try_get_setsuzokujoshi: {norm}"
+                f"Unsupported type in try_get_setsuzokujoshi: {lemma}"
             )
 
         return None, None
