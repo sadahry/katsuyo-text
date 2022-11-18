@@ -16,7 +16,7 @@ class ISentenceConverter(abc.ABC):
 
     def __init__(
         self,
-        # 現状はIJodoushiHelperを対応している
+        # 現状はIJodoushiHelperのみ対応している
         convertions_dict: Dict[IJodoushiHelper, Optional[IKatsuyoTextAppendant]],
     ) -> None:
         self.convertions_dict = convertions_dict
