@@ -40,9 +40,7 @@ MIZEN_FORMS: Set[str] = {
 }
 RENYO_FORMS: Set[str] = {
     "連用形-一般",
-    # 連用形の撥音便,促音便はKatsuyoTextで対応しているため一般変形として扱える
     "連用形-撥音便",
-    # 連用形の撥音便,促音便はKatsuyoTextで対応しているため一般変形として扱える
     "連用形-促音便",
     # 活用変形の一種であるため一般変形として扱える
     "連用形-イ音便",
@@ -233,12 +231,20 @@ def convert(
             "すまない",
         ),
         (
-            "Teinei->Dantei",
+            "Teinei->None",
             "公園へ行きまして",
             {
                 Teinei(): None,
             },
             "公園へ行って",
+        ),
+        (
+            "Teinei->None",
+            "公園で遊びまして",
+            {
+                Teinei(): None,
+            },
+            "公園で遊んで",
         ),
         (
             "Teinei->Dantei",
