@@ -336,11 +336,11 @@ class SpacyKatsuyoTextAppendantDetector(IKatsuyoTextAppendantDetector):
 
             return None, None
         elif pos_tag == "ADJ":
-            # 「ない」のみ対応
+            # 形容詞「ない」はIJodoushiHelperの対象外とする
             # NOTE: 必ずしも正確に否定表現を解析できるとは限らない
             #       @see: https://github.com/sadahry/spacy-dialog-reflection/blob/17507db530da24c11816374d6caa4766e4614f69/tests/lang/ja/test_katsuyo_text_detector.py#L676-L693
-            if norm in ["無い"]:
-                return self.try_get_helper(Hitei)
+            # if norm in ["無い"]:
+            #     return self.try_get_helper(Hitei)
 
             return None, None
         elif pos_tag == "ADV":

@@ -153,8 +153,7 @@ def katsuyo_texts_appendants_detector_init_warning():
             "それは仕方がない",
             "無い",
             "ADJ",
-            # TODO 格助詞「が」も取得できるように
-            [Hitei],
+            [],
         ),
         (
             "あなたを愛したい",
