@@ -21,6 +21,7 @@ from katsuyo_text.sentence_converter import (
 
 
 class SpacySentenceConverter(ISentenceConverter):
+
     # 以下からleft-id.def(right-id.def)を取得し、活用形を参照して作成
     # ref. https://ja.osdn.net/projects/unidic/downloads/58338/unidic-mecab-2.1.2_src.zip/
     # 必要に応じて以下の辞書も参照
