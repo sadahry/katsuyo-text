@@ -1384,6 +1384,7 @@ FUKUJOSHI_MADE = FukujoshiRentaiText("まで")
 FUKUJOSHI_DAKE = FukujoshiRentaiText("だけ")
 FUKUJOSHI_HODO = FukujoshiRentaiText("ほど")
 FUKUJOSHI_KURAI = FukujoshiRentaiText("くらい")
+FUKUJOSHI_TTE = FukujoshiRentaiText("って")
 FUKUJOSHI_NADO = FukujoshiGokanText("など")
 FUKUJOSHI_NARI = FukujoshiGokanText("なり")
 FUKUJOSHI_YARA = FukujoshiGokanText("やら")
@@ -1398,6 +1399,7 @@ ALL_FUKUJOSHIS = {
     FUKUJOSHI_DAKE,
     FUKUJOSHI_HODO,
     FUKUJOSHI_KURAI,
+    FUKUJOSHI_TTE,
     FUKUJOSHI_NADO,
     FUKUJOSHI_NARI,
     FUKUJOSHI_YARA,
