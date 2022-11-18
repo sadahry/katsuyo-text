@@ -950,6 +950,9 @@ class Desu(IJodoushiKatsuyoText):
             elif isinstance(pre.katsuyo, k.KeiyoudoushiKatsuyo):
                 assert (fkt := pre.as_fkt_gokan) is not None
                 return fkt + self.katsuyo_text
+            elif isinstance(pre.katsuyo, k.TaKatsuyo):
+                assert (fkt := pre.as_fkt_rentai) is not None
+                return fkt + self.katsuyo_text
 
             raise KatsuyoTextError(
                 f"Unsupported katsuyo_text in {type(self)}: {pre} "

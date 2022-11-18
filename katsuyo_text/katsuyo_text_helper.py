@@ -602,7 +602,9 @@ class DanteiTeinei(IJodoushiHelper):
         if isinstance(pre, kt.INonKatsuyoText):
             return pre + kt.JODOUSHI_DESU
 
-        if isinstance(pre.katsuyo, (k.KeiyoushiKatsuyo, k.KeiyoudoushiKatsuyo)):
+        if isinstance(
+            pre.katsuyo, (k.KeiyoushiKatsuyo, k.KeiyoudoushiKatsuyo, k.TaKatsuyo)
+        ):
             return pre + kt.JODOUSHI_DESU
 
         return None

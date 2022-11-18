@@ -2165,7 +2165,7 @@ def test_jodoushi_dantei_value_error(unsupported_katsuyo_text):
         (
             "助動詞「た」",
             JODOUSHI_TA,
-            "たのです",
+            "たです",
         ),
         (
             "助動詞「です」",
