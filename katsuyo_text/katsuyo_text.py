@@ -1285,7 +1285,7 @@ class FukujoshiTextAppendant(FukujoshiText, IKatsuyoTextAppendant["FukujoshiText
 @attrs.define(frozen=True, slots=False)
 class FukujoshiRentaiText(FukujoshiTextAppendant):
     """
-    副助詞。連体形につくものをまとめる
+    副助詞。終止形につくものをまとめる
     """
 
     def merge(self, pre: IKatsuyoTextSource) -> "FukujoshiText":
@@ -1384,7 +1384,7 @@ FUKUJOSHI_MADE = FukujoshiRentaiText("まで")
 FUKUJOSHI_DAKE = FukujoshiRentaiText("だけ")
 FUKUJOSHI_HODO = FukujoshiRentaiText("ほど")
 FUKUJOSHI_KURAI = FukujoshiRentaiText("くらい")
-FUKUJOSHI_TTE = FukujoshiRentaiText("って")
+FUKUJOSHI_TTE = FukujoshiGokanText("って")
 FUKUJOSHI_NADO = FukujoshiGokanText("など")
 FUKUJOSHI_NARI = FukujoshiGokanText("なり")
 FUKUJOSHI_YARA = FukujoshiGokanText("やら")
@@ -1443,8 +1443,6 @@ class SetuzokujoshiTeText(SetsuzokujoshiTextAppendant):
             return super().merge(pre)
         elif isinstance(pre, KigoText):
             return super().merge(pre)
-        elif isinstance(pre, JuntaijoshiText):
-            return super().merge(pre)
         elif isinstance(pre, KatsuyoText):
             if isinstance(pre.katsuyo, k.GodanKatsuyo) and (
                 pre.katsuyo.shushi in ["ぐ", "ぬ", "ぶ", "む"]
@@ -1453,6 +1451,10 @@ class SetuzokujoshiTeText(SetsuzokujoshiTextAppendant):
                     f"Should be 「で」or「だって」: {pre} "
                     f"type: {type(pre)} katsuyo: {type(pre.katsuyo)}"
                 )
+
+            if isinstance(pre.katsuyo, k.KeiyoushiKatsuyo):
+                assert (fkt := pre.as_fkt_renyo) is not None
+                return super().merge(fkt)
 
             if (fkt := pre.as_fkt_renyo_ta) is not None:
                 return super().merge(fkt)
@@ -1474,8 +1476,6 @@ class SetuzokujoshiDeText(SetsuzokujoshiTextAppendant):
         if isinstance(pre, FixedKatsuyoText):
             return super().merge(pre)
         elif isinstance(pre, KigoText):
-            return super().merge(pre)
-        elif isinstance(pre, JuntaijoshiText):
             return super().merge(pre)
         elif isinstance(pre, KatsuyoText):
             if isinstance(pre.katsuyo, k.IDoushiKatsuyo) and (

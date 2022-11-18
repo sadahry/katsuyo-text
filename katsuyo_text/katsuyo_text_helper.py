@@ -1,27 +1,31 @@
 from collections.abc import Callable
-from typing import Optional, Set, cast
+from typing import Optional, Set, Generic, cast
 import abc
 import sys
 import katsuyo_text.katsuyo as k
 import katsuyo_text.katsuyo_text as kt
 
 
-class IKatsuyoTextHelper(kt.IKatsuyoTextAppendant[kt.M]):
+class IKatsuyoTextHelper(kt.IKatsuyoTextAppendant, Generic[kt.M]):
     """
     柔軟に活用系を変換するためのクラス
     """
 
     def __init__(
         self,
-        bridge: Optional[Callable[[kt.IKatsuyoTextSource], kt.M]] = None,
+        bridge: Optional[
+            Callable[[kt.IKatsuyoTextSource], kt.IKatsuyoTextSource]
+        ] = None,
     ) -> None:
-        self.bridge: Optional[Callable[[kt.IKatsuyoTextSource], kt.M]] = bridge
+        self.bridge: Optional[
+            Callable[[kt.IKatsuyoTextSource], kt.IKatsuyoTextSource]
+        ] = bridge
         """
         文法的には不正な活用形の組み合わせを
         任意の活用形に変換して返せるようにするための関数
         """
 
-    def merge(self, pre: kt.IKatsuyoTextSource) -> kt.M:
+    def merge(self, pre: kt.IKatsuyoTextSource) -> kt.IKatsuyoTextSource:
         result = self.try_merge(pre)
         if result is not None:
             return result
@@ -89,7 +93,7 @@ class Ukemi(IJodoushiHelper):
     def __init__(
         self,
         bridge: Optional[
-            Optional[Callable[[kt.IKatsuyoTextSource], kt.KatsuyoText]]
+            Optional[Callable[[kt.IKatsuyoTextSource], kt.IKatsuyoTextSource]]
         ] = bridge_Ukemi_default,
     ) -> None:
         super().__init__(bridge)
@@ -156,7 +160,7 @@ class Shieki(IJodoushiHelper):
     def __init__(
         self,
         bridge: Optional[
-            Optional[Callable[[kt.IKatsuyoTextSource], kt.KatsuyoText]]
+            Optional[Callable[[kt.IKatsuyoTextSource], kt.IKatsuyoTextSource]]
         ] = bridge_Shieki_default,
     ) -> None:
         super().__init__(bridge)
@@ -231,7 +235,7 @@ class Hitei(IJodoushiHelper):
     def __init__(
         self,
         bridge: Optional[
-            Callable[[kt.IKatsuyoTextSource], kt.KatsuyoText]
+            Callable[[kt.IKatsuyoTextSource], kt.IKatsuyoTextSource]
         ] = bridge_Hitei_default,
     ) -> None:
         super().__init__(bridge)
@@ -257,7 +261,9 @@ class KibouSelf(IJodoushiHelper):
     def __init__(
         self,
         # デフォルトでは特に何もbridgeしない
-        bridge: Optional[Callable[[kt.IKatsuyoTextSource], kt.KatsuyoText]] = None,
+        bridge: Optional[
+            Callable[[kt.IKatsuyoTextSource], kt.IKatsuyoTextSource]
+        ] = None,
     ) -> None:
         super().__init__(bridge)
 
@@ -274,7 +280,9 @@ class KibouOthers(IJodoushiHelper):
     def __init__(
         self,
         # デフォルトでは特に何もbridgeしない
-        bridge: Optional[Callable[[kt.IKatsuyoTextSource], kt.KatsuyoText]] = None,
+        bridge: Optional[
+            Callable[[kt.IKatsuyoTextSource], kt.IKatsuyoTextSource]
+        ] = None,
     ) -> None:
         super().__init__(bridge)
 
@@ -311,7 +319,7 @@ class KakoKanryo(IJodoushiHelper):
     def __init__(
         self,
         bridge: Optional[
-            Callable[[kt.IKatsuyoTextSource], kt.KatsuyoText]
+            Callable[[kt.IKatsuyoTextSource], kt.IKatsuyoTextSource]
         ] = bridge_KakoKanryo_default,
     ) -> None:
         super().__init__(bridge)
@@ -364,7 +372,7 @@ class Youtai(IJodoushiHelper):
     def __init__(
         self,
         bridge: Optional[
-            Callable[[kt.IKatsuyoTextSource], kt.KatsuyoText]
+            Callable[[kt.IKatsuyoTextSource], kt.IKatsuyoTextSource]
         ] = bridge_Youtai_default,
     ) -> None:
         super().__init__(bridge)
@@ -401,7 +409,7 @@ class Denbun(IJodoushiHelper):
     def __init__(
         self,
         bridge: Optional[
-            Callable[[kt.IKatsuyoTextSource], kt.KatsuyoText]
+            Callable[[kt.IKatsuyoTextSource], kt.IKatsuyoTextSource]
         ] = bridge_Denbun_default,
     ) -> None:
         super().__init__(bridge)
@@ -436,7 +444,7 @@ class Suitei(IJodoushiHelper):
     def __init__(
         self,
         bridge: Optional[
-            Callable[[kt.IKatsuyoTextSource], kt.KatsuyoText]
+            Callable[[kt.IKatsuyoTextSource], kt.IKatsuyoTextSource]
         ] = bridge_Suitei_default,
     ) -> None:
         super().__init__(bridge)
@@ -476,7 +484,7 @@ class Touzen(IJodoushiHelper):
     def __init__(
         self,
         bridge: Optional[
-            Callable[[kt.IKatsuyoTextSource], kt.KatsuyoText]
+            Callable[[kt.IKatsuyoTextSource], kt.IKatsuyoTextSource]
         ] = bridge_Touzen_default,
     ) -> None:
         super().__init__(bridge)
@@ -513,7 +521,7 @@ class HikyoReizi(IJodoushiHelper):
     def __init__(
         self,
         bridge: Optional[
-            Callable[[kt.IKatsuyoTextSource], kt.KatsuyoText]
+            Callable[[kt.IKatsuyoTextSource], kt.IKatsuyoTextSource]
         ] = bridge_HikyoReizi_default,
     ) -> None:
         super().__init__(bridge)
@@ -549,7 +557,7 @@ class Dantei(IJodoushiHelper):
     def __init__(
         self,
         bridge: Optional[
-            Callable[[kt.IKatsuyoTextSource], kt.KatsuyoText]
+            Callable[[kt.IKatsuyoTextSource], kt.IKatsuyoTextSource]
         ] = bridge_Dantei_default,
     ) -> None:
         super().__init__(bridge)
@@ -579,7 +587,7 @@ class DanteiTeinei(IJodoushiHelper):
     def __init__(
         self,
         bridge: Optional[
-            Callable[[kt.IKatsuyoTextSource], kt.KatsuyoText]
+            Callable[[kt.IKatsuyoTextSource], kt.IKatsuyoTextSource]
         ] = bridge_DanteiTeinei_default,
     ) -> None:
         super().__init__(bridge)
@@ -613,7 +621,7 @@ class Teinei(IJodoushiHelper):
     def __init__(
         self,
         bridge: Optional[
-            Callable[[kt.IKatsuyoTextSource], kt.KatsuyoText]
+            Callable[[kt.IKatsuyoTextSource], kt.IKatsuyoTextSource]
         ] = bridge_Teinei_default,
     ) -> None:
         super().__init__(bridge)
@@ -676,7 +684,7 @@ class Keizoku(IJodoushiHelper):
     def __init__(
         self,
         bridge: Optional[
-            Callable[[kt.IKatsuyoTextSource], kt.KatsuyoText]
+            Callable[[kt.IKatsuyoTextSource], kt.IKatsuyoTextSource]
         ] = bridge_Keizoku_default,
     ) -> None:
         super().__init__(bridge)
@@ -712,3 +720,101 @@ ALL_JODOUSHI_HELPERS: Set[IKatsuyoTextHelper] = {
     DanteiTeinei(),
     Teinei(),
 }
+
+# ==============================================================================
+# 接続助詞
+# ==============================================================================
+
+
+class ISetsuzokujoshiHelper(IKatsuyoTextHelper[kt.SetsuzokujoshiText]):
+    pass
+
+
+# ==============================================================================
+# 「て」「で」「たって」「だって」
+# ==============================================================================
+
+
+def bridge_TeDe_default(pre: kt.IKatsuyoTextSource) -> kt.IKatsuyoTextSource:
+    if isinstance(
+        pre,
+        (
+            kt.KandoushiText,
+            kt.SetsuzokuText,
+            kt.SettoText,
+            kt.KigoText,
+            kt.SetsuzokujoshiText,
+            kt.KeijoshiText,
+        ),
+    ):
+        return pre + kt.FUKUJOSHI_TTE
+    elif isinstance(pre, kt.INonKatsuyoText):
+        # 断定の「だ」でブリッジ。次に連用形が来ることを想定
+        return pre + kt.JODOUSHI_DA_DANTEI
+
+    if isinstance(pre.katsuyo, k.TaKatsuyo):
+        return pre + kt.FUKUJOSHI_TTE
+
+    raise kt.KatsuyoTextError(
+        f"Unsupported katsuyo_text in {sys._getframe().f_code.co_name}: {pre} "
+        f"type: {type(pre)} katsuyo: {type(pre.katsuyo)}"
+    )
+
+
+class TeDe(ISetsuzokujoshiHelper):
+    def __init__(
+        self,
+        bridge: Optional[
+            Callable[[kt.IKatsuyoTextSource], kt.IKatsuyoTextSource]
+        ] = bridge_TeDe_default,
+    ) -> None:
+        super().__init__(bridge)
+
+    def try_merge(self, pre: kt.IKatsuyoTextSource) -> Optional[kt.SetsuzokujoshiText]:
+        if isinstance(pre, kt.KatsuyoText):
+            if isinstance(pre.katsuyo, k.TaKatsuyo):
+                return None
+            if isinstance(pre.katsuyo, k.GodanKatsuyo) and (
+                pre.katsuyo.shushi in ["ぐ", "ぬ", "ぶ", "む"]
+            ):
+                return pre + kt.SETSUZOKUJOSHI_DE
+
+            return pre + kt.SETSUZOKUJOSHI_TE
+
+        return None
+
+
+def bridge_TatteDatte_default(pre: kt.IKatsuyoTextSource) -> kt.IKatsuyoTextSource:
+    if isinstance(pre, kt.INonKatsuyoText):
+        return pre + kt.FUKUJOSHI_TTE
+
+    if isinstance(pre.katsuyo, k.TaKatsuyo):
+        return pre + kt.FUKUJOSHI_TTE
+
+    raise kt.KatsuyoTextError(
+        f"Unsupported katsuyo_text in {sys._getframe().f_code.co_name}: {pre} "
+        f"type: {type(pre)} katsuyo: {type(pre.katsuyo)}"
+    )
+
+
+class TatteDatte(ISetsuzokujoshiHelper):
+    def __init__(
+        self,
+        bridge: Optional[
+            Callable[[kt.IKatsuyoTextSource], kt.IKatsuyoTextSource]
+        ] = bridge_TatteDatte_default,
+    ) -> None:
+        super().__init__(bridge)
+
+    def try_merge(self, pre: kt.IKatsuyoTextSource) -> Optional[kt.SetsuzokujoshiText]:
+        if isinstance(pre, kt.KatsuyoText):
+            if isinstance(pre.katsuyo, k.TaKatsuyo):
+                return None
+            if isinstance(pre.katsuyo, k.GodanKatsuyo) and (
+                pre.katsuyo.shushi in ["ぐ", "ぬ", "ぶ", "む"]
+            ):
+                return pre + kt.SETSUZOKUJOSHI_DATTE
+
+            return pre + kt.SETSUZOKUJOSHI_TATTE
+
+        return None

@@ -1198,7 +1198,7 @@ def test_FukujoshiKiriText_error(msg, katsuyo_text):
                 gokan="美し",
                 katsuyo=KEIYOUSHI,
             ),
-            "美しかって",
+            "美しくて",
         ),
         (
             "形容動詞",
