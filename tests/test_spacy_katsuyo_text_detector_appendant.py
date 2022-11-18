@@ -14,8 +14,6 @@ from katsuyo_text.katsuyo_text import (
     FUKUJOSHI_ZUTSU,
     SETSUZOKUJOSHI_GA,
     SETSUZOKUJOSHI_SHI,
-    SETSUZOKUJOSHI_TE,
-    SETSUZOKUJOSHI_DE,
     SETSUZOKUJOSHI_TO,
     SETSUZOKUJOSHI_DO,
     # SETSUZOKUJOSHI_NI,
@@ -24,8 +22,6 @@ from katsuyo_text.katsuyo_text import (
     SETSUZOKUJOSHI_TSUTSU,
     SETSUZOKUJOSHI_TOMO,
     SETSUZOKUJOSHI_NARI,
-    SETSUZOKUJOSHI_TATTE,
-    SETSUZOKUJOSHI_DATTE,
     SETSUZOKUJOSHI_NAGARA,
     SETSUZOKUJOSHI_KEREDO,
     SHUJOSHI_KA,
@@ -55,6 +51,8 @@ from katsuyo_text.katsuyo_text_helper import (
     Dantei,
     DanteiTeinei,
     Teinei,
+    TeDe,
+    TatteDatte,
 )
 
 
@@ -548,13 +546,13 @@ def test_spacy_fukujoshi_appendants_detector(
             "あなたを愛して、",
             "て",
             "助詞-接続助詞",
-            SETSUZOKUJOSHI_TE,
+            TeDe(),
         ),
         (
             "あなたと遊んで、",
             "で",
             "助詞-接続助詞",
-            SETSUZOKUJOSHI_DE,
+            TeDe(),
         ),
         (
             "あなたを愛すると、",
@@ -609,14 +607,14 @@ def test_spacy_fukujoshi_appendants_detector(
             "あなたを愛したって、",
             "たって",
             "助詞-接続助詞",
-            SETSUZOKUJOSHI_TATTE,
+            TatteDatte(),
         ),
         (
             "あなたが遊んだって、",
             # "だって", # sudachiの辞書の正規形が正しくない「たって」となるためlemmaで対応
             "だって",
             "助詞-接続助詞",
-            SETSUZOKUJOSHI_DATTE,
+            TatteDatte(),
         ),
         (
             "あなたと遊びながら、",
