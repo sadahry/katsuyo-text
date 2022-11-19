@@ -126,6 +126,9 @@ class SpacySentenceConverter(ISentenceConverter):
             fkt = pre.as_fkt_renyo
         elif conjugation_form in self.SHUSHI_FORMS:
             fkt = pre.as_fkt_shushi
+        # 特殊対応 否定「ぬ」
+        elif conjugation_form == "終止形-撥音便" and prev_token.lemma_ == "ぬ":
+            fkt = pre.as_fkt_shushi
         elif conjugation_form in self.RENTAI_FORMS:
             fkt = pre.as_fkt_rentai
         elif conjugation_form in self.KATEI_FORMS:
