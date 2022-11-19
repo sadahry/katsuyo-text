@@ -120,11 +120,15 @@ class SpacySentenceConverter(ISentenceConverter):
                 f"prev: {prev_token} doc: {prev_token.doc} "
             )
 
+        fkt = None
         if conjugation_form in self.MIZEN_FORMS:
             fkt = pre.as_fkt_mizen
         elif conjugation_form in self.RENYO_FORMS:
             fkt = pre.as_fkt_renyo
         elif conjugation_form in self.SHUSHI_FORMS:
+            fkt = pre.as_fkt_shushi
+        # 特殊対応 否定「ぬ」
+        elif conjugation_form == "終止形-撥音便" and prev_token.lemma_ == "ぬ":
             fkt = pre.as_fkt_shushi
         elif conjugation_form in self.RENTAI_FORMS:
             fkt = pre.as_fkt_rentai
@@ -168,7 +172,7 @@ class SpacySentenceConverter(ISentenceConverter):
                     raise KatsuyoTextError(
                         f"Unsupported token: {prev_token} tag: {prev_token.tag_} doc: {prev_token.doc}"
                     )
-                convert_kt = self.convertions_dict.get(kt)
+                convert_kt = self.convertions_dict[kt]
                 if convert_kt is not None:
                     prev_kt += convert_kt
                 prev_token = token
@@ -190,6 +194,8 @@ class SpacySentenceConverter(ISentenceConverter):
             continue
 
         if prev_kt is not None:
+            if isinstance(prev_kt, KatsuyoText):
+                prev_kt = self._bridge_by_form(prev_kt, prev_token)
             result += str(prev_kt)
         else:
             assert prev_token is not None

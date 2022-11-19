@@ -294,7 +294,7 @@ class SpacyKatsuyoTextAppendantDetector(IKatsuyoTextAppendantDetector):
         norm = candidate.norm_
         lemma = candidate.lemma_
 
-        if pos_tag == "AUX":
+        if pos_tag == "AUX" or tag == "助動詞":
             # ==================================================
             # 助動詞の判定
             # ==================================================
