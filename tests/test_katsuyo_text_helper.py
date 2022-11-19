@@ -456,7 +456,7 @@ def test_jodoushi_shieki_value_error(msg, katsuyo_text):
         (
             "TaigenText",
             TaigenText("症状"),
-            "症状がない",
+            "症状ではない",
         ),
         (
             "FukujoshiText",

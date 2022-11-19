@@ -204,11 +204,10 @@ def bridge_Hitei_default(pre: kt.IKatsuyoTextSource) -> kt.KatsuyoText:
     # kt.HOJO_NAIを使えば「〜でない」にできるが「〜ではない」としたい
     nai = kt.KatsuyoText(gokan="な", katsuyo=k.KEIYOUSHI)
 
-    if isinstance(pre, kt.TaigenText):
-        return pre + kt.KAKUJOSHI_GA + nai
-    elif isinstance(
+    if isinstance(
         pre,
         (
+            kt.TaigenText,
             kt.FukushiText,
             kt.SettoText,
             kt.KigoText,
