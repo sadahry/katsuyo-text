@@ -142,6 +142,14 @@ def test_convert_dantei_teinei(nlp_ja, msg, sentence, convertions_dict, expected
             },
             "怒った",
         ),
+        (
+            "Contexual Suffix",
+            "怒られろ",
+            {
+                Ukemi(): None,
+            },
+            "怒れ",
+        ),
     ],
 )
 def test_convert_contextual(nlp_ja, msg, sentence, convertions_dict, expected):

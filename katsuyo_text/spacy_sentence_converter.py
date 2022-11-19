@@ -190,6 +190,8 @@ class SpacySentenceConverter(ISentenceConverter):
             continue
 
         if prev_kt is not None:
+            if isinstance(prev_kt, KatsuyoText):
+                prev_kt = self._bridge_by_form(prev_kt, prev_token)
             result += str(prev_kt)
         else:
             assert prev_token is not None
