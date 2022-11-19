@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "katsuyo-text"
-version = "0.1.1"
+version = "0.1.2"
 description = "A Japanese conjugation form converter"
 authors = ["Sadahiro YOSHIKAWA"]
 license = "MIT license"
