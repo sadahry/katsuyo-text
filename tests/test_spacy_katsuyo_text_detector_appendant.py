@@ -95,6 +95,12 @@ def katsuyo_texts_appendants_detector_init_warning():
             [Ukemi],
         ),
         (
+            "あいつに嫌われよ",
+            "れる",
+            "VERB",  # ja_ginzaではAUXとならない
+            [Ukemi],
+        ),
+        (
             "あなたを愛させる",
             "せる",
             "AUX",
