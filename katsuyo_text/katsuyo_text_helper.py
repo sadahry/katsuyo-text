@@ -207,10 +207,10 @@ def bridge_Hitei_default(pre: kt.IKatsuyoTextSource) -> kt.KatsuyoText:
         return pre + kt.KAKUJOSHI_DE + kt.KEIJOSHI_HA + kt.HOJO_NAI
     elif isinstance(pre, (kt.SetsuzokuText, kt.SetsuzokujoshiText)):
         return pre + kt.KEIJOSHI_HA + kt.HOJO_NAI
-    elif isinstance(
-        pre, (kt.FukushiText, kt.KandoushiText, kt.KakujoshiText, kt.JuntaijoshiText)
-    ):
-        return pre + kt.HOJO_NAI
+    elif isinstance(pre, (kt.KandoushiText)):
+        # 無理やり「〜ない」を付与
+        nai = kt.KatsuyoText(gokan="な", katsuyo=k.KEIYOUSHI)
+        return pre + nai
 
     if isinstance(pre.katsuyo, (k.TaKatsuyo, k.DesuKatsuyo, k.MasuKatsuyo)):
         # 現状は対応できない
@@ -247,8 +247,8 @@ class Hitei(IJodoushiHelper):
         super().__init__(bridge)
 
     def try_merge(self, pre: kt.IKatsuyoTextSource) -> Optional[kt.KatsuyoText]:
-        if isinstance(pre, kt.KeijoshiText):
-            return pre + kt.JODOUSHI_NAI
+        if isinstance(pre, (kt.FukushiText, kt.KakujoshiText, kt.JuntaijoshiText)):
+            return pre + kt.HOJO_NAI
         elif isinstance(pre, kt.INonKatsuyoText):
             return None
 

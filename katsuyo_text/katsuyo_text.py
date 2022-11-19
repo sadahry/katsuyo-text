@@ -247,7 +247,8 @@ class INonKatsuyoText(IKatsuyoTextSource):
     katsuyo: None = None
 
     def __add__(self, post: IKatsuyoTextAppendant[A]) -> A:
-        if isinstance(post, KatsuyoText):
+        if type(post) is KatsuyoText:
+            assert isinstance(post, KatsuyoText)
             return KatsuyoText(
                 gokan=str(self) + post.gokan,
                 katsuyo=post.katsuyo,
@@ -738,10 +739,7 @@ class SoudaYoutai(IJodoushiKatsuyoText):
         if isinstance(pre, FixedKatsuyoText):
             return pre + self.katsuyo_text
         if isinstance(pre, INonKatsuyoText):
-            raise KatsuyoTextError(
-                f"Unsupported katsuyo_text in merge of {type(self)}: "
-                f"{pre} type: {type(pre)}"
-            )
+            return pre + self.katsuyo_text
         else:
             assert isinstance(pre, KatsuyoText)
 
@@ -820,15 +818,7 @@ class Rashii(IJodoushiKatsuyoText):
         if isinstance(pre, FixedKatsuyoText):
             return pre + self.katsuyo_text
         if isinstance(pre, INonKatsuyoText):
-            if isinstance(pre, TaigenText):
-                return pre + self.katsuyo_text
-            elif isinstance(pre, KakujoshiText):
-                return pre + self.katsuyo_text
-
-            raise KatsuyoTextError(
-                f"Unsupported katsuyo_text in merge of {type(self)}: "
-                f"{pre} type: {type(pre)}"
-            )
+            return pre + self.katsuyo_text
         else:
             assert isinstance(pre, KatsuyoText)
 
@@ -1037,10 +1027,7 @@ class Deiru(IJodoushiKatsuyoText):
         if isinstance(pre, FixedKatsuyoText):
             return pre + self.katsuyo_text
         if isinstance(pre, INonKatsuyoText):
-            raise KatsuyoTextError(
-                f"Unsupported katsuyo_text in merge of {type(self)}: "
-                f"{pre} type: {type(pre)}"
-            )
+            return pre + self.katsuyo_text
         else:
             assert isinstance(pre, KatsuyoText)
 
