@@ -120,6 +120,7 @@ class SpacySentenceConverter(ISentenceConverter):
                 f"prev: {prev_token} doc: {prev_token.doc} "
             )
 
+        fkt = None
         if conjugation_form in self.MIZEN_FORMS:
             fkt = pre.as_fkt_mizen
         elif conjugation_form in self.RENYO_FORMS:
