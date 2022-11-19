@@ -471,7 +471,7 @@ class Suitei(IJodoushiHelper):
 
 def bridge_Touzen_default(pre: kt.IKatsuyoTextSource) -> kt.KatsuyoText:
     if isinstance(pre, kt.INonKatsuyoText):
-        return pre + kt.KAKUJOSHI_DE + kt.HOJO_ARU + kt.JODOUSHI_BEKIDA
+        return pre + kt.HOJO_ARU + kt.JODOUSHI_BEKIDA
 
     if isinstance(
         pre.katsuyo,
