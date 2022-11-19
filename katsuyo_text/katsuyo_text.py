@@ -296,18 +296,22 @@ ZURU = KatsuyoText(
 # ==============================================================================
 
 
-class HojoKatsuyoText(KatsuyoText):
+class IHojoKatsuyoText(KatsuyoText):
+    @property
+    def katsuyo_text(self) -> KatsuyoText:
+        return KatsuyoText(
+            gokan=self.gokan,
+            katsuyo=self.katsuyo,
+        )
+
+
+class HojoKatsuyoText(IHojoKatsuyoText):
     def merge(self, pre: IKatsuyoTextSource) -> KatsuyoText:
         if isinstance(pre, FixedKatsuyoText):
-            return pre + self
+            return pre + self.katsuyo_text
         elif isinstance(pre, INonKatsuyoText):
-            if isinstance(pre, KakujoshiText):
-                return pre + self
-
-            raise KatsuyoTextError(
-                f"Unsupported katsuyo_text in merge of {type(self)}: "
-                f"{pre} type: {type(pre)}"
-            )
+            # 現状は厳密に制御していない
+            return pre + KAKUJOSHI_DE + self.katsuyo_text
         else:
             assert isinstance(pre, KatsuyoText)
 
@@ -315,14 +319,14 @@ class HojoKatsuyoText(KatsuyoText):
                 if isinstance(pre.katsuyo, k.GodanKatsuyo) and (
                     pre.katsuyo.shushi in ["ぐ", "ぬ", "ぶ", "む"]
                 ):
-                    return pre + DaKakoKanryo() + self
-                return pre + Ta() + self
+                    return pre + SETSUZOKUJOSHI_DE + self.katsuyo_text
+                return pre + SETSUZOKUJOSHI_TE + self.katsuyo_text
             elif isinstance(pre.katsuyo, k.KeiyoushiKatsuyo):
                 assert (fkt := pre.as_fkt_renyo) is not None
-                return fkt + self
+                return fkt + self.katsuyo_text
             elif isinstance(pre.katsuyo, k.KeiyoudoushiKatsuyo):
                 assert (fkt := pre.as_fkt_renyo_nai) is not None
-                return fkt + self
+                return fkt + self.katsuyo_text
 
             raise KatsuyoTextError(
                 f"Unsupported katsuyo_text in {type(self)}: {pre} "

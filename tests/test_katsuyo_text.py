@@ -1,5 +1,6 @@
 import pytest
 from katsuyo_text.katsuyo_text import (
+    HOJO_NAI,
     FUKUJOSHI_BAKARI,
     FUKUJOSHI_HODO,
     FUKUJOSHI_KIRI,
@@ -135,6 +136,239 @@ def test_error():
 # TODO KeiyoushiKatsuyo, KeiyoudoushiKatsuyo, TaKatsuyo, MasuKatsuyo, DesuKatsuyoのテスト
 # TODO KeijoshiTextTextのテストを追加
 # TODO SetsuzokujoshiTextのテストを追加
+
+
+@pytest.mark.parametrize(
+    "msg, katsuyo_text, expected",
+    [
+        # 五段活用を念入りにテスト
+        (
+            "五段活用",
+            KatsuyoText(
+                gokan="歩",
+                katsuyo=GODAN_KA_GYO,
+            ),
+            "歩いてない",
+        ),
+        (
+            "五段活用",
+            KatsuyoText(
+                gokan="稼",
+                katsuyo=GODAN_GA_GYO,
+            ),
+            "稼いでない",
+        ),
+        (
+            "五段活用",
+            KatsuyoText(
+                gokan="話",
+                katsuyo=GODAN_SA_GYO,
+            ),
+            "話してない",
+        ),
+        (
+            "五段活用",
+            KatsuyoText(
+                gokan="待",
+                katsuyo=GODAN_TA_GYO,
+            ),
+            "待ってない",
+        ),
+        (
+            "五段活用",
+            KatsuyoText(
+                gokan="死",
+                katsuyo=GODAN_NA_GYO,
+            ),
+            "死んでない",
+        ),
+        (
+            "五段活用",
+            KatsuyoText(
+                gokan="遊",
+                katsuyo=GODAN_BA_GYO,
+            ),
+            "遊んでない",
+        ),
+        (
+            "五段活用",
+            KatsuyoText(
+                gokan="読",
+                katsuyo=GODAN_MA_GYO,
+            ),
+            "読んでない",
+        ),
+        (
+            "五段活用",
+            KatsuyoText(
+                gokan="帰",
+                katsuyo=GODAN_RA_GYO,
+            ),
+            "帰ってない",
+        ),
+        (
+            "五段活用",
+            KatsuyoText(
+                gokan="買",
+                katsuyo=GODAN_WAA_GYO,
+            ),
+            "買ってない",
+        ),
+        (
+            "五段活用",
+            KatsuyoText(
+                gokan="行",
+                katsuyo=GODAN_IKU,
+            ),
+            "行ってない",
+        ),
+        (
+            "上一段活用",
+            KatsuyoText(
+                gokan="見",
+                katsuyo=KAMI_ICHIDAN,
+            ),
+            "見てない",
+        ),
+        (
+            "下一段活用",
+            KatsuyoText(
+                gokan="求め",
+                katsuyo=SHIMO_ICHIDAN,
+            ),
+            "求めてない",
+        ),
+        (
+            "カ変活用",
+            KURU,
+            "きてない",
+        ),
+        (
+            "サ変活用",
+            KatsuyoText(
+                gokan="ウォーキング",
+                katsuyo=SA_GYO_HENKAKU_SURU,
+            ),
+            "ウォーキングしてない",
+        ),
+        (
+            "サ変活用(する)",
+            KatsuyoText(
+                gokan="尊重",
+                katsuyo=SA_GYO_HENKAKU_SURU,
+            ),
+            "尊重してない",
+        ),
+        (
+            "サ変活用(ずる)",
+            KatsuyoText(
+                gokan="重ん",
+                katsuyo=SA_GYO_HENKAKU_ZURU,
+            ),
+            "重んじてない",
+        ),
+        (
+            "形容詞",
+            KatsuyoText(
+                gokan="美し",
+                katsuyo=KEIYOUSHI,
+            ),
+            "美しくない",
+        ),
+        (
+            "形容動詞",
+            KatsuyoText(
+                gokan="綺麗",
+                katsuyo=KEIYOUDOUSHI,
+            ),
+            "綺麗でない",
+        ),
+        (
+            "TaigenText",
+            TaigenText("それ"),
+            "それでない",
+        ),
+        (
+            "FukujoshiText",
+            FUKUJOSHI_HODO,
+            "ほどでない",
+        ),
+        (
+            "SetsuzokujoshiText",
+            SETSUZOKUJOSHI_TE,
+            "てでない",
+        ),
+        (
+            "ShujoshiText",
+            SHUJOSHI_NA,
+            "なでない",
+        ),
+        (
+            "KakujoshiText",
+            KAKUJOSHI_NI,
+            "にでない",
+        ),
+        (
+            "KeijoshiText",
+            KEIJOSHI_MO,
+            "もでない",
+        ),
+        (
+            "FukushiText",
+            FukushiText("めっちゃ"),
+            "めっちゃでない",
+        ),
+        (
+            "感動詞",
+            KandoushiText("ほら"),
+            "ほらでない",
+        ),
+        (
+            "接続詞",
+            SetsuzokuText("でも"),
+            "でもでない",
+        ),
+        (
+            "SettoText",
+            SettoText("前々"),
+            "前々でない",
+        ),
+        # 記号は厳密にハンドリングせずに許容している
+        (
+            "KigoText",
+            KigoText("🥺"),
+            "🥺でない",
+        ),
+    ],
+)
+def test_HOJO_NAI(msg, katsuyo_text, expected):
+    hojo = HOJO_NAI
+    result = katsuyo_text + hojo
+    assert str(result) == expected, msg
+
+
+@pytest.mark.parametrize(
+    "msg, katsuyo_text",
+    [
+        (
+            "助動詞「た」",
+            JODOUSHI_TA,
+        ),
+        (
+            "助動詞「です」",
+            JODOUSHI_DESU,
+        ),
+        (
+            "助動詞「ます」",
+            JODOUSHI_MASU,
+        ),
+    ],
+)
+def test_HOJO_NAI_error(msg, katsuyo_text):
+    hojo = HOJO_NAI
+    with pytest.raises(KatsuyoTextError):
+        katsuyo_text + hojo
+        assert False, msg
 
 
 @pytest.mark.parametrize(
