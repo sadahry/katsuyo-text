@@ -74,3 +74,13 @@ sent = next(doc.sents)
 print(converter.convert(sent))
 # => 今日は最高の日だった
 ```
+
+### カスタマイズ
+
+Helperは文法的に成立しない形態を `bridge` できる
+
+
+
+Helperで任意の活用変形を実装
+
+Hiteiの形容詞「ない」の仕様変更

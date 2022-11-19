@@ -486,12 +486,12 @@ def test_jodoushi_shieki_value_error(msg, katsuyo_text):
         (
             "JuntaijoshiText",
             JUNTAIJOSHI_NO,
-            "のない",
+            "のではない",
         ),
         (
             "FukushiText",
             FukushiText("かなり"),
-            "かなりない",
+            "かなりではない",
         ),
         # 文法的には微妙だが、現状は許容している
         (

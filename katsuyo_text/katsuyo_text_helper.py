@@ -199,17 +199,28 @@ class Shieki(IJodoushiHelper):
 
 
 def bridge_Hitei_default(pre: kt.IKatsuyoTextSource) -> kt.KatsuyoText:
+    # 細かくハンドリング
+    # 無理やり「〜ない」を付与
+    # kt.HOJO_NAIを使えば「〜でない」にできるが「〜ではない」としたい
+    nai = kt.KatsuyoText(gokan="な", katsuyo=k.KEIYOUSHI)
+
     if isinstance(pre, kt.TaigenText):
-        return pre + kt.KAKUJOSHI_GA + kt.HOJO_NAI
+        return pre + kt.KAKUJOSHI_GA + nai
     elif isinstance(
-        pre, (kt.SettoText, kt.KigoText, kt.FukujoshiText, kt.ShujoshiText)
+        pre,
+        (
+            kt.FukushiText,
+            kt.SettoText,
+            kt.KigoText,
+            kt.FukujoshiText,
+            kt.ShujoshiText,
+            kt.JuntaijoshiText,
+        ),
     ):
-        return pre + kt.KAKUJOSHI_DE + kt.KEIJOSHI_HA + kt.HOJO_NAI
+        return pre + kt.KAKUJOSHI_DE + kt.KEIJOSHI_HA + nai
     elif isinstance(pre, (kt.SetsuzokuText, kt.SetsuzokujoshiText)):
-        return pre + kt.KEIJOSHI_HA + kt.HOJO_NAI
-    elif isinstance(pre, (kt.KandoushiText)):
-        # 無理やり「〜ない」を付与
-        nai = kt.KatsuyoText(gokan="な", katsuyo=k.KEIYOUSHI)
+        return pre + kt.KEIJOSHI_HA + nai
+    elif isinstance(pre, (kt.KandoushiText, kt.KakujoshiText, kt.KeijoshiText)):
         return pre + nai
 
     if isinstance(pre.katsuyo, (k.TaKatsuyo, k.DesuKatsuyo, k.MasuKatsuyo)):
@@ -247,9 +258,7 @@ class Hitei(IJodoushiHelper):
         super().__init__(bridge)
 
     def try_merge(self, pre: kt.IKatsuyoTextSource) -> Optional[kt.KatsuyoText]:
-        if isinstance(pre, (kt.FukushiText, kt.KakujoshiText, kt.JuntaijoshiText)):
-            return pre + kt.HOJO_NAI
-        elif isinstance(pre, kt.INonKatsuyoText):
+        if isinstance(pre, kt.INonKatsuyoText):
             return None
 
         if isinstance(pre.katsuyo, k.IDoushiKatsuyo):
