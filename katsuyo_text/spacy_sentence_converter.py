@@ -168,7 +168,7 @@ class SpacySentenceConverter(ISentenceConverter):
                     raise KatsuyoTextError(
                         f"Unsupported token: {prev_token} tag: {prev_token.tag_} doc: {prev_token.doc}"
                     )
-                convert_kt = self.convertions_dict.get(kt)
+                convert_kt = self.convertions_dict[kt]
                 if convert_kt is not None:
                     prev_kt += convert_kt
                 prev_token = token
