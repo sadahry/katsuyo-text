@@ -142,7 +142,7 @@ class SpacyKatsuyoTextSourceDetector(IKatsuyoTextSourceDetector):
     # universaldependenciesのADJは形状詞を形容動詞として扱うが、KatsuyoTextとしては形状詞は名詞として扱う
     # ref. https://universaldependencies.org/treebanks/ja_gsd/ja_gsd-pos-ADJ.html
     # 「記号」e.g., 「ε」
-    MEISHI_PATTERN = re.compile(r"(名詞|.*名詞的|形状詞|.*形状詞的)")
+    MEISHI_PATTERN = re.compile(r"(名詞|代名詞|.*名詞的|形状詞|.*形状詞的)")
     FUKUSHI_PATTERN = "副詞"
     KANDOUSHI_PATTERN = "感動詞"
     SETSUZOKU_PATTERN = "接続詞"
